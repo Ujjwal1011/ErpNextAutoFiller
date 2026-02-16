@@ -4,7 +4,9 @@ app_publisher = "Ujjwal "
 app_description = "This help in filling the calculation for the sales , quotation"
 app_email = "ujjwalbhansali55@gmail.com"
 app_license = "mit"
-
+#Added 
+fixtures = ["Client Script", "Custom Field", "Property Setter"]
+# Addition Over 
 # Apps
 # ------------------
 
