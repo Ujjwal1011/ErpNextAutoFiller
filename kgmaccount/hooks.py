@@ -5,10 +5,8 @@ app_description = "This help in filling the calculation for the sales , quotatio
 app_email = "ujjwalbhansali55@gmail.com"
 app_license = "mit"
 #Added 
-fixtures = ["Client Script", "Custom Field", "Property Setter","Print Format"]
-
-# Addition Over 
-# Apps
+fixtures = ["Client Script", "Custom Field", "Property Setter",
+{"dt": "Print Format", "filters": [["module", "=", "Auto Filler"]]}]
 # ------------------
 
 # required_apps = []
