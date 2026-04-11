@@ -9,8 +9,9 @@ fixtures = [
     "Client Script", 
     "Custom Field", 
     "Property Setter",
-    {"dt": "Print Format", "filters": [["module", "=", "Auto Filler"]]},
-    {"dt": "Server Script", "filters": [["module", "=", "Auto Filler"]]}  # <-- ADD THIS LINE
+
+    {"dt": "Print Format", "filters": [["module", "in", ["Kgmaccount", "Auto Filler"]]]},
+    {"dt": "Server Script", "filters": [["module", "in", ["Kgmaccount", "Auto Filler"]]]}  
 ]
 # ------------------
 
