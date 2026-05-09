@@ -5,5 +5,5 @@
 from frappe.tests.utils import FrappeTestCase
 
 
-class TestWhatsappMessenger(FrappeTestCase):
+class TestWhatsAppConnection(FrappeTestCase):
 	pass

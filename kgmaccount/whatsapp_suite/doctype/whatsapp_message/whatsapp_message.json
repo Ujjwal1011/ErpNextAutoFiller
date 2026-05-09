@@ -1,0 +1,138 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2026-05-09 20:38:24.317607",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "whatsapp_connection",
+  "whatsapp_group",
+  "section_break_erwe",
+  "whatsapp_id",
+  "message_id",
+  "direction",
+  "message",
+  "timestamp",
+  "session_name",
+  "media_url",
+  "section_break_yesb",
+  "has_media",
+  "media_type",
+  "attachment",
+  "section_break_yxpt",
+  "raw_json"
+ ],
+ "fields": [
+  {
+   "fieldname": "whatsapp_connection",
+   "fieldtype": "Link",
+   "label": "WhatsApp Connection",
+   "options": "WhatsApp Connection"
+  },
+  {
+   "fieldname": "whatsapp_group",
+   "fieldtype": "Link",
+   "label": "WhatsApp Group",
+   "options": "WhatsApp Group"
+  },
+  {
+   "fieldname": "section_break_erwe",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "whatsapp_id",
+   "fieldtype": "Data",
+   "label": "WhatsApp ID"
+  },
+  {
+   "fieldname": "message_id",
+   "fieldtype": "Data",
+   "label": "Message ID"
+  },
+  {
+   "fieldname": "direction",
+   "fieldtype": "Select",
+   "label": "Direction",
+   "options": "Incoming\nOutgoing"
+  },
+  {
+   "fieldname": "message",
+   "fieldtype": "Small Text",
+   "label": "Message"
+  },
+  {
+   "fieldname": "timestamp",
+   "fieldtype": "Datetime",
+   "label": "Timestamp"
+  },
+  {
+   "fieldname": "session_name",
+   "fieldtype": "Data",
+   "label": "Session Name"
+  },
+  {
+   "fieldname": "media_url",
+   "fieldtype": "Data",
+   "label": "Media URL"
+  },
+  {
+   "fieldname": "section_break_yxpt",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "raw_json",
+   "fieldtype": "Long Text",
+   "label": "Raw JSON",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_yesb",
+   "fieldtype": "Section Break",
+   "label": "Media"
+  },
+  {
+   "default": "0",
+   "fieldname": "has_media",
+   "fieldtype": "Check",
+   "label": "Has Media"
+  },
+  {
+   "fieldname": "media_type",
+   "fieldtype": "Select",
+   "label": "Media Type",
+   "options": "Image\nVideo\nAudio\nDocument"
+  },
+  {
+   "fieldname": "attachment",
+   "fieldtype": "Attach",
+   "label": "Attachment"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2026-05-09 22:34:16.141893",
+ "modified_by": "Administrator",
+ "module": "Whatsapp Suite",
+ "name": "WhatsApp Message",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

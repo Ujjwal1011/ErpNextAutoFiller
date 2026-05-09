@@ -5,5 +5,5 @@
 from frappe.tests.utils import FrappeTestCase
 
 
-class TestWhatsAppSettings(FrappeTestCase):
+class TestWhatsAppGroup(FrappeTestCase):
 	pass
