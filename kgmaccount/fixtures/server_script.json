@@ -9,13 +9,13 @@
   "doctype_event": "Before Save",
   "enable_rate_limit": 0,
   "event_frequency": "All",
-  "modified": "2026-03-22 16:45:10.445834",
+  "modified": "2026-05-27 12:27:10.893169",
   "module": "Auto Filler",
   "name": "Auto Extract Bill No",
   "rate_limit_count": 5,
   "rate_limit_seconds": 86400,
   "reference_doctype": "Quotation",
-  "script": "# The system automatically knows 'doc' is the current document\r\nif doc.name:\r\n    # Split the ID by the hyphen and grab the very last part\r\n    # Example: \"SAL-QTN-2026-00001\" becomes \"00001\"\r\n    doc.custom_bill_no = doc.name.split('-')[-1]",
+  "script": "# The system automatically knows 'doc' is the current document\r\nif doc.name:\r\n    # Split the ID by the hyphen and grab the very last part\r\n    # Example: \"SAL-QTN-2026-00001\" becomes \"00001\"\r\n    doc.custom_bill_no = doc.name.split('-')[3]",
   "script_type": "DocType Event"
  },
  {
@@ -28,13 +28,13 @@
   "doctype_event": "Before Save",
   "enable_rate_limit": 0,
   "event_frequency": "All",
-  "modified": "2026-03-26 22:38:29.839589",
+  "modified": "2026-05-16 16:16:15.841579",
   "module": "Auto Filler",
   "name": "Sales Order Auto Extract Bill No",
   "rate_limit_count": 5,
   "rate_limit_seconds": 86400,
   "reference_doctype": "Sales Order",
-  "script": "if doc.name:\r\n    doc.custom_bill_no = doc.name.split('-')[-1]",
+  "script": "if doc.name:\r\n    doc.custom_bill_no = doc.name.split('-')[3]",
   "script_type": "DocType Event"
  }
 ]
