@@ -1,6 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
+ "autoname": "format:WA-MSG-{YY}{MM}-{#####}",
  "creation": "2026-05-09 20:38:24.317607",
  "doctype": "DocType",
  "engine": "InnoDB",
@@ -20,7 +21,8 @@
   "media_type",
   "attachment",
   "section_break_yxpt",
-  "raw_json"
+  "raw_json",
+  "is_ai_processed"
  ],
  "fields": [
   {
@@ -106,15 +108,22 @@
    "fieldname": "attachment",
    "fieldtype": "Attach",
    "label": "Attachment"
+  },
+  {
+   "default": "0",
+   "fieldname": "is_ai_processed",
+   "fieldtype": "Check",
+   "label": "IS AI Processed"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-05-09 22:34:16.141893",
+ "modified": "2026-06-06 20:55:54.067805",
  "modified_by": "Administrator",
  "module": "Whatsapp Suite",
  "name": "WhatsApp Message",
+ "naming_rule": "Expression",
  "owner": "Administrator",
  "permissions": [
   {

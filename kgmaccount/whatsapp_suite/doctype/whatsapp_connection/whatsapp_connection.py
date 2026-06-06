@@ -205,11 +205,15 @@ def handle_incoming_webhook():
 
         chat_id = msg.get("from") or msg.get("chatId")
         body    = msg.get("body", "")
+        msg_id  = msg.get("id")
+        if isinstance(msg_id, dict):
+            msg_id = msg_id.get("_serialized")
 
         doc             = frappe.new_doc("WhatsApp Message")
         doc.whatsapp_id = chat_id
+        doc.message_id  = msg_id
         doc.message     = body
-        doc.session     = session
+        doc.session_name = session
         doc.direction   = "Incoming"
         doc.insert(ignore_permissions=True)
         frappe.db.commit()

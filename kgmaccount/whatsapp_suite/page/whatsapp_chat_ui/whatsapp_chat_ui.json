@@ -1,0 +1,23 @@
+{
+ "content": null,
+ "creation": "2026-05-27 15:27:00.033621",
+ "docstatus": 0,
+ "doctype": "Page",
+ "idx": 0,
+ "modified": "2026-05-27 16:29:12.092074",
+ "modified_by": "Administrator",
+ "module": "Whatsapp Suite",
+ "name": "whatsapp-chat-ui",
+ "owner": "Administrator",
+ "page_name": "whatsapp-chat-ui",
+ "roles": [
+  {
+   "role": "System Manager"
+  }
+ ],
+ "script": null,
+ "standard": "Yes",
+ "style": null,
+ "system_page": 0,
+ "title": "WhatsApp Chat UI"
+}

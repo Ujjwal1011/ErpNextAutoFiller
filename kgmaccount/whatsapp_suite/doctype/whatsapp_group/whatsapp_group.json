@@ -1,6 +1,6 @@
 {
  "actions": [],
- "allow_rename": 1,
+ "autoname": "format:WA-GRP-{#####}",
  "creation": "2026-05-09 13:02:01.784047",
  "doctype": "DocType",
  "engine": "InnoDB",
@@ -54,10 +54,11 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-05-09 13:06:58.542716",
+ "modified": "2026-06-06 20:56:26.502442",
  "modified_by": "Administrator",
  "module": "Whatsapp Suite",
  "name": "WhatsApp Group",
+ "naming_rule": "Expression",
  "owner": "Administrator",
  "permissions": [
   {

@@ -172,6 +172,13 @@ fixtures = [
 # 		"kgmaccount.tasks.monthly"
 # 	],
 # }
+# custom scheduling 
+scheduler_events = {
+    # 'all' automatically triggers the function every 4 minutes natively inside Frappe
+    "all": [
+        "kgmaccount.utils.vision_scheduler.fetch_and_process_unprocessed_whatsapp_messages"
+    ]
+}
 
 # Testing
 # -------

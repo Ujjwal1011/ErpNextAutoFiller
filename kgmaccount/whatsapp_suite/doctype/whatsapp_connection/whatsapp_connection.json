@@ -1,6 +1,6 @@
 {
  "actions": [],
- "allow_rename": 1,
+ "autoname": "field:whatsapp_name",
  "creation": "2026-05-04 23:00:54.789329",
  "doctype": "DocType",
  "engine": "InnoDB",
@@ -8,6 +8,7 @@
   "waha_server_ip",
   "session_name",
   "api_key",
+  "whatsapp_name",
   "section_break_lmpr",
   "qr_code_display"
  ],
@@ -35,15 +36,22 @@
    "fieldname": "qr_code_display",
    "fieldtype": "HTML",
    "label": "QR Code Display"
+  },
+  {
+   "fieldname": "whatsapp_name",
+   "fieldtype": "Data",
+   "label": "Whatsapp Name",
+   "unique": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-05-09 13:19:11.402628",
+ "modified": "2026-06-06 20:18:37.405604",
  "modified_by": "Administrator",
  "module": "Whatsapp Suite",
  "name": "WhatsApp Connection",
+ "naming_rule": "By fieldname",
  "owner": "Administrator",
  "permissions": [
   {

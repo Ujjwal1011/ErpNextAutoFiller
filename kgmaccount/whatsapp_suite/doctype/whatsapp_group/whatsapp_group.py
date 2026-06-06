@@ -7,11 +7,8 @@ from frappe.model.document import Document
 from frappe.utils.data import get_datetime
 from frappe.utils.file_manager import save_file
 
-class WhatsAppGroup(Document): # <--- MUST match Doctype name (no spaces)
+class WhatsAppGroup(Document):
     pass
-
-
-
 
 @frappe.whitelist()
 def fetch_group_messages(group_docname):
@@ -30,27 +27,64 @@ def fetch_group_messages(group_docname):
             order_by="timestamp desc"
         )
 
+        scrape_start_date = group.get("scrape_start_date")  # Ensure this matches your exact fieldname
+
+        # Store valid timestamps here to find the max later
+        available_timestamps = []
+
         if last_message_time:
-            timestamp_gte = int(time.mktime(get_datetime(last_message_time).timetuple())) + 1
+            # +1 second to avoid fetching the exact same last message again
+            db_ts = int(time.mktime(get_datetime(last_message_time).timetuple())) + 1
+            available_timestamps.append(db_ts)
+            
+        if scrape_start_date:
+            scrape_ts = int(time.mktime(get_datetime(scrape_start_date).timetuple()))
+            available_timestamps.append(scrape_ts)
+
+        # Take the max of the available timestamps, or default to today if both are empty
+        if available_timestamps:
+            timestamp_gte = max(available_timestamps)
         else:
-            fetch_date = group.get("fetch_from_date") or nowdate()
-            timestamp_gte = int(time.mktime(getdate(fetch_date).timetuple()))
+            timestamp_gte = int(time.mktime(get_datetime(nowdate()).timetuple()))
 
         base_url = f"http://{conn_doc.waha_server_ip}" # e.g., http://localhost:3000
-        api_key = conn_doc.get_password("api_key")
         
+        # Ensure API key defaults to a string instead of None if not set
+        api_key = conn_doc.get_password("api_key") or ""
+
         # Initialize your WAHA Client
-        from waha_python import WAHAClient # Ensure this path is correct
+        from waha_python import WAHAClient 
         client = WAHAClient(base_url=base_url, api_key=api_key)
 
-        all_messages = client.chats.get_messages(
-            conn_doc.session_name,
-            group.whatsapp_id,
-            limit=100
-        )
+        # Try block added: Some versions of waha_python may reject kwargs they don't recognize
+        try:
+            all_messages = client.chats.get_messages(
+                conn_doc.session_name,
+                group.whatsapp_id,
+                limit=100,
+                downloadMedia=True
+            )
+        except TypeError:
+            # Fallback if downloadMedia is not supported natively by your wrapper version
+            all_messages = client.chats.get_messages(
+                conn_doc.session_name,
+                group.whatsapp_id,
+                limit=100
+            )
 
         inserted_count = 0
         for msg in all_messages:
+
+
+            # --- ADD THIS NEW FILTER ---
+            # Extract the internal message type (default to 'chat' if missing)
+            msg_type = msg.get("_data", {}).get("type", "chat")
+            
+            # Skip system notifications, protocol messages, or call logs
+            if msg_type in ["e2e_notification", "protocol", "call_log"]:
+                continue
+            # ---------------------------
+
             msg_ts = int(msg.get("timestamp", 0))
             if msg_ts < timestamp_gte:
                 continue
@@ -59,53 +93,79 @@ def fetch_group_messages(group_docname):
             if isinstance(msg_id, dict):
                 msg_id = msg_id.get("_serialized")
 
-            if frappe.db.exists("WhatsApp Message", {"whatsapp_message_id": msg_id}):
+            if frappe.db.exists("WhatsApp Message", {"message_id": msg_id}):
                 continue
 
-            # Create the Message Doc
+            # 1. Create and INSERT the Message Doc FIRST
             new_msg = frappe.new_doc("WhatsApp Message")
             new_msg.whatsapp_connection = conn_doc.name
             new_msg.whatsapp_group = group.name
             new_msg.whatsapp_id = msg.get("from")
-            new_msg.whatsapp_message_id = msg_id
+            new_msg.message_id = msg_id
+            new_msg.session_name = conn_doc.session_name
             new_msg.message = msg.get("body")
             new_msg.direction = "Outgoing" if msg.get("fromMe") else "Incoming"
             new_msg.timestamp = get_datetime(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(msg_ts)))
+            new_msg.raw_json = json.dumps(msg, indent=4)
+            
+            # Insert so the document gets a real ID in the database (new_msg.name)
+            new_msg.insert(ignore_permissions=True)
 
-            # Handle Media (Image/Audio/Video)
+            # 2. Handle Media AFTER the document exists
             if msg.get("hasMedia") and msg.get("media"):
                 media_info = msg.get("media")
-                mimetype = media_info.get("mimetype", "")
+                # Safety fallback in case mimetype is None
+                mimetype = media_info.get("mimetype") or "" 
                 
-                # Use the URL from the JSON
                 file_url = media_info.get("url")
                 
-                # If the URL is localhost but the server is remote, 
-                # you might need to swap the base URL
-                if "localhost" in file_url and conn_doc.waha_server_ip != "localhost":
-                    file_url = file_url.replace("localhost:3000", conn_doc.waha_server_ip)
+                if file_url:
+                    if "localhost" in file_url and conn_doc.waha_server_ip != "localhost":
+                        file_url = file_url.replace("localhost:3000", conn_doc.waha_server_ip)
 
-                response = requests.get(file_url, stream=True)
-                
-                if response.status_code == 200:
-                    ext = mimetype.split('/')[-1].split(';')[0] # get 'jpeg' or 'ogg'
-                    fname = f"{msg_id}.{ext}"
+                    headers = {
+                        "X-Api-Key": api_key
+                    }
                     
-                    # Save file to Frappe
-                    ret_file = save_file(
-                        fname,
-                        response.content,
-                        new_msg.doctype,
-                        new_msg.name,
-                        is_private=1
-                    )
-                    
-                    new_msg.has_media = 1
-                    new_msg.attachment = ret_file.file_url
-                    new_msg.media_type = mimetype.split('/')[0].capitalize()
+                    try:
+                        # Added timeout to prevent worker locking if the media server hangs
+                        response = requests.get(file_url, headers=headers, stream=True, timeout=15)
+                        
+                        if response.status_code == 200:
+                            # Safely extract extension
+                            ext = mimetype.split('/')[-1].split(';')[0] if '/' in mimetype else "bin"
+                            fname = f"{msg_id}.{ext}"
+                            
+                            ret_file = save_file(
+                                fname,
+                                response.content,
+                                new_msg.doctype,
+                                new_msg.name, # This is now a valid ID!
+                                is_private=1
+                            )
+                            
+                            # Update the already-inserted document
+                            new_msg.has_media = 1
+                            new_msg.attachment = ret_file.file_url
+                            # Safely map the MIME-type to your Frappe Select Options
+                            if 'image' in mimetype:
+                                new_msg.media_type = "Image"
+                            elif 'video' in mimetype:
+                                new_msg.media_type = "Video"
+                            elif 'audio' in mimetype:
+                                new_msg.media_type = "Audio"
+                            else:
+                                # Catch-all for application/pdf, text/csv, zip files, etc.
+                                new_msg.media_type = "Document"
+                            new_msg.save(ignore_permissions=True)
+                        else:
+                            frappe.log_error(
+                                title="WAHA Media Download Failed", 
+                                message=f"Status: {response.status_code} | URL: {file_url}"
+                            )
+                    except Exception as e:
+                        frappe.log_error(title="WAHA Media Request Exception", message=str(e))
 
-            new_msg.raw_json = json.dumps(msg, indent=4)
-            new_msg.insert(ignore_permissions=True)
             inserted_count += 1
 
         frappe.db.commit()
@@ -113,4 +173,4 @@ def fetch_group_messages(group_docname):
 
     except Exception:
         frappe.log_error(title="WAHA Fetch Group Messages Error", message=frappe.get_traceback())
-        raise # Re-raising helps see the error in the console
+        raise
