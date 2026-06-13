@@ -36,5 +36,24 @@
   "reference_doctype": "Sales Order",
   "script": "if doc.name:\r\n    doc.custom_bill_no = doc.name.split('-')[3]",
   "script_type": "DocType Event"
+ },
+ {
+  "allow_guest": 0,
+  "api_method": "rajasthan_cutting_kota_area",
+  "cron_format": null,
+  "disabled": 0,
+  "docstatus": 0,
+  "doctype": "Server Script",
+  "doctype_event": null,
+  "enable_rate_limit": 0,
+  "event_frequency": "All",
+  "modified": "2026-06-13 00:00:00.000000",
+  "module": "Auto Filler",
+  "name": "Rajasthan Cutting Kota Area API",
+  "rate_limit_count": 5,
+  "rate_limit_seconds": 86400,
+  "reference_doctype": null,
+  "script": "def positive_float(value):\r\n    try:\r\n        return max(0, float(value or 0))\r\n    except Exception:\r\n        return 0\r\n\r\ndef ceil_positive(value):\r\n    whole = int(value)\r\n    if value > whole:\r\n        return whole + 1\r\n    return whole\r\n\r\ndef round_up_to_even_inch(value):\r\n    whole = ceil_positive(positive_float(value))\r\n    if whole <= 0:\r\n        return 0\r\n    if whole % 2:\r\n        return whole + 1\r\n    return whole\r\n\r\ndef truthy(value):\r\n    return str(value or '').strip().lower() in ('1', 'true', 'yes', 'y')\r\n\r\ndef size_key(height, width, use_billable_size):\r\n    if use_billable_size:\r\n        h = round_up_to_even_inch(height)\r\n        w = round_up_to_even_inch(width)\r\n    else:\r\n        h = ceil_positive(positive_float(height))\r\n        w = ceil_positive(positive_float(width))\r\n\r\n    if not h or not w:\r\n        return ''\r\n\r\n    low = min(h, w)\r\n    high = max(h, w)\r\n    return '{}x{}'.format(high, low)\r\n\r\nprices = {\r\n    '20.25m': {\r\n        '22x11': {'polish': 26, 'ruf': 25},\r\n        '22x16': {'polish': 31},\r\n        '22x22': {'polish': 32},\r\n    },\r\n    '25.30m': {\r\n        '22x16': {'polish': 33, 'ruf': 30},\r\n        '23x17': {'polish': 35},\r\n        '22x22': {'polish': 34, 'ruf': 32},\r\n        '23x23': {'polish': 35},\r\n    },\r\n    'gadela': {\r\n        '24x18': {'polish': 38},\r\n        '24x24': {'polish': 39},\r\n    },\r\n}\r\n\r\nargs = frappe.form_dict\r\nitem_code = str(args.get('item_code') or '').lower()\r\nheight = positive_float(args.get('height') or args.get('custom_height'))\r\nwidth = positive_float(args.get('width') or args.get('custom_width'))\r\nrequired_area_sqft = positive_float(args.get('required_area_sqft') or args.get('area_sqft'))\r\nfinish = str(args.get('finish') or '').strip().lower()\r\nprice_section = str(args.get('price_section') or '').strip().lower()\r\n\r\nif not finish:\r\n    if 'ruf' in item_code or 'rough' in item_code or 'rou' in item_code:\r\n        finish = 'ruf'\r\n    else:\r\n        finish = 'polish'\r\n\r\nis_gadela = truthy(args.get('is_gadela')) or 'gadela' in item_code or ' raj g' in (' ' + item_code + ' ')\r\nif not price_section:\r\n    price_section = 'gadela' if is_gadela else '25.30m'\r\n\r\nstone_coverage_sqft = (height * width) / 144 if height and width else 0\r\nif not height or not width or not required_area_sqft or not stone_coverage_sqft:\r\n    frappe.response['message'] = {\r\n        'ok': False,\r\n        'error': 'height, width, and required_area_sqft are required positive numbers',\r\n    }\r\nelse:\r\n    key = size_key(height, width, price_section == 'gadela')\r\n    price_row = prices.get(price_section, {}).get(key)\r\n\r\n    if not price_row:\r\n        frappe.response['message'] = {\r\n            'ok': False,\r\n            'error': 'price not found for section {} and size {}'.format(price_section, key),\r\n            'size_key': key,\r\n            'price_section': price_section,\r\n        }\r\n    else:\r\n        rate = price_row.get(finish) or price_row.get('polish')\r\n        stones_needed = ceil_positive(required_area_sqft / stone_coverage_sqft)\r\n        billable_height = round_up_to_even_inch(height)\r\n        billable_width = round_up_to_even_inch(width)\r\n        billable_area_sqft = round(stones_needed * ((billable_height * billable_width) / 144), 4)\r\n        amount = round(billable_area_sqft * rate, 2)\r\n\r\n        frappe.response['message'] = {\r\n            'ok': True,\r\n            'item_code': args.get('item_code'),\r\n            'height': height,\r\n            'width': width,\r\n            'required_area_sqft': required_area_sqft,\r\n            'stone_coverage_sqft': round(stone_coverage_sqft, 4),\r\n            'stones_needed': stones_needed,\r\n            'billable_height': billable_height,\r\n            'billable_width': billable_width,\r\n            'billable_area_sqft': billable_area_sqft,\r\n            'price_section': price_section,\r\n            'size_key': key,\r\n            'finish': finish,\r\n            'rate': rate,\r\n            'amount': amount,\r\n        }",
+  "script_type": "API"
  }
 ]

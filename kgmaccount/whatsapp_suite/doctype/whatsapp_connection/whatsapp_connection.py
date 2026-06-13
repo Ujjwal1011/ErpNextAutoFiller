@@ -1,13 +1,22 @@
 import frappe
 from frappe.model.document import Document
 from waha_python import WAHAClient, WAHAAuthenticationError, WAHANotFoundError
+from kgmaccount.whatsapp_suite.permissions import assert_whatsapp_admin
 
 class WhatsAppConnection(Document):
     pass
 
+
+def _waha_offline_message(ip):
+    return (
+        f"Could not reach WhatsApp server at {ip}. "
+        "Please start the WAHA server and try again."
+    )
+
 @frappe.whitelist()
 def test_waha_connection(ip, session_name, api_key, docname=None):
     """Pings the WAHA server to check if it is alive and the session exists."""
+    assert_whatsapp_admin()
     logger = frappe.logger("whatsapp_suite")
     
     # --- FRAPPE PASSWORD FIX ---
@@ -46,11 +55,12 @@ def test_waha_connection(ip, session_name, api_key, docname=None):
         error_msg = f"Network Error: Could not reach WAHA server at {ip}. Error: {str(e)}"
         logger.error(error_msg)
         frappe.log_error(title="WAHA Network Timeout/Error", message=error_msg)
-        return {"status": "error", "message": f"Could not reach WAHA server: {str(e)}"}
+        return {"status": "error", "message": _waha_offline_message(ip), "error": str(e)}
 
 @frappe.whitelist()
 def generate_qr_code(ip, session_name, api_key, docname=None):
     """Fetches the QR code data from the WAHA API."""
+    assert_whatsapp_admin()
     logger = frappe.logger("whatsapp_suite")
     
     # --- FRAPPE PASSWORD FIX ---
@@ -88,11 +98,12 @@ def generate_qr_code(ip, session_name, api_key, docname=None):
         error_msg = f"Exception during QR fetch: {str(e)}"
         logger.error(error_msg)
         frappe.log_error(title="WAHA QR Fetch Exception", message=error_msg)
-        return {"status": "error", "message": str(e)}
+        return {"status": "error", "message": _waha_offline_message(ip), "error": str(e)}
 
 @frappe.whitelist()
 def sync_waha_chats(connection_name=None):
     """Fetches chats from WAHA and upserts them into the Frappe WhatsApp Group DocType."""
+    assert_whatsapp_admin()
     logger = frappe.logger("whatsapp_suite")
     logger.info("Starting WhatsApp Group Sync...")
     
@@ -171,7 +182,7 @@ def sync_waha_chats(connection_name=None):
         error_msg = f"WAHA Sync Error: {str(e)}"
         logger.error(error_msg)
         frappe.log_error(title="WAHA Sync Failed", message=frappe.get_traceback())
-        return {"status": "error", "message": str(e)}
+        return {"status": "error", "message": _waha_offline_message(ip), "error": str(e)}
 
 
 

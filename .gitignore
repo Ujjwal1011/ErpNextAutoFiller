@@ -5,3 +5,5 @@
 tags
 node_modules
 __pycache__
+kgmaccount/tests/logs/*
+sales order item list.csv

@@ -1,0 +1,66 @@
+{% if doc.sales_orders %}
+    {% set first_bill = namespace(doc=None) %}
+    {% set batch_total = namespace(grand_total=0) %}
+    {% for row in doc.sales_orders %}
+        {% if row.sales_order %}
+            {% set current_bill = frappe.get_doc("Sales Order", row.sales_order) %}
+            {% if not first_bill.doc %}
+                {% set first_bill.doc = current_bill %}
+            {% endif %}
+            {% set batch_total.grand_total = batch_total.grand_total + (current_bill.grand_total or 0) %}
+        {% endif %}
+    {% endfor %}
+
+    {% if first_bill.doc %}
+        <div class="kgm-batch-header">
+            <div class="kgm-bill-customer">
+                <div class="kgm-customer-name">
+                    {{ first_bill.doc.custom_cash_customer_name if first_bill.doc.custom_cash_customer_name else first_bill.doc.customer }}
+                </div>
+                {% if first_bill.doc.custom_phone_number %}
+                <div style="font-size: 7pt; color: #444; margin-top: 2px;">
+                    <span class="kgm-muted-label">Phone:</span>
+                    {{ first_bill.doc.custom_phone_number }}
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="kgm-bill-meta">
+                <div class="kgm-doc-title">Quotations</div>
+                {% if doc.from_date or doc.to_date %}
+                <div style="font-size: 7pt;">
+                    <span class="kgm-muted-label">Period:</span>
+                    {{ frappe.format(doc.from_date, {"fieldtype": "Date"}) if doc.from_date else "" }}
+                    {% if doc.from_date and doc.to_date %} to {% endif %}
+                    {{ frappe.format(doc.to_date, {"fieldtype": "Date"}) if doc.to_date else "" }}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    {% endif %}
+
+    {% for row in doc.sales_orders %}
+        {% if row.sales_order %}
+            {% set bill_doc = frappe.get_doc("Sales Order", row.sales_order) %}
+            {% set hide_party_header = 1 %}
+            {% set hide_signature = 1 %}
+            {% set hide_in_words = 1 %}
+            {% include "kgmaccount/templates/includes/sales_order_bill.html" %}
+        {% endif %}
+    {% endfor %}
+
+    <div class="kgm-batch-total">
+        <table class="summary-table">
+            <tr>
+                <td class="grand-total-label">BATCH GRAND TOTAL</td>
+                <td class="grand-total-value">{{ "%.2f"|format(batch_total.grand_total) }}</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="sign-grid kgm-batch-signature">
+        <div class="sign-line">Authorized Signatory</div>
+    </div>
+{% else %}
+    <div class="kgm-empty-batch">No Sales Orders selected.</div>
+{% endif %}

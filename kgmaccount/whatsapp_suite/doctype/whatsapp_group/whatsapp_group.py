@@ -6,16 +6,32 @@ from frappe.utils import getdate, nowdate
 from frappe.model.document import Document
 from frappe.utils.data import get_datetime
 from frappe.utils.file_manager import save_file
+from waha_python import WAHAClient
+from kgmaccount.whatsapp_suite.permissions import assert_can_access_whatsapp_group
 
 class WhatsAppGroup(Document):
     pass
 
+
+def _waha_offline_message(conn_doc):
+    server = conn_doc.waha_server_ip or "the configured WAHA server"
+    return (
+        f"Could not reach WhatsApp server at {server}. "
+        "Please start the WAHA server and try again."
+    )
+
+
 @frappe.whitelist()
 def fetch_group_messages(group_docname):
+    assert_can_access_whatsapp_group(group_docname)
+
     try:
         group = frappe.get_doc("WhatsApp Group", group_docname)
         if not group.whatsapp_connection:
-            frappe.throw("This group is not linked to a WhatsApp Connection.")
+            return {
+                "status": "error",
+                "message": "This group is not linked to a WhatsApp Connection.",
+            }
 
         conn_doc = frappe.get_doc("WhatsApp Connection", group.whatsapp_connection)
 
@@ -52,8 +68,6 @@ def fetch_group_messages(group_docname):
         # Ensure API key defaults to a string instead of None if not set
         api_key = conn_doc.get_password("api_key") or ""
 
-        # Initialize your WAHA Client
-        from waha_python import WAHAClient 
         client = WAHAClient(base_url=base_url, api_key=api_key)
 
         # Try block added: Some versions of waha_python may reject kwargs they don't recognize
@@ -171,6 +185,17 @@ def fetch_group_messages(group_docname):
         frappe.db.commit()
         return {"status": "success", "message": f"Fetched {inserted_count} new messages."}
 
-    except Exception:
+    except (requests.exceptions.RequestException, ConnectionError, TimeoutError, OSError) as e:
+        frappe.log_error(title="WAHA Server Unavailable", message=frappe.get_traceback())
+        return {
+            "status": "error",
+            "message": _waha_offline_message(conn_doc) if "conn_doc" in locals() else "Could not reach WhatsApp server. Please start WAHA and try again.",
+            "error": str(e),
+        }
+    except Exception as e:
         frappe.log_error(title="WAHA Fetch Group Messages Error", message=frappe.get_traceback())
-        raise
+        return {
+            "status": "error",
+            "message": "Could not fetch WhatsApp messages right now. Please check the WhatsApp server and Error Log.",
+            "error": str(e),
+        }

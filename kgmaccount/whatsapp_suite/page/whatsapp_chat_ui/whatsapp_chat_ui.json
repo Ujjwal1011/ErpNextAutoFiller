@@ -12,12 +12,12 @@
  "page_name": "whatsapp-chat-ui",
  "roles": [
   {
-   "role": "System Manager"
+   "role": "All"
   }
  ],
  "script": null,
  "standard": "Yes",
  "style": null,
  "system_page": 0,
- "title": "WhatsApp Chat UI"
+ "title": "WhatsApp Chat"
 }

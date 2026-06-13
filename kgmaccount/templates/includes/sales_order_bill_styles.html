@@ -1,0 +1,173 @@
+<style>
+    @page {
+        size: A5;
+        margin: 10mm 8mm 10mm 8mm;
+    }
+
+    * { box-sizing: border-box; }
+
+    .print-format {
+        font-family: Arial, sans-serif;
+        font-size: 7pt;
+        color: #1a1a1a;
+        line-height: 1.1;
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .kgm-bill {
+        width: 100%;
+        margin-bottom: 8mm;
+    }
+
+    .kgm-empty-batch {
+        font-family: Arial, sans-serif;
+        font-size: 10pt;
+        padding: 16px;
+    }
+
+    .kgm-bill-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        border-bottom: 1px solid #000;
+        padding-bottom: 4px;
+        margin-bottom: 8px;
+    }
+
+    .kgm-batch-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        border-bottom: 1px solid #000;
+        padding-bottom: 4px;
+        margin-bottom: 8px;
+    }
+
+    .kgm-order-strip {
+        display: flex;
+        justify-content: flex-end;
+        gap: 16px;
+        border-bottom: 1px solid #000;
+        padding-bottom: 3px;
+        margin-bottom: 4px;
+        font-size: 7pt;
+    }
+
+    .kgm-bill-customer { padding-left: 10px; }
+    .kgm-bill-meta { text-align: right; padding-right: 10px; }
+    .kgm-customer-name { font-size: 13pt; font-weight: bold; }
+    .kgm-doc-title { font-size: 10pt; font-weight: bold; text-transform: uppercase; margin-bottom: 3px; }
+    .kgm-muted-label { color: #666; font-weight: bold; text-transform: uppercase; font-size: 6.5pt; }
+
+    .table-main {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .table-main th {
+        background-color: #fcfcfc;
+        border-top: 1px solid #000;
+        border-bottom: 1px solid #000;
+        border-right: 1px solid #ccc;
+        padding: 1px 2px;
+        text-align: left;
+        font-weight: bold;
+        text-transform: uppercase;
+        font-size: 7pt;
+        white-space: nowrap;
+    }
+
+    .table-main th:last-child { border-right: none; }
+
+    .table-main td {
+        padding: 1px 2px;
+        border-bottom: 1px solid #bbb;
+        border-right: 1px solid #ddd;
+        vertical-align: middle;
+        white-space: nowrap;
+        font-size: 7pt;
+    }
+
+    .table-main td:last-child { border-right: none; }
+
+    .stone-row td {
+        font-size: 8pt;
+        font-weight: bold;
+        color: #000;
+        border-top: 1px solid #000;
+    }
+
+    .moulding-row td {
+        color: #555;
+        font-style: italic;
+        font-size: 7pt;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .indent-content { padding-left: 10px !important; }
+    .mould-symbol { color: #999; margin-right: 2px; }
+
+    .edge-box {
+        width: 10px;
+        height: 10px;
+        margin: auto;
+        background: #fff;
+        border: 0.5px solid #ccc;
+    }
+
+    .summary-box {
+        margin-top: 8px;
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .summary-table {
+        width: 280px;
+        border-collapse: collapse;
+        font-size: 8pt;
+    }
+
+    .summary-table td {
+        padding: 0;
+        border: none;
+        font-size: 8pt;
+        line-height: 1.2;
+    }
+
+    .grand-total-label,
+    .grand-total-value {
+        border-top: 1px solid #000 !important;
+        border-bottom: 1px solid #000 !important;
+        padding: 3px 0 !important;
+        font-size: 10pt !important;
+        font-weight: bold;
+    }
+
+    .grand-total-value { text-align: right; }
+
+    .sign-grid {
+        margin-top: 30px;
+        display: flex;
+        justify-content: space-between;
+        padding-top: 4px;
+    }
+
+    .sign-line {
+        width: 110px;
+        border-top: 1px solid #000;
+        text-align: center;
+        padding-top: 2px;
+        font-size: 7pt;
+    }
+
+    .kgm-batch-signature {
+        margin-top: 18px;
+    }
+
+    .kgm-batch-total {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 10px;
+    }
+</style>

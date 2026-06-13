@@ -1,0 +1,8 @@
+{
+  "profile": "sales_invoice",
+  "script": "Sales-Invoice Select Item",
+  "description": "Best known Kaddpa-only Select Item result before the Kaddpa client-script update.",
+  "max_failed_rows": 12,
+  "failed_csv_rows": [49, 59, 60, 69, 73, 513, 603, 1532, 1533, 1534, 1758, 1760],
+  "note": "Some CSV rows may contain incorrect expected item codes or cut sizes, so this benchmark is a guard against regressions, not proof that every remaining failure is a script bug."
+}

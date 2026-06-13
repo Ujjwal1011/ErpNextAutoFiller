@@ -1,0 +1,135 @@
+{% set bill = bill_doc if bill_doc is defined else doc %}
+{% set batch_mode = hide_party_header if hide_party_header is defined else 0 %}
+<div class="kgm-bill">
+    {% if not batch_mode %}
+    <div class="kgm-bill-header">
+        <div class="kgm-bill-customer">
+            <div class="kgm-customer-name">
+                {{ bill.custom_cash_customer_name if bill.custom_cash_customer_name else bill.customer }}
+            </div>
+            {% if bill.custom_phone_number %}
+            <div style="font-size: 7pt; color: #444; margin-top: 2px;">
+                <span class="kgm-muted-label">Phone:</span>
+                {{ bill.custom_phone_number }}
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="kgm-bill-meta">
+            <div class="kgm-doc-title">Quotation</div>
+            <div style="font-size: 7pt; line-height: 1.6;">
+                <span class="kgm-muted-label">Order No:</span>
+                <strong>{{ bill.name[-3:] }}</strong>
+            </div>
+            <div style="font-size: 7pt;">
+                <span class="kgm-muted-label">Date:</span>
+                {{ bill.get_formatted("transaction_date") }}
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="kgm-order-strip">
+        <div>
+            <span class="kgm-muted-label">Order No:</span>
+            <strong>{{ bill.name[-3:] }}</strong>
+        </div>
+        <div>
+            <span class="kgm-muted-label">Date:</span>
+            {{ bill.get_formatted("transaction_date") }}
+        </div>
+    </div>
+    {% endif %}
+
+    <table class="table-main">
+        <thead>
+            <tr>
+                <th style="width: 18px;">SR</th>
+                <th>Item & Services</th>
+                <th style="width: 50px;">Size</th>
+                <th style="text-align: center; width: 30px;">Edges</th>
+                <th style="width: 22px;">Qty</th>
+                <th style="width: 65px;">Measurement</th>
+                <th style="width: 50px;">Rate (Rs.)</th>
+                <th style="text-align: right; width: 60px;">Amount (Rs.)</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% set sr_counter = namespace(val=1) %}
+            {% set skipped_items = namespace(list=[]) %}
+
+            {% for item in bill.items %}
+                {% if item.name not in skipped_items.list %}
+                    <tr class="stone-row">
+                        <td>{{ sr_counter.val }}</td>
+                        <td>{{ item.item_name }}</td>
+                        <td style="white-space: nowrap;">{{ item.custom_width|int }} &times; {{ item.custom_height|int }}</td>
+                        <td></td>
+                        <td>{{ item.custom_quantity|int }}</td>
+                        <td>{{ "%.3f"|format(item.qty) }} <small>{{ item.uom }}</small></td>
+                        <td>{{ "%.2f"|format(item.rate) }}</td>
+                        <td style="text-align: right;">{{ "%.2f"|format(item.amount) }}</td>
+                    </tr>
+                    {% set sr_counter.val = sr_counter.val + 1 %}
+
+                    {% for sub in bill.items %}
+                        {% if sub.name != item.name and sub.name not in skipped_items.list %}
+                            {% if ('Mould' in (sub.item_code or '') or 'MouldG' in (sub.item_code or '')) and sub.custom_width == item.custom_width and sub.custom_height == item.custom_height %}
+                                {% set _ = skipped_items.list.append(sub.name) %}
+                                <tr class="moulding-row">
+                                    <td></td>
+                                    <td class="indent-content"><span class="mould-symbol">&#8627;</span>{{ sub.item_name }}</td>
+                                    <td style="font-size: 6.5pt; color: #888; white-space: nowrap;">{{ sub.custom_width|int }} &times; {{ sub.custom_height|int }}</td>
+                                    <td>
+                                        <div class="edge-box" style="
+                                            {% if sub.custom_top %} border-top: 2pt solid #000; {% endif %}
+                                            {% if sub.custom_bottom %} border-bottom: 2pt solid #000; {% endif %}
+                                            {% if sub.custom_left %} border-left: 2pt solid #000; {% endif %}
+                                            {% if sub.custom_right %} border-right: 2pt solid #000; {% endif %}
+                                        "></div>
+                                    </td>
+                                    <td>{{ sub.custom_quantity|int }}</td>
+                                    <td>{{ "%.3f"|format(sub.qty) }} <small>{{ sub.uom }}</small></td>
+                                    <td>{{ "%.2f"|format(sub.rate) }}</td>
+                                    <td style="text-align: right;">{{ "%.2f"|format(sub.amount) }}</td>
+                                </tr>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="summary-box">
+        <table class="summary-table">
+            <tr>
+                <td style="font-weight: bold; width: 60%;">Net Total</td>
+                <td style="text-align: right; font-weight: bold; width: 40%;">{{ "%.2f"|format(bill.total) }}</td>
+            </tr>
+            {% for tax in bill.taxes %}
+                {% if tax.tax_amount %}
+                <tr>
+                    <td style="color: #666;">{{ tax.description }}</td>
+                    <td style="text-align: right;">{{ "%.2f"|format(tax.tax_amount) }}</td>
+                </tr>
+                {% endif %}
+            {% endfor %}
+            <tr>
+                <td class="grand-total-label">GRAND TOTAL</td>
+                <td class="grand-total-value">{{ "%.2f"|format(bill.grand_total) }}</td>
+            </tr>
+        </table>
+    </div>
+
+    {% if not (hide_in_words if hide_in_words is defined else 0) %}
+    <div style="margin-top: 10px; font-size: 6.5pt; font-style: italic;">
+        <strong>In Words:</strong> {{ bill.in_words }}
+    </div>
+    {% endif %}
+
+    {% if not (hide_signature if hide_signature is defined else 0) %}
+    <div class="sign-grid">
+        <div class="sign-line">Authorized Signatory</div>
+    </div>
+    {% endif %}
+</div>
