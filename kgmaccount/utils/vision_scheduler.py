@@ -4,6 +4,8 @@ from kgmaccount.utils import whatsapp_logger  # configure whatsapp log file
 
 logger = logging.getLogger(__name__)
 
+DEFAULT_MAX_IMAGE_RETRIES = 3
+
 def fetch_and_process_unprocessed_whatsapp_messages():
     """
     Scheduled job that polls for messages, but checks your 
@@ -13,6 +15,10 @@ def fetch_and_process_unprocessed_whatsapp_messages():
     print("[kgmaccount] fetch_and_process_unprocessed_whatsapp_messages started")
     # 1. Fetch live user settings from the Desk
     settings = frappe.get_doc("WhatsApp AI Settings")
+    max_retries = max(
+        1,
+        int(getattr(settings, "max_image_processing_retries", 0) or DEFAULT_MAX_IMAGE_RETRIES),
+    )
     
     # Check if master switch is turned OFF
     if not settings.enable_ai_worker:
@@ -34,6 +40,7 @@ def fetch_and_process_unprocessed_whatsapp_messages():
             "media_type": "Image",  # Capital 'I' and correct field name
             "has_media": 1,
             "is_ai_processed": 0,
+            "ai_retry_count": ["<", max_retries],
             "whatsapp_group": ["in", allowed_group_list] # Correct field name
         },
         fields=["name"]
@@ -44,7 +51,11 @@ def fetch_and_process_unprocessed_whatsapp_messages():
     # 3. Queue them for AI processing
     for msg in unprocessed_messages:
         # Mark as processed immediately to prevent double-polling collisions
-        frappe.db.set_value("WhatsApp Message", msg.name, "is_ai_processed", 1)
+        frappe.db.set_value(
+            "WhatsApp Message",
+            msg.name,
+            {"is_ai_processed": 1, "ai_processing_status": "Processing"},
+        )
         frappe.db.commit()
         logger.info(f"Enqueuing message {msg.name} for AI processing")
         print(f"[kgmaccount] Enqueuing message {msg.name} for AI processing")

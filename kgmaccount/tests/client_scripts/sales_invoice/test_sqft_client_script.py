@@ -115,6 +115,16 @@ class TestSalesInvoiceSqftCalculationClientScript(unittest.TestCase):
         self.assertEqual(result["row"]["qty"], float(csv_row["SQFT"]), debug)
         self.assertEqual(float(csv_row["Rate"]), 55.0, debug)
 
+    def test_job_work_is_skipped_by_sqft_calculation(self):
+        """Sales Invoice job work rows are handled by moulding quantity, not sqft calculation."""
+        case, _csv_row = get_required_case("job_work")
+        result = self._run_sqft_case(case)
+        debug = f"client script output row={result['row']}; calls={result.get('calls')}"
+
+        self.assertNotIn("qty", result["row"], debug)
+        self.assertNotIn("cut_from_height", result["row"], debug)
+        self.assertNotIn("cut_from_width", result["row"], debug)
+
     def _run_sqft_case(self, case):
         """Run the Sales Invoice sqft script for one CSV-backed item example."""
         return run_item_client_script(

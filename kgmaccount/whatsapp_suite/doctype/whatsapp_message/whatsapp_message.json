@@ -22,7 +22,10 @@
   "attachment",
   "section_break_yxpt",
   "raw_json",
-  "is_ai_processed"
+  "is_ai_processed",
+  "ai_processing_status",
+  "ai_retry_count",
+  "ai_last_error"
  ],
  "fields": [
   {
@@ -114,6 +117,27 @@
    "fieldname": "is_ai_processed",
    "fieldtype": "Check",
    "label": "IS AI Processed"
+  },
+  {
+   "default": "Pending",
+   "fieldname": "ai_processing_status",
+   "fieldtype": "Select",
+   "label": "AI Processing Status",
+   "options": "Pending\nProcessing\nProcessed\nSkipped",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "ai_retry_count",
+   "fieldtype": "Int",
+   "label": "AI Failed Attempts",
+   "read_only": 1
+  },
+  {
+   "fieldname": "ai_last_error",
+   "fieldtype": "Small Text",
+   "label": "AI Last Error",
+   "read_only": 1
   }
  ],
  "grid_page_length": 50,

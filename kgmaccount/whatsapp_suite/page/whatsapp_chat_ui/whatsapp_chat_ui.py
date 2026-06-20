@@ -5,6 +5,8 @@ from kgmaccount.whatsapp_suite.permissions import (
     get_user_whatsapp_access,
 )
 
+CHAT_PAGE_SIZE = 20
+
 
 def _with_group_access_filter(filters, access):
     filters = dict(filters or {})
@@ -51,17 +53,24 @@ def get_groups():
 
 
 @frappe.whitelist()
-def get_chat_history(group_name):
+def get_chat_history(group_name, start=0):
     assert_can_access_whatsapp_group(group_name)
+    try:
+        start = max(0, int(start or 0))
+    except (TypeError, ValueError):
+        start = 0
 
-    # Fetch the latest 100 messages for the selected group
+    # Fetch one extra row so the UI knows whether to offer older messages.
     messages = frappe.get_all(
         "WhatsApp Message",
         filters={"whatsapp_group": group_name},
         fields=["name", "message", "direction", "timestamp", "has_media", "media_type", "attachment"],
-        order_by="timestamp desc",
-        limit=100
+        order_by="timestamp desc, creation desc",
+        limit_start=start,
+        limit_page_length=CHAT_PAGE_SIZE + 1,
     )
+    has_more = len(messages) > CHAT_PAGE_SIZE
+    messages = messages[:CHAT_PAGE_SIZE]
 
     message_names = [message.name for message in messages]
     if message_names:
@@ -79,4 +88,7 @@ def get_chat_history(group_name):
             message["order_staging_links"] = staging_by_message.get(message.name, [])
 
     # Reverse so the newest messages appear at the bottom
-    return list(reversed(messages))
+    return {
+        "messages": list(reversed(messages)),
+        "has_more": has_more,
+    }

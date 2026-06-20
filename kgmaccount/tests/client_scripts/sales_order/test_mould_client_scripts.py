@@ -71,6 +71,30 @@ class TestSalesOrderMouldClientScripts(unittest.TestCase):
         self.assertEqual(result["row"]["custom_left"], 1, debug)
         self.assertEqual(result["row"]["custom_top"], 1, debug)
 
+    def test_job_work_dialog_selects_all_sides_by_default(self):
+        """Job work rows should open the mould dialog with all side flags selected."""
+        result = run_item_client_script(
+            PROFILE,
+            CLIENT_SCRIPT_PROFILES[PROFILE]["mould_dialog_script"],
+            "item_code",
+            {"name": "JOB-WORK-ROW", "item_code": "Tiles Job Work"},
+            doc_items=[
+                {"name": "STONE-ROW", "custom_height": 31.2, "custom_width": 17.5},
+                {"name": "JOB-WORK-ROW", "item_code": "Tiles Job Work"},
+            ],
+        )
+        debug = (
+            f"client script output row={result['row']}; "
+            f"dialog={result.get('dialog_values')}; "
+            f"calls={result.get('calls')}; "
+            f"messages={result.get('messages')}"
+        )
+
+        self.assertEqual(result["row"]["custom_right"], 1, debug)
+        self.assertEqual(result["row"]["custom_left"], 1, debug)
+        self.assertEqual(result["row"]["custom_top"], 1, debug)
+        self.assertEqual(result["row"]["custom_bottom"], 1, debug)
+
     def test_mould_quantity_calculation_matches_csv_running_feet(self):
         """Standard Mould rounds dimensions to six inches before running-foot calculation."""
         case, csv_row = get_required_case("mould")
@@ -88,6 +112,18 @@ class TestSalesOrderMouldClientScripts(unittest.TestCase):
 
         self.assertEqual(result["row"]["qty"], float(csv_row["SQFT"]), debug)
         self.assertEqual(float(csv_row["Rate"]), 10.0, debug)
+
+    def test_job_work_quantity_calculation_matches_csv_running_feet_with_all_sides(self):
+        """Job work rows use moulding running-foot calculation instead of sqft."""
+        case, csv_row = get_required_case("job_work")
+        result = self._run_mould_case(
+            case,
+            {"custom_left": 1, "custom_right": 1, "custom_top": 1, "custom_bottom": 1},
+        )
+        debug = format_csv_expectation(csv_row, result)
+
+        self.assertEqual(result["row"]["qty"], float(csv_row["SQFT"]), debug)
+        self.assertEqual(float(csv_row["Rate"]), 15.0, debug)
 
     def _run_mould_case(self, case, side_values):
         """Run the Sales Order mould calculation script for one CSV-backed item."""

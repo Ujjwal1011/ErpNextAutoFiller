@@ -5,8 +5,8 @@ Input:
 - For each applicable row, sends these CSV fields to the Client Script:
   `Item Name` -> `item_code`, `Height` -> `custom_height`,
   `Width` -> `custom_width`, `Quantity` -> `custom_quantity`.
-- Skips rows handled by other scripts, such as mould, mouldG, tiles, hole, and
-  farma rows.
+- Skips rows handled by other scripts, such as mould, mouldG, tiles, hole,
+  farma, and job work rows.
 
 How it checks:
 - Runs `Sales-Order Kota Kaddpaa Granite Neno Calculation` in Node.js.
@@ -38,11 +38,16 @@ from kgmaccount.tests.client_scripts.shared.client_script_test_utils import (
 PROFILE = "sales_order"
 
 
+def is_sales_order_sqft_row(csv_row):
+    """Return True for Sales Order rows that should run through the sqft script."""
+    return is_sqft_calculation_row(csv_row) and "job work" not in csv_row["Item Name"].lower()
+
+
 class TestSalesOrderSqftCalculationClientScript(unittest.TestCase):
     def test_all_applicable_csv_rows_match_sqft_client_script(self):
         """Loop every non-mould calculable CSV row and compare sqft with the Client Script."""
         profile = CLIENT_SCRIPT_PROFILES[PROFILE]
-        csv_rows = [row for row in iter_item_csv_rows() if is_sqft_calculation_row(row)]
+        csv_rows = [row for row in iter_item_csv_rows() if is_sales_order_sqft_row(row)]
         results = run_item_client_script_for_rows(PROFILE, profile["sqft_script"], "item_code", csv_rows)
 
         self.assertGreater(len(csv_rows), 0, "No sqft-calculable rows found in shared CSV")
@@ -114,6 +119,16 @@ class TestSalesOrderSqftCalculationClientScript(unittest.TestCase):
         self.assertEqual(result["row"]["cut_from_width"], float(csv_row["Cut From Width"]), debug)
         self.assertEqual(result["row"]["qty"], float(csv_row["SQFT"]), debug)
         self.assertEqual(float(csv_row["Rate"]), 55.0, debug)
+
+    def test_job_work_is_skipped_by_sqft_calculation(self):
+        """Job work rows are handled by moulding quantity, not sqft calculation."""
+        case, _csv_row = get_required_case("job_work")
+        result = self._run_sqft_case(case)
+        debug = f"client script output row={result['row']}; calls={result.get('calls')}"
+
+        self.assertNotIn("qty", result["row"], debug)
+        self.assertNotIn("cut_from_height", result["row"], debug)
+        self.assertNotIn("cut_from_width", result["row"], debug)
 
     def _run_sqft_case(self, case):
         """Run the Sales Order sqft script for one CSV-backed item example."""

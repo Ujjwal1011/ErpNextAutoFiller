@@ -6,6 +6,7 @@
  "engine": "InnoDB",
  "field_order": [
   "enable_ai_worker",
+  "max_image_processing_retries",
   "openrouter_api_key",
   "allowed_groups",
   "system_prompt"
@@ -16,6 +17,14 @@
    "fieldname": "enable_ai_worker",
    "fieldtype": "Check",
    "label": "Enable AI Processing Worker"
+  },
+  {
+   "default": "3",
+   "description": "Number of failed attempts allowed for one image before it is skipped.",
+   "fieldname": "max_image_processing_retries",
+   "fieldtype": "Int",
+   "label": "Maximum Image Processing Attempts",
+   "mandatory_depends_on": "eval:doc.enable_ai_worker"
   },
   {
    "fieldname": "openrouter_api_key",

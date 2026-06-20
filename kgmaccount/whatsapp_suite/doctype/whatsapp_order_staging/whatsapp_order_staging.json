@@ -10,7 +10,10 @@
   "column_break_rxiq",
   "status",
   "section_break_pndp",
+  "image_viewer",
+  "column_break_extracted_data",
   "extracted_data_json",
+  "section_break_result",
   "created_sales_order"
  ],
  "fields": [
@@ -40,13 +43,27 @@
   },
   {
    "fieldname": "section_break_pndp",
-   "fieldtype": "Section Break"
+   "fieldtype": "Section Break",
+   "label": "Source Image and Extracted Order Data"
+  },
+  {
+   "fieldname": "image_viewer",
+   "fieldtype": "HTML",
+   "label": "Image Viewer"
+  },
+  {
+   "fieldname": "column_break_extracted_data",
+   "fieldtype": "Column Break"
   },
   {
    "fieldname": "extracted_data_json",
    "fieldtype": "Code",
    "label": "Extracted Data JSON",
    "read_only": 1
+  },
+  {
+   "fieldname": "section_break_result",
+   "fieldtype": "Section Break"
   },
   {
    "fieldname": "created_sales_order",

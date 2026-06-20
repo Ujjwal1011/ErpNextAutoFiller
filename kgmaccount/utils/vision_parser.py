@@ -8,12 +8,18 @@ from kgmaccount.utils import whatsapp_logger  # configures file handler
 
 logger = logging.getLogger(__name__)
 
+DEFAULT_MAX_IMAGE_RETRIES = 3
+
 def process_order_image(whatsapp_message_id):
     try:
         logger.info(f"Processing WhatsApp message: {whatsapp_message_id}")
         print(f"[kgmaccount] Processing WhatsApp message: {whatsapp_message_id}")
         # Fetch live configuration values
         settings = frappe.get_doc("WhatsApp AI Settings")
+        max_retries = max(
+            1,
+            int(getattr(settings, "max_image_processing_retries", 0) or DEFAULT_MAX_IMAGE_RETRIES),
+        )
         
         api_key = settings.get_password("openrouter_api_key")
         system_prompt = settings.system_prompt
@@ -158,6 +164,11 @@ def process_order_image(whatsapp_message_id):
             created.append(staging_doc.name)
 
         # Commit all new staging documents to the database at once
+        frappe.db.set_value(
+            "WhatsApp Message",
+            whatsapp_message_id,
+            {"ai_processing_status": "Processed", "ai_last_error": None},
+        )
         frappe.db.commit()
 
         logger.info(f"Created {len(created)} WhatsApp Order Staging docs for message {whatsapp_message_id}: {', '.join(created)}")
@@ -167,11 +178,38 @@ def process_order_image(whatsapp_message_id):
         frappe.db.rollback()
         logger.exception(f"Failed to process WhatsApp message {whatsapp_message_id}: {e}")
         print(f"[kgmaccount] ERROR processing message {whatsapp_message_id}: {e}")
-        # Mark back to 0 if parsing failed so it can be retried later
+        # Retry a failed image only up to the configured per-image limit.
         try:
-            frappe.db.set_value("WhatsApp Message", whatsapp_message_id, "is_ai_processed", 0)
+            retry_count = int(getattr(locals().get("msg_doc"), "ai_retry_count", 0) or 0) + 1
+            max_retries = locals().get("max_retries", DEFAULT_MAX_IMAGE_RETRIES)
+            skipped = retry_count >= max_retries
+            status = "Skipped" if skipped else "Pending"
+            frappe.db.set_value(
+                "WhatsApp Message",
+                whatsapp_message_id,
+                {
+                    "ai_retry_count": retry_count,
+                    "ai_processing_status": status,
+                    "ai_last_error": str(e)[:500],
+                    # A skipped image stays out of future scheduler queries.
+                    "is_ai_processed": 1 if skipped else 0,
+                },
+            )
             frappe.db.commit()
+            if skipped:
+                logger.error(
+                    "Skipping WhatsApp message %s after %s failed attempts",
+                    whatsapp_message_id,
+                    retry_count,
+                )
+            else:
+                logger.warning(
+                    "WhatsApp message %s failed attempt %s/%s and will be retried",
+                    whatsapp_message_id,
+                    retry_count,
+                    max_retries,
+                )
         except Exception:
-            logger.exception("Failed to reset is_ai_processed flag")
-            print("[kgmaccount] ERROR resetting is_ai_processed flag")
+            logger.exception("Failed to update AI retry state")
+            print("[kgmaccount] ERROR updating AI retry state")
         frappe.log_error(title=f"Vision Extraction Failure: {whatsapp_message_id}", message=frappe.get_traceback())

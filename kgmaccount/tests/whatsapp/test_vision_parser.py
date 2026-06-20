@@ -86,6 +86,39 @@ class TestVisionParser(unittest.TestCase):
         self.assertEqual(json.loads(created_docs[1].extracted_data_json)["customer_name"], "B")
         self.assertEqual(fake_db.commits, 1)
 
+    def test_failed_image_is_skipped_after_configured_attempts(self):
+        """The last permitted failure should stop an image from being retried."""
+        fake_db = FakeDb()
+        settings = FakeDoc(
+            openrouter_api_key="secret",
+            system_prompt="extract orders",
+            max_image_processing_retries=3,
+        )
+        message = FakeDoc(attachment="/private/files/order.jpg", ai_retry_count=2)
+
+        def fake_get_doc(doctype, *args, **kwargs):
+            if doctype == "WhatsApp AI Settings":
+                return settings
+            if doctype == "WhatsApp Message":
+                return message
+            raise RuntimeError("attachment unavailable")
+
+        fake_frappe = types.SimpleNamespace(
+            get_doc=fake_get_doc,
+            db=fake_db,
+            logger=lambda *args, **kwargs: NoopLogger(),
+            log_error=Mock(),
+            get_traceback=lambda: "traceback",
+        )
+
+        with patch.object(vision_parser, "frappe", fake_frappe):
+            vision_parser.process_order_image("MSG-FAIL")
+
+        retry_update = fake_db.set_values[-1][0][2]
+        self.assertEqual(retry_update["ai_retry_count"], 3)
+        self.assertEqual(retry_update["ai_processing_status"], "Skipped")
+        self.assertEqual(retry_update["is_ai_processed"], 1)
+
 
 if __name__ == "__main__":
     unittest.main()

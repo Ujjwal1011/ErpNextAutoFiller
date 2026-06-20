@@ -1,17 +1,34 @@
 frappe.pages['whatsapp-chat-ui'].on_page_load = function(wrapper) {
-    frappe.ui.make_app_page({
+    const page = frappe.ui.make_app_page({
         parent: wrapper,
         title: 'WhatsApp Chat',
         single_column: true
     });
+    const fullScreenMode = new URLSearchParams(window.location.search).get('fullscreen') === '1';
+
+    $('body').toggleClass('wa-chat-fullscreen', fullScreenMode);
+    if (!fullScreenMode) {
+        page.add_inner_button(__('Open Full-Screen Tab'), function() {
+            window.open('/app/whatsapp-chat-ui?fullscreen=1', '_blank', 'noopener');
+        });
+    }
 
     const $main = $(wrapper).find('.layout-main-section');
     let selectedGroup = null;
+    let chatHistoryOffset = 0;
+    let storedHistoryHasMore = false;
 
     $main.html(`
         <style>
-            .wa-chat-shell { display: grid; grid-template-columns: 330px minmax(0, 1fr); min-height: calc(100vh - 150px); border: 1px solid #dfe5eb; border-radius: 8px; overflow: hidden; background: #ffffff; }
-            .wa-sidebar { border-right: 1px solid #dfe5eb; background: #f8fafc; overflow-y: auto; }
+            body.wa-chat-fullscreen { overflow: hidden; }
+            body.wa-chat-fullscreen > .navbar,
+            body.wa-chat-fullscreen .page-head { display: none !important; }
+            body.wa-chat-fullscreen .page-body { width: 100%; max-width: none; padding: 8px; }
+            body.wa-chat-fullscreen .layout-side-section { display: none !important; }
+            body.wa-chat-fullscreen .layout-main-section-wrapper { flex: 0 0 100%; max-width: 100%; }
+            body.wa-chat-fullscreen .wa-chat-shell { height: calc(100vh - 16px); min-height: 0; }
+            .wa-chat-shell { display: grid; grid-template-columns: 330px minmax(0, 1fr); height: calc(100vh - 158px); min-height: 420px; border: 1px solid #dfe5eb; border-radius: 8px; overflow: hidden; background: #ffffff; }
+            .wa-sidebar { min-height: 0; border-right: 1px solid #dfe5eb; background: #f8fafc; overflow-y: auto; }
             .wa-sidebar-head { padding: 12px 14px; border-bottom: 1px solid #dfe5eb; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
             .wa-title { font-weight: 700; color: #1f2933; font-size: 14px; }
             .wa-group-item { padding: 12px 14px; border-bottom: 1px solid #edf2f7; cursor: pointer; background: #ffffff; }
@@ -23,11 +40,12 @@ frappe.pages['whatsapp-chat-ui'].on_page_load = function(wrapper) {
             .wa-btn.primary { background: #0f766e; border-color: #0f766e; color: #ffffff; }
             .wa-btn.primary:hover { background: #115e59; }
             .wa-btn:disabled { opacity: 0.6; cursor: not-allowed; }
-            .wa-chat-area { display: flex; flex-direction: column; min-width: 0; background-color: #efeae2; background-image: url('https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png'); }
-            .wa-chat-header { min-height: 58px; padding: 10px 14px; background: #ffffff; border-bottom: 1px solid #dfe5eb; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+            .wa-chat-area { display: flex; flex-direction: column; min-width: 0; min-height: 0; overflow: hidden; background-color: #efeae2; background-image: url('https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png'); }
+            .wa-chat-header { flex: 0 0 auto; min-height: 58px; padding: 10px 14px; background: #ffffff; border-bottom: 1px solid #dfe5eb; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
             .wa-chat-name { font-size: 14px; font-weight: 700; color: #1f2933; overflow-wrap: anywhere; }
             .wa-chat-meta { color: #64748b; font-size: 11px; margin-top: 3px; overflow-wrap: anywhere; }
-            .wa-chat-box { flex: 1; padding: 18px; overflow-y: auto; display: flex; flex-direction: column; gap: 2px; }
+            .wa-chat-box { flex: 1 1 auto; min-height: 0; padding: 18px; overflow-x: hidden; overflow-y: auto; overscroll-behavior: contain; display: flex; flex-direction: column; gap: 2px; }
+            .wa-load-older-wrap { display: flex; justify-content: center; padding: 0 0 14px; }
             .wa-empty { padding: 28px; text-align: center; color: #64748b; }
             .wa-denied { max-width: 560px; margin: 60px auto; background: #ffffff; border: 1px solid #dfe5eb; border-radius: 8px; padding: 22px; text-align: center; }
             .wa-msg { max-width: min(65%, 720px); padding: 8px 12px; border-radius: 8px; margin-bottom: 8px; font-size: 13px; position: relative; box-shadow: 0 1px 1px rgba(0,0,0,0.1); overflow-wrap: anywhere; }
@@ -146,6 +164,8 @@ frappe.pages['whatsapp-chat-ui'].on_page_load = function(wrapper) {
     }
 
     function load_chat(group) {
+        chatHistoryOffset = 0;
+        storedHistoryHasMore = false;
         const displayName = group.group_name || group.name;
         $('#wa-chat-main').html(`
             <div class="wa-chat-header">
@@ -164,7 +184,7 @@ frappe.pages['whatsapp-chat-ui'].on_page_load = function(wrapper) {
             fetchGroupMessages(group.name);
         });
 
-        fetch_messages_to_ui(group.name);
+        fetch_messages_to_ui(group.name, false);
     }
 
     function fetchGroupMessages(groupName) {
@@ -185,7 +205,7 @@ frappe.pages['whatsapp-chat-ui'].on_page_load = function(wrapper) {
                     });
                     return;
                 }
-                fetch_messages_to_ui(groupName);
+                fetch_messages_to_ui(groupName, false);
             },
             always: function() {
                 $btn.prop('disabled', false).text('Fetch Messages');
@@ -193,23 +213,89 @@ frappe.pages['whatsapp-chat-ui'].on_page_load = function(wrapper) {
         });
     }
 
-    function fetch_messages_to_ui(groupName) {
+    function fetch_messages_to_ui(groupName, loadOlder) {
         const $box = $('#wa-chat-box-inner');
+        const start = loadOlder ? chatHistoryOffset : 0;
+        const oldHeight = loadOlder && $box[0] ? $box[0].scrollHeight : 0;
+        const oldScrollTop = loadOlder && $box[0] ? $box[0].scrollTop : 0;
+
+        if (loadOlder) {
+            $box.find('.wa-load-older').prop('disabled', true).text('Loading...');
+        }
+
         frappe.call({
             method: 'kgmaccount.whatsapp_suite.page.whatsapp_chat_ui.whatsapp_chat_ui.get_chat_history',
-            args: { group_name: groupName },
+            args: { group_name: groupName, start: start },
             callback: function(r) {
-                const messages = r.message || [];
+                if (!selectedGroup || selectedGroup.name !== groupName) return;
+
+                const payload = r.message || {};
+                const messages = payload.messages || [];
+                storedHistoryHasMore = Boolean(payload.has_more);
                 if (!messages.length) {
-                    $box.html('<div class="wa-empty">No messages in this chat yet.</div>');
+                    if (!loadOlder) {
+                        $box.html('<div class="wa-empty">No messages in this chat yet.</div>');
+                    } else {
+                        $box.find('.wa-load-older-wrap').remove();
+                    }
                     return;
                 }
 
-                $box.empty();
-                messages.forEach(msg => $box.append(messageHtml(msg)));
-                setTimeout(() => $box.scrollTop($box[0].scrollHeight), 50);
+                const messagesHtml = messages.map(messageHtml).join('');
+                if (loadOlder) {
+                    $box.find('.wa-load-older-wrap').remove();
+                    $box.prepend(messagesHtml);
+                    chatHistoryOffset += messages.length;
+                    $box.prepend(loadOlderButtonHtml(payload.has_more));
+
+                    const box = $box[0];
+                    box.scrollTop = oldScrollTop + (box.scrollHeight - oldHeight);
+                    let trackedHeight = box.scrollHeight;
+                    $box.find('img, video').slice(0, messages.length).on('load loadedmetadata', function() {
+                        const heightChange = box.scrollHeight - trackedHeight;
+                        box.scrollTop += heightChange;
+                        trackedHeight = box.scrollHeight;
+                    });
+                } else {
+                    $box.html(`${loadOlderButtonHtml(payload.has_more)}${messagesHtml}`);
+                    chatHistoryOffset = messages.length;
+
+                    // Media loads after the message HTML and can increase the chat height.
+                    // Keep the initial view pinned to the newest message as that happens.
+                    scroll_to_latest($box);
+                    $box.find('img, video').on('load loadedmetadata', function() {
+                        scroll_to_latest($box);
+                    });
+                }
+
+                $box.find('.wa-load-older').off('click').on('click', function() {
+                    load_older_messages(groupName);
+                });
             }
         });
+    }
+
+    function load_older_messages(groupName) {
+        if (!storedHistoryHasMore) return;
+        fetch_messages_to_ui(groupName, true);
+    }
+
+    function loadOlderButtonHtml(hasMore) {
+        const disabled = hasMore ? '' : 'disabled';
+        const label = hasMore ? 'Load Older Messages' : 'No Older Messages';
+        return `<div class="wa-load-older-wrap"><button class="wa-btn wa-load-older" ${disabled}>${label}</button></div>`;
+    }
+
+    function scroll_to_latest($box) {
+        const box = $box && $box[0];
+        if (!box) return;
+
+        requestAnimationFrame(() => {
+            box.scrollTop = box.scrollHeight;
+        });
+        setTimeout(() => {
+            box.scrollTop = box.scrollHeight;
+        }, 100);
     }
 
     function messageHtml(msg) {
@@ -265,4 +351,13 @@ frappe.pages['whatsapp-chat-ui'].on_page_load = function(wrapper) {
 
         return `<div class="wa-linked-docs">${rows}</div>`;
     }
+};
+
+frappe.pages['whatsapp-chat-ui'].on_page_show = function() {
+    const fullScreenMode = new URLSearchParams(window.location.search).get('fullscreen') === '1';
+    $('body').toggleClass('wa-chat-fullscreen', fullScreenMode);
+};
+
+frappe.pages['whatsapp-chat-ui'].on_page_hide = function() {
+    $('body').removeClass('wa-chat-fullscreen');
 };

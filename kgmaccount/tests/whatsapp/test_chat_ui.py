@@ -39,9 +39,33 @@ class TestWhatsAppChatPageFunctions(unittest.TestCase):
         ):
             history = call_whitelisted(whatsapp_chat_ui.get_chat_history, "GROUP-1")
 
-        self.assertEqual([message.name for message in history], ["MSG-1", "MSG-2"])
-        self.assertEqual(history[0]["order_staging_links"][0].name, "STG-1")
-        self.assertEqual(history[1]["order_staging_links"][0].name, "STG-2")
+        self.assertEqual([message.name for message in history["messages"]], ["MSG-1", "MSG-2"])
+        self.assertEqual(history["messages"][0]["order_staging_links"][0].name, "STG-1")
+        self.assertEqual(history["messages"][1]["order_staging_links"][0].name, "STG-2")
+        self.assertFalse(history["has_more"])
+
+    def test_get_chat_history_returns_twenty_messages_and_has_more(self):
+        """Chat history should paginate in groups of twenty newest messages."""
+        query = {}
+
+        def fake_get_all(doctype, **kwargs):
+            if doctype == "WhatsApp Message":
+                query.update(kwargs)
+                return [FakeDoc(name=f"MSG-{index}") for index in range(21)]
+            if doctype == "WhatsApp Order Staging":
+                return []
+            raise AssertionError(f"Unexpected doctype {doctype}")
+
+        fake_frappe = types.SimpleNamespace(get_all=fake_get_all)
+        with patch.object(whatsapp_chat_ui, "frappe", fake_frappe), patch.object(
+            whatsapp_chat_ui, "assert_can_access_whatsapp_group", lambda group_name: None
+        ):
+            history = call_whitelisted(whatsapp_chat_ui.get_chat_history, "GROUP-1", "20")
+
+        self.assertEqual(query["limit_start"], 20)
+        self.assertEqual(query["limit_page_length"], 21)
+        self.assertEqual(len(history["messages"]), 20)
+        self.assertTrue(history["has_more"])
 
     def test_get_groups_returns_access_denied_payload_without_access(self):
         """Users without WhatsApp access should receive no groups."""

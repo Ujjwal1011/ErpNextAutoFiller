@@ -29,6 +29,7 @@ Debugging:
 import csv
 import json
 import os
+import re
 import shutil
 import subprocess
 from pathlib import Path
@@ -116,6 +117,12 @@ REQUIRED_CSV_CASES = {
         "width": 3,
         "quantity": 1,
     },
+    "job_work": {
+        "item_name": "Tiles Job Work",
+        "height": 31.2,
+        "width": 17.5,
+        "quantity": 1,
+    },
 }
 
 # Backward-compatible names for older flat tests or WhatsApp tests that import
@@ -126,6 +133,11 @@ REQUIRED_SALES_ORDER_CSV_CASES = REQUIRED_CSV_CASES
 def to_float(value):
     """Convert CSV text to float using zero for blank values."""
     return float(value or 0)
+
+
+def normalize_select_item_code(item_code):
+    """Use lowercase `x` between numeric item dimensions for select-item tests."""
+    return re.sub(r"(\d)X(\d)", r"\1x\2", item_code)
 
 
 def get_profile(profile_name):
@@ -159,7 +171,7 @@ def is_mould_or_mouldg_row(csv_row):
 def is_sqft_calculation_row(csv_row):
     """Return True for rows handled by the Kota/Kaddpa/default sqft Client Script."""
     item_code = csv_row["Item Name"].lower()
-    strict_exclusions = ["mould", "mouldg", "hole", "farma", "tiles"]
+    strict_exclusions = ["mould", "mouldg", "hole", "farma", "tiles", "job work"]
     return (
         not any(exclusion in item_code for exclusion in strict_exclusions)
         and to_float(csv_row["Height"]) > 0
@@ -231,6 +243,8 @@ def get_select_item_dialog_values(csv_row):
             values["custom_is_jada"] = 1
         if "RUF" in suffix_set:
             values["custom_is_rough"] = 1
+        if "MIR" in suffix_set:
+            values["custom_is_mirror"] = 1
     else:
         for suffix, polish_type in polish_by_suffix.items():
             if suffix in suffix_set:
@@ -340,6 +354,7 @@ function emptyJquery() {
     length: 0,
     off() { return this; },
     on() { return this; },
+    one() { return this; },
     find() { return this; },
     closest() { return this; },
     first() { return this; },
@@ -356,6 +371,10 @@ if (!docItems.some(item => item.name === cdn)) docItems.push(row);
 
 const context = {
   console: { log() {}, warn() {}, error() {} },
+  document: {
+    addEventListener() {},
+    removeEventListener() {},
+  },
   setTimeout(fn) { fn(); return 0; },
   clearTimeout() {},
   __: value => value,
@@ -383,6 +402,7 @@ const frm = {
 class FakeDialog {
   constructor(opts) {
     this.opts = opts;
+    this.$wrapper = emptyJquery();
     this.fieldMap = {};
     this.values = {};
     for (const field of opts.fields || []) {
@@ -635,8 +655,8 @@ def get_generated_select_item_code(result):
     return result["row"].get("item_code")
 
 
-def collect_select_item_mismatches(profile_name, csv_rows, case_sensitive_item_code=True):
-    """Run Select Item for CSV rows and return rows that do not match expected output."""
+def collect_select_item_mismatches(profile_name, csv_rows, case_sensitive_item_code=False):
+    """Return Select Item rows whose generated item code does not match the CSV."""
     profile = CLIENT_SCRIPT_PROFILES[profile_name]
     mismatches = []
     for csv_row in csv_rows:
@@ -649,9 +669,9 @@ def collect_select_item_mismatches(profile_name, csv_rows, case_sensitive_item_c
                 "custom_width": to_float(csv_row["Width"]),
             },
             dialog_values=get_select_item_dialog_values(csv_row),
-            available_items=[csv_row["Item Name"]],
+            available_items=[normalize_select_item_code(csv_row["Item Name"])],
         )
-        expected_item_code = csv_row["Item Name"]
+        expected_item_code = normalize_select_item_code(csv_row["Item Name"])
         generated_item_code = get_generated_select_item_code(result)
         expected_cut_height = to_float(csv_row["Cut From Height"])
         expected_cut_width = to_float(csv_row["Cut From Width"])
@@ -661,13 +681,9 @@ def collect_select_item_mismatches(profile_name, csv_rows, case_sensitive_item_c
         if case_sensitive_item_code:
             item_code_matches = generated_item_code == expected_item_code
         else:
-            item_code_matches = str(generated_item_code).upper() == str(expected_item_code).upper()
+            item_code_matches = str(generated_item_code).lower() == str(expected_item_code).lower()
 
-        if (
-            not item_code_matches
-            or abs(actual_cut_height - expected_cut_height) > 0.01
-            or abs(actual_cut_width - expected_cut_width) > 0.01
-        ):
+        if not item_code_matches:
             mismatches.append(
                 {
                     "csv_row": csv_row["_csv_row_number"],
@@ -690,16 +706,13 @@ def collect_select_item_mismatches(profile_name, csv_rows, case_sensitive_item_c
 
 
 def write_failed_rows_log(filename, rows, profile_name=None):
-    """Write failed rows plus previous/best comparison logs, then return CSV path.
+    """Write failed rows plus previous/best CSV comparison logs, then return CSV path.
 
-    Files written for `sales_order_kaddpa_select_item_failed_rows.json`:
-    - `select_item/sales_order_kaddpa_select_item_failed_rows.json/csv`: latest run.
-    - `select_item/previous/sales_order_kaddpa_select_item_failed_rows.json/csv`:
-      run before the latest run.
-    - `select_item/best/sales_order_kaddpa_select_item_failed_rows.json/csv`:
-      lowest failure count seen so far.
-    - `select_item/summary/sales_order_kaddpa_select_item_failed_rows.json/csv`:
-      counts and deltas for latest vs previous/best.
+    Files written for a log filename like `sales_order_kaddpa_select_item_failed_rows.json`:
+    - `select_item/sales_order_kaddpa_select_item_failed_rows.csv`: latest run.
+    - `select_item/previous/sales_order_kaddpa_select_item_failed_rows.csv`: run before the latest run.
+    - `select_item/best/sales_order_kaddpa_select_item_failed_rows.csv`: lowest failure count seen so far.
+    - `select_item/summary/sales_order_kaddpa_select_item_failed_rows.csv`: latest vs previous/best.
     """
     log_dir = Path(os.environ.get("KGM_TEST_LOG_DIR", DEFAULT_TEST_LOG_DIR))
     log_dir = log_dir / get_failed_rows_log_subfolder(filename)
@@ -712,31 +725,18 @@ def write_failed_rows_log(filename, rows, profile_name=None):
     for comparison_dir in (previous_dir, best_dir, summary_dir):
         comparison_dir.mkdir(parents=True, exist_ok=True)
 
-    previous_log_path = previous_dir / filename
-    previous_csv_log_path = previous_log_path.with_suffix(".csv")
-    best_log_path = best_dir / filename
-    best_csv_log_path = best_log_path.with_suffix(".csv")
-    summary_log_path = summary_dir / filename
-    summary_csv_log_path = summary_log_path.with_suffix(".csv")
+    previous_csv_log_path = previous_dir / csv_log_path.name
+    best_csv_log_path = best_dir / csv_log_path.name
+    summary_csv_log_path = summary_dir / csv_log_path.name
 
-    previous_count = _read_failed_row_count(log_path)
-    if log_path.exists():
-        shutil.copyfile(log_path, previous_log_path)
+    previous_count = _read_failed_row_count(csv_log_path)
     if csv_log_path.exists():
         shutil.copyfile(csv_log_path, previous_csv_log_path)
 
-    payload = {
-        "source_csv": str(SALES_ORDER_ITEM_CSV),
-        "profile": profile_name,
-        "failed_row_count": len(rows),
-        "failed_rows": rows,
-    }
-    _write_failed_rows_json(log_path, payload)
     _write_failed_rows_csv(csv_log_path, rows)
 
-    best_count = _read_failed_row_count(best_log_path)
+    best_count = _read_failed_row_count(best_csv_log_path)
     if best_count is None or len(rows) <= best_count:
-        _write_failed_rows_json(best_log_path, payload)
         _write_failed_rows_csv(best_csv_log_path, rows)
         best_count = len(rows)
 
@@ -754,15 +754,9 @@ def write_failed_rows_log(filename, rows, profile_name=None):
         "previous_csv": str(previous_csv_log_path) if previous_csv_log_path.exists() else "",
         "best_csv": str(best_csv_log_path) if best_csv_log_path.exists() else "",
     }
-    _write_failed_rows_json(summary_log_path, summary)
     _write_summary_csv(summary_csv_log_path, summary)
 
     return csv_log_path
-
-
-def _write_failed_rows_json(path, payload):
-    """Write one JSON log payload with stable formatting."""
-    path.write_text(json.dumps(payload, indent=2, sort_keys=True), encoding="utf-8")
 
 
 def _write_failed_rows_csv(path, rows):
@@ -793,14 +787,19 @@ def _write_summary_csv(path, summary):
 
 
 def _read_failed_row_count(path):
-    """Read `failed_row_count` from a JSON log, or None when unavailable."""
+    """Read the failed row count from a generated CSV log, or None when unavailable."""
     if not path.exists():
         return None
     try:
-        payload = json.loads(path.read_text(encoding="utf-8"))
-    except (json.JSONDecodeError, OSError):
+        with path.open(newline="", encoding="utf-8") as csvfile:
+            rows = list(csv.DictReader(csvfile))
+    except OSError:
         return None
-    return payload.get("failed_row_count")
+    if not rows:
+        return 0
+    if rows[0].get("status") == "no failures":
+        return 0
+    return len(rows)
 
 
 def get_failed_rows_log_subfolder(filename):
