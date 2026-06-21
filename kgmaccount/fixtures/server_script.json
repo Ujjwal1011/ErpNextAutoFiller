@@ -47,7 +47,7 @@
   "doctype_event": null,
   "enable_rate_limit": 0,
   "event_frequency": "All",
-  "modified": "2026-06-13 00:00:00.000000",
+  "modified": "2026-06-13 00:00:00",
   "module": "Auto Filler",
   "name": "Rajasthan Cutting Kota Area API",
   "rate_limit_count": 5,
