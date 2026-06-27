@@ -321,16 +321,14 @@ def convert_staging_to_sales_order(staging_id):
         if fallback_messages:
             sales_order_link = frappe.utils.get_link_to_form("Sales Order", sales_order.name)
             frappe.msgprint(
+                "Some AI values were not found and were replaced before creating the Sales Order."
+                "<br><br>"
+                + "<br>".join(frappe.utils.escape_html(message) for message in fallback_messages)
+                + "<br><br>Please open "
+                + sales_order_link
+                + " and correct the customer or item if needed.",
                 title="AI Value Replaced",
                 indicator="orange",
-                msg=(
-                    "Some AI values were not found and were replaced before creating the Sales Order."
-                    "<br><br>"
-                    + "<br>".join(frappe.utils.escape_html(message) for message in fallback_messages)
-                    + "<br><br>Please open "
-                    + sales_order_link
-                    + " and correct the customer or item if needed."
-                ),
             )
         
         frappe.db.commit()
