@@ -323,7 +323,7 @@ def convert_staging_to_sales_order(staging_id):
             frappe.msgprint(
                 title="AI Value Replaced",
                 indicator="orange",
-                message=(
+                msg=(
                     "Some AI values were not found and were replaced before creating the Sales Order."
                     "<br><br>"
                     + "<br>".join(frappe.utils.escape_html(message) for message in fallback_messages)
