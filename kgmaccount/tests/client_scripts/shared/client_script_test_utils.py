@@ -647,6 +647,106 @@ def format_csv_expectation(csv_row, result):
     )
 
 
+DBT_SQFT_FAILURE_COLUMNS = [
+    "csv_row",
+    "sales_order",
+    "item",
+    "height",
+    "width",
+    "quantity",
+    "expected_sqft",
+    "actual_sqft",
+    "sqft_delta",
+    "expected_cut_height",
+    "actual_cut_height",
+    "expected_cut_width",
+    "actual_cut_width",
+]
+
+
+def collect_sqft_mismatches(csv_rows, results):
+    """Return dbt-style failure rows for CSV rows whose SQFT does not match."""
+    mismatches = []
+    for csv_row, result in zip(csv_rows, results):
+        output_row = result["row"]
+        expected_sqft = to_float(csv_row["SQFT"])
+        actual_sqft = to_float(output_row.get("qty"))
+        sqft_delta = round(actual_sqft - expected_sqft, 4)
+
+        if abs(sqft_delta) <= 0.01:
+            continue
+
+        mismatches.append(
+            {
+                "csv_row": csv_row["_csv_row_number"],
+                "sales_order": csv_row["Sales Order"],
+                "item": csv_row["Item Name"],
+                "height": csv_row["Height"],
+                "width": csv_row["Width"],
+                "quantity": csv_row["Quantity"],
+                "expected_sqft": expected_sqft,
+                "actual_sqft": actual_sqft,
+                "sqft_delta": sqft_delta,
+                "expected_cut_height": to_float(csv_row["Cut From Height"]),
+                "actual_cut_height": to_float(output_row.get("cut_from_height")),
+                "expected_cut_width": to_float(csv_row["Cut From Width"]),
+                "actual_cut_width": to_float(output_row.get("cut_from_width")),
+            }
+        )
+
+    return mismatches
+
+
+def format_dbt_style_failure_output(
+    test_name,
+    tested_rows,
+    mismatches,
+    log_path,
+    columns=None,
+    preview_limit=25,
+):
+    """Build a compact dbt-style failed-row table for unittest output."""
+    columns = columns or DBT_SQFT_FAILURE_COLUMNS
+    preview_rows = mismatches[:preview_limit]
+    lines = [
+        f"dbt-style test failure: {test_name}",
+        f"tested rows: {tested_rows}",
+        f"failing rows: {len(mismatches)}",
+        f"failure log: {log_path}",
+        "",
+        format_dbt_table(columns, preview_rows),
+    ]
+    if len(mismatches) > preview_limit:
+        lines.append(f"showing first {preview_limit} failing rows")
+    return "\n".join(lines)
+
+
+def format_dbt_table(columns, rows):
+    """Format rows as an ASCII table similar to dbt's failed-row preview."""
+    rendered_rows = [
+        {column: _format_dbt_cell(row.get(column, "")) for column in columns}
+        for row in rows
+    ]
+    widths = {
+        column: max([len(column)] + [len(row[column]) for row in rendered_rows])
+        for column in columns
+    }
+    header = " | ".join(column.ljust(widths[column]) for column in columns)
+    separator = "-+-".join("-" * widths[column] for column in columns)
+    body = [
+        " | ".join(row[column].ljust(widths[column]) for column in columns)
+        for row in rendered_rows
+    ]
+    return "\n".join([header, separator, *body])
+
+
+def _format_dbt_cell(value):
+    """Render dbt table cells without noisy Python float formatting."""
+    if isinstance(value, float):
+        return f"{value:g}"
+    return str(value)
+
+
 def get_generated_select_item_code(result):
     """Return the item code searched by the dialog, even when item lookup fails."""
     for call in result.get("calls", []):

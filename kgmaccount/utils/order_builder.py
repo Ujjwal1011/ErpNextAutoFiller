@@ -12,6 +12,8 @@ logger = logging.getLogger(__name__)
 # This Client Script is the source of truth for Sales Order item qty calculation.
 # The WhatsApp flow reads it at runtime so Desk-side changes keep applying here.
 SALES_ORDER_QTY_CLIENT_SCRIPT = "Sales-Order Kota Kaddpaa Granite Neno Calculation"
+DEFAULT_WHATSAPP_CUSTOMER = "Suspense"
+DEFAULT_WHATSAPP_ITEM_CODE = "KOTA 11x11 RAJ"
 
 
 def get_sales_order_qty_client_script():
@@ -122,6 +124,81 @@ console.log(JSON.stringify(row));
     }
 
 
+def resolve_whatsapp_customer(customer_name):
+    if customer_name and frappe.db.exists("Customer", customer_name):
+        return customer_name
+
+    if frappe.db.exists("Customer", DEFAULT_WHATSAPP_CUSTOMER):
+        logger.warning(
+            "WhatsApp customer %r not found; using fallback customer %s",
+            customer_name,
+            DEFAULT_WHATSAPP_CUSTOMER,
+        )
+        return DEFAULT_WHATSAPP_CUSTOMER
+
+    frappe.throw(
+        f"Customer '{customer_name}' not found and fallback customer "
+        f"'{DEFAULT_WHATSAPP_CUSTOMER}' does not exist."
+    )
+
+
+def get_default_whatsapp_item_code():
+    if frappe.db.exists("Item", DEFAULT_WHATSAPP_ITEM_CODE):
+        return DEFAULT_WHATSAPP_ITEM_CODE
+
+    fallback_item = frappe.db.get_value("Item", {"disabled": 0, "is_sales_item": 1}, "name")
+    if fallback_item:
+        return fallback_item
+
+    fallback_item = frappe.db.get_value("Item", {"disabled": 0}, "name")
+    if fallback_item:
+        return fallback_item
+
+    frappe.throw(
+        f"Default item '{DEFAULT_WHATSAPP_ITEM_CODE}' does not exist and no enabled Item was found."
+    )
+
+
+def resolve_whatsapp_item_code(item_code):
+    if item_code and frappe.db.exists("Item", item_code):
+        return item_code
+
+    fallback_item_code = get_default_whatsapp_item_code()
+    logger.warning(
+        "WhatsApp item %r not found; using fallback item %s",
+        item_code,
+        fallback_item_code,
+    )
+    return fallback_item_code
+
+
+def get_sales_order_currency_defaults():
+    company = (
+        frappe.defaults.get_user_default("Company")
+        or frappe.defaults.get_global_default("company")
+    )
+    company_currency = frappe.db.get_value("Company", company, "default_currency") if company else None
+    currency = company_currency or frappe.db.get_single_value("Global Defaults", "default_currency") or "INR"
+    selling_price_list = (
+        frappe.db.get_single_value("Selling Settings", "selling_price_list")
+        or frappe.db.get_value("Price List", {"selling": 1, "enabled": 1}, "name")
+    )
+    price_list_currency = (
+        frappe.db.get_value("Price List", selling_price_list, "currency")
+        if selling_price_list
+        else None
+    )
+
+    return {
+        "company": company,
+        "currency": currency,
+        "conversion_rate": 1,
+        "selling_price_list": selling_price_list,
+        "price_list_currency": price_list_currency or currency,
+        "plc_conversion_rate": 1,
+    }
+
+
 @frappe.whitelist()
 def convert_staging_to_sales_order(staging_id):
     """
@@ -171,11 +248,27 @@ def convert_staging_to_sales_order(staging_id):
                 print(f"[kgmaccount] WARNING: Failed to parse date '{raw_date}', using server date")
 
         delivery_date = transaction_date
+        customer_name = order_payload.get("customer_name")
+        resolved_customer = resolve_whatsapp_customer(customer_name)
+        fallback_messages = []
+        if customer_name != resolved_customer:
+            fallback_messages.append(
+                f"Customer '{customer_name or 'Blank'}' was not found, so customer was set to "
+                f"'{resolved_customer}'."
+            )
+        currency_defaults = get_sales_order_currency_defaults()
 
         # 3. Build the Core ERPNext Draft Sales Order
         sales_order = frappe.get_doc({
             "doctype": "Sales Order",
-            "customer": order_payload.get("customer_name") or "Walk-in Customer", # Fallback default
+            "customer": resolved_customer,
+            "company": currency_defaults["company"],
+            "currency": currency_defaults["currency"],
+            "conversion_rate": currency_defaults["conversion_rate"],
+            "selling_price_list": currency_defaults["selling_price_list"],
+            "price_list_currency": currency_defaults["price_list_currency"],
+            "plc_conversion_rate": currency_defaults["plc_conversion_rate"],
+            "custom_cash_customer_name": None,
             "custom_phone_number": order_payload.get("mobile_number"),
             "custom_vehicle_number_": order_payload.get("vehicle_number"),
             "custom_ai_bounding_box": json.dumps(order_payload.get("bounding_box") or []),
@@ -189,6 +282,15 @@ def convert_staging_to_sales_order(staging_id):
 
         # Append item rows parsed from the LLM structure
         for item in order_payload.get("items", []):
+            item = dict(item or {})
+            original_item_code = item.get("item_code")
+            item["item_code"] = resolve_whatsapp_item_code(original_item_code)
+            if original_item_code != item.get("item_code"):
+                fallback_messages.append(
+                    f"Item '{original_item_code or 'Blank'}' was not found, so item code was set to "
+                    f"'{item.get('item_code')}'."
+                )
+
             # Run the current Sales Order Client Script calculation before insert.
             # This avoids duplicating the Kota/Kaddpa/Granite/Neno formula in Python.
             calculated_values = calculate_sales_order_item_from_client_script(item)
@@ -215,9 +317,24 @@ def convert_staging_to_sales_order(staging_id):
         staging_doc.save(ignore_permissions=True)
         logger.info(f"Updated staging {staging_id} -> Converted, linked Sales Order {sales_order.name}")
         print(f"[kgmaccount] Updated staging {staging_id} -> Converted, linked Sales Order {sales_order.name}")
+
+        if fallback_messages:
+            sales_order_link = frappe.utils.get_link_to_form("Sales Order", sales_order.name)
+            frappe.msgprint(
+                title="AI Value Replaced",
+                indicator="orange",
+                message=(
+                    "Some AI values were not found and were replaced before creating the Sales Order."
+                    "<br><br>"
+                    + "<br>".join(frappe.utils.escape_html(message) for message in fallback_messages)
+                    + "<br><br>Please open "
+                    + sales_order_link
+                    + " and correct the customer or item if needed."
+                ),
+            )
         
         frappe.db.commit()
-        return {"sales_order": sales_order.name}
+        return {"sales_order": sales_order.name, "fallback_messages": fallback_messages}
 
     except Exception as e:
         frappe.db.rollback()

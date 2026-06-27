@@ -56,6 +56,32 @@ class TestOrderBuilderClientScriptBridge(unittest.TestCase):
             with self.assertRaises(Exception):
                 order_builder.get_sales_order_qty_client_script()
 
+    def test_resolve_whatsapp_customer_uses_suspense_when_ai_customer_is_missing(self):
+        """Invalid AI customer links should fall back to the Suspense customer."""
+        fake_frappe = types.SimpleNamespace(
+            db=types.SimpleNamespace(
+                exists=Mock(side_effect=lambda doctype, name: doctype == "Customer" and name == "Suspense"),
+                get_value=Mock(return_value=None),
+            ),
+            throw=Mock(side_effect=Exception),
+        )
+
+        with patch.object(order_builder, "frappe", fake_frappe):
+            self.assertEqual(order_builder.resolve_whatsapp_customer("Wrong AI Name"), "Suspense")
+
+    def test_resolve_whatsapp_item_code_uses_kota_raj_when_ai_item_is_missing(self):
+        """Invalid AI item links should fall back to the default item code."""
+        fake_frappe = types.SimpleNamespace(
+            db=types.SimpleNamespace(
+                exists=Mock(side_effect=lambda doctype, name: doctype == "Item" and name == "KOTA 11x11 RAJ"),
+                get_value=Mock(return_value=None),
+            ),
+            throw=Mock(side_effect=Exception),
+        )
+
+        with patch.object(order_builder, "frappe", fake_frappe):
+            self.assertEqual(order_builder.resolve_whatsapp_item_code("Wrong AI Item"), "KOTA 11x11 RAJ")
+
 
 if __name__ == "__main__":
     unittest.main()
