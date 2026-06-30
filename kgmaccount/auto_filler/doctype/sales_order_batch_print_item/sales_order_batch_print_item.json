@@ -6,6 +6,7 @@
  "engine": "InnoDB",
  "field_order": [
   "sales_order",
+  "sales_order_status",
   "customer",
   "transaction_date",
   "grand_total"
@@ -18,6 +19,13 @@
    "label": "Sales Order",
    "options": "Sales Order",
    "reqd": 1
+  },
+  {
+   "fieldname": "sales_order_status",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Status",
+   "read_only": 1
   },
   {
    "fetch_from": "sales_order.customer",

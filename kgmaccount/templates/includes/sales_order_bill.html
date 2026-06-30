@@ -1,5 +1,7 @@
 {% set bill = bill_doc if bill_doc is defined else doc %}
 {% set batch_mode = hide_party_header if hide_party_header is defined else 0 %}
+{% set show_status = show_bill_status if show_bill_status is defined else 0 %}
+{% set bill_status = "Approved / Submitted" if bill.docstatus == 1 else "Draft" %}
 <div class="kgm-bill">
     {% if not batch_mode %}
     <div class="kgm-bill-header">
@@ -17,6 +19,9 @@
 
         <div class="kgm-bill-meta">
             <div class="kgm-doc-title">Quotation</div>
+            {% if show_status %}
+            <div class="kgm-status-pill {{ 'is-submitted' if bill.docstatus == 1 else 'is-draft' }}">{{ bill_status }}</div>
+            {% endif %}
             <div style="font-size: 7pt; line-height: 1.6;">
                 <span class="kgm-muted-label">Order No:</span>
                 <strong>{{ bill.name[-3:] }}</strong>
@@ -37,6 +42,11 @@
             <span class="kgm-muted-label">Date:</span>
             {{ bill.get_formatted("transaction_date") }}
         </div>
+        {% if show_status %}
+        <div>
+            <span class="kgm-status-pill {{ 'is-submitted' if bill.docstatus == 1 else 'is-draft' }}">{{ bill_status }}</span>
+        </div>
+        {% endif %}
     </div>
     {% endif %}
 

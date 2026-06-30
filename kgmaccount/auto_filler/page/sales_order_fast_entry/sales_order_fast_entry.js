@@ -19,6 +19,7 @@ frappe.pages["sales-order-fast-entry"].on_page_load = function(wrapper) {
 		isAddingEntry: false,
 		editingIndex: null,
 		lastSideMode: "",
+		sqftManual: false,
 	};
 
 	const $main = $(wrapper).find(".layout-main-section");
@@ -27,9 +28,9 @@ frappe.pages["sales-order-fast-entry"].on_page_load = function(wrapper) {
 			.kgm-fast-shell { min-height: calc(100vh - 150px); background: #f6f8fb; border: 1px solid #dde4ec; border-radius: 8px; overflow: hidden; }
 			.kgm-fast-band { background: #ffffff; border-bottom: 1px solid #dde4ec; padding: 14px; }
 			.kgm-fast-header { display: grid; grid-template-columns: minmax(220px, 1.35fr) repeat(4, minmax(120px, 0.75fr)); gap: 12px; align-items: end; }
-			.kgm-entry-band { overflow-x: auto; }
-			.kgm-entry-grid { min-width: 940px; display: grid; grid-template-columns: 110px minmax(210px, 1fr) 130px 130px 88px 100px; gap: 10px; align-items: end; }
-			.kgm-entry-grid.second { min-width: 1230px; grid-template-columns: 118px 330px 130px 420px 110px 150px; margin-top: 10px; }
+			.kgm-entry-band { overflow: visible; }
+			.kgm-entry-grid { display: grid; grid-template-columns: 110px minmax(220px, 1fr) repeat(4, minmax(88px, 130px)); gap: 10px; align-items: end; }
+			.kgm-entry-grid.second { grid-template-columns: 118px minmax(300px, 1.15fr) minmax(90px, 105px) minmax(120px, 140px) minmax(240px, 1fr) minmax(100px, 120px) minmax(120px, 150px); margin-top: 10px; }
 			.kgm-field { min-width: 0; }
 			.kgm-field label { display: block; margin: 0 0 5px; color: #52616f; font-size: 11px; font-weight: 700; text-transform: uppercase; }
 			.kgm-field input, .kgm-field select { width: 100%; height: 34px; border: 1px solid #cbd5e1; border-radius: 6px; padding: 5px 8px; background: #fff; color: #1f2933; }
@@ -59,10 +60,10 @@ frappe.pages["sales-order-fast-entry"].on_page_load = function(wrapper) {
 			.kgm-tax-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
 			.kgm-hidden { display: none !important; }
 			@media (max-width: 1100px) {
-				.kgm-fast-header, .kgm-tax-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+				.kgm-fast-header, .kgm-entry-grid, .kgm-entry-grid.second, .kgm-tax-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 			}
 			@media (max-width: 620px) {
-				.kgm-fast-header, .kgm-tax-grid { grid-template-columns: 1fr; }
+				.kgm-fast-header, .kgm-entry-grid, .kgm-entry-grid.second, .kgm-tax-grid { grid-template-columns: 1fr; }
 				.kgm-fast-band { padding: 10px; }
 			}
 		</style>
@@ -104,8 +105,8 @@ frappe.pages["sales-order-fast-entry"].on_page_load = function(wrapper) {
 						<input id="kgm-quantity" type="number" min="0" step="0.01" inputmode="decimal" value="1">
 					</div>
 					<div class="kgm-field">
-						<label>${__("Rate")}</label>
-						<input id="kgm-rate" type="number" min="0" step="0.01" inputmode="decimal">
+						<label>${__("Sqft")}</label>
+						<input id="kgm-sqft" type="number" min="0" step="0.01" inputmode="decimal">
 					</div>
 				</div>
 				<div class="kgm-entry-grid second">
@@ -132,6 +133,10 @@ frappe.pages["sales-order-fast-entry"].on_page_load = function(wrapper) {
 							<button type="button" data-attr="j">J</button>
 							<button type="button" data-attr="mirror">Mirror</button>
 						</div>
+					</div>
+					<div class="kgm-field">
+						<label>${__("Rate")}</label>
+						<input id="kgm-rate" type="number" min="0" step="0.01" inputmode="decimal">
 					</div>
 					<div class="kgm-field">
 						<label>${__("Work")}</label>
@@ -305,6 +310,9 @@ frappe.pages["sales-order-fast-entry"].on_page_load = function(wrapper) {
 	function bindEvents() {
 		$main.on("change", "#kgm-template, #kgm-finish", refreshGeneratedItem);
 		$main.on("input", "#kgm-height, #kgm-width, #kgm-quantity", refreshGeneratedItem);
+		$main.on("input", "#kgm-sqft", function() {
+			state.sqftManual = Boolean($(this).val());
+		});
 		$main.on("change", "#kgm-operation", function() {
 			updateOperationControls({ focusAddEntry: !$(this).val() });
 			refreshOperationRate();
@@ -380,7 +388,7 @@ frappe.pages["sales-order-fast-entry"].on_page_load = function(wrapper) {
 			renderTaxes();
 		});
 		$main.on("click", "#kgm-save", saveDraft);
-		$main.on("keydown", "#kgm-height, #kgm-width, #kgm-quantity, #kgm-rate, #kgm-operation-rate", function(event) {
+		$main.on("keydown", "#kgm-height, #kgm-width, #kgm-quantity, #kgm-sqft, #kgm-rate, #kgm-operation-rate", function(event) {
 			if (event.ctrlKey || event.metaKey) return;
 			if (event.key !== "Enter") return;
 			event.preventDefault();
@@ -630,6 +638,10 @@ frappe.pages["sales-order-fast-entry"].on_page_load = function(wrapper) {
 		}
 
 		const previewStone = Object.assign({}, stone, { rate: getPositiveFloat("#kgm-rate") });
+		if (state.sqftManual) {
+			previewStone.qty = getPositiveFloat("#kgm-sqft");
+			previewStone.manual_qty = 1;
+		}
 		if (isJobWorkItem(previewStone.item_code)) {
 			Object.assign(previewStone, getSides());
 		}
@@ -656,6 +668,9 @@ frappe.pages["sales-order-fast-entry"].on_page_load = function(wrapper) {
 				if (!row) {
 					$summary.text("");
 					return;
+				}
+				if (!state.sqftManual) {
+					$main.find("#kgm-sqft").val(formatNumber(row.qty));
 				}
 				$summary.text(
 					`${__("Qty")}: ${formatNumber(row.qty)} | ${__("Cut")}: ${formatNumber(row.custom_cut_from_height)} x ${formatNumber(row.custom_cut_from_width)}`
@@ -765,6 +780,10 @@ frappe.pages["sales-order-fast-entry"].on_page_load = function(wrapper) {
 
 	function buildEntryPayload() {
 		const stone = getStoneSelection();
+		if (state.sqftManual) {
+			stone.qty = getPositiveFloat("#kgm-sqft");
+			stone.manual_qty = 1;
+		}
 		stone.rate = getPositiveFloat("#kgm-rate");
 		if (!stone.item_code) {
 			frappe.msgprint(__("Select an item."));
@@ -867,12 +886,14 @@ frappe.pages["sales-order-fast-entry"].on_page_load = function(wrapper) {
 		$main.find("#kgm-height").val("");
 		$main.find("#kgm-width").val("");
 		$main.find("#kgm-quantity").val("1");
+		$main.find("#kgm-sqft").val("");
 		$main.find("#kgm-rate").val("");
 		$main.find("#kgm-operation").val("");
 		$main.find("#kgm-operation-rate").val("");
 		$main.find("#kgm-attrs button, #kgm-sides button").removeClass("active");
 		state.lastGeneratedItemCode = "";
 		state.lastOperationItemCode = "";
+		state.sqftManual = false;
 		refreshGeneratedItem();
 		updateOperationControls({ focusAddEntry: false });
 		updateEntryMode();
@@ -906,6 +927,8 @@ frappe.pages["sales-order-fast-entry"].on_page_load = function(wrapper) {
 		$main.find("#kgm-height").val(formatNumber(stone.custom_height));
 		$main.find("#kgm-width").val(formatNumber(stone.custom_width));
 		$main.find("#kgm-quantity").val(formatNumber(stone.custom_quantity || 1));
+		$main.find("#kgm-sqft").val(stone.qty ? formatNumber(stone.qty) : "");
+		state.sqftManual = Boolean(stone.manual_qty);
 		$main.find("#kgm-rate").val(stone.rate ? formatNumber(stone.rate) : "");
 		$main.find("#kgm-finish").val(formState.finish || "");
 		setActiveAttrs(formState.attrs || []);

@@ -11,6 +11,9 @@
   "column_break_xkbc",
   "from_date",
   "to_date",
+  "status_section",
+  "include_draft",
+  "include_submitted",
   "sales_orders_section",
   "sales_orders"
  ],
@@ -46,6 +49,23 @@
    "fieldname": "to_date",
    "fieldtype": "Date",
    "label": "To Date"
+  },
+  {
+   "fieldname": "status_section",
+   "fieldtype": "Section Break",
+   "label": "Bill Status"
+  },
+  {
+   "default": "1",
+   "fieldname": "include_draft",
+   "fieldtype": "Check",
+   "label": "Show Draft"
+  },
+  {
+   "default": "1",
+   "fieldname": "include_submitted",
+   "fieldtype": "Check",
+   "label": "Show Approved / Submitted"
   },
   {
    "fieldname": "sales_orders_section",

@@ -295,8 +295,10 @@ def _is_piece_qty_item(item_code):
 
 
 def _calculate_stone_row(raw, index=1, price_list=DEFAULT_PRICE_LIST):
+    raw = frappe._dict(raw or {})
     row = _base_row(raw, f"STONE-{index}")
     _validate_item(row["item_code"])
+    manual_qty = _to_check(raw.get("manual_qty"))
 
     if _is_piece_qty_item(row["item_code"]):
         row["qty"] = flt(row.get("custom_quantity"))
@@ -310,10 +312,14 @@ def _calculate_stone_row(raw, index=1, price_list=DEFAULT_PRICE_LIST):
         row["qty"] = 0
         result = _run_sales_order_item_script(MOULD_CLIENT_SCRIPT, "custom_quantity", row)
         calculated = _sync_cut_fields(dict(result.get("row") or row))
+        if manual_qty:
+            calculated["qty"] = flt(raw.get("qty"))
         return _with_display_fields(calculated, price_list)
 
     result = _run_sales_order_item_script(SQFT_CLIENT_SCRIPT, "item_code", row)
     calculated = _sync_cut_fields(dict(result.get("row") or row))
+    if manual_qty:
+        calculated["qty"] = flt(raw.get("qty"))
     return _with_display_fields(calculated, price_list)
 
 
