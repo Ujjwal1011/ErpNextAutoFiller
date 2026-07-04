@@ -1,0 +1,424 @@
+{
+ "actions": [],
+ "creation": "2026-07-01 00:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "transaction_documents_section",
+  "apply_to_sales_order",
+  "apply_to_quotation",
+  "apply_to_sales_invoice",
+  "features_section",
+  "enable_select_item_shortcut",
+  "select_item_shortcut",
+  "enable_select_item_dialog",
+  "enable_moulding_dialog",
+  "column_break_features",
+  "enable_stone_sqft_calculation",
+  "enable_moulding_quantity_calculation",
+  "dialog_submit_shortcut",
+  "post_dialog_focus_field",
+  "timing_section",
+  "focus_delay_ms",
+  "calculation_debounce_ms",
+  "tax_merge_delay_ms",
+  "select_item_section",
+  "default_item_template",
+  "allow_manual_segment_edit",
+  "manual_segment_default",
+  "column_break_select_item",
+  "item_lookup_mode",
+  "missing_item_behavior",
+  "calculation_constants_section",
+  "small_height_threshold",
+  "area_divisor",
+  "inch_to_foot_divisor",
+  "quantity_precision",
+  "column_break_calculation_constants",
+  "height_segment_multiple",
+  "default_granite_multiple",
+  "kaddpa_multiple",
+  "kaddpa_min_cut_width",
+  "standard_min_cut_width",
+  "pati_height_multiple",
+  "pati_width_multiple",
+  "pati_min_cut_width",
+  "date_tax_section",
+  "enable_sales_order_date_from_last_order",
+  "enable_quotation_date_from_last_quotation",
+  "quotation_valid_till_months",
+  "column_break_date_tax",
+  "enable_sales_order_tax_merge",
+  "enable_sales_invoice_tax_merge",
+  "show_force_tax_merge_button",
+  "auto_merge_after_get_items",
+  "item_templates_section",
+  "item_templates",
+  "finish_options_section",
+  "finish_options",
+  "attribute_suffix_rules_section",
+  "attribute_suffix_rules",
+  "item_match_rules_section",
+  "item_match_rules",
+  "width_rules_section",
+  "width_rules"
+ ],
+ "fields": [
+  {
+   "fieldname": "transaction_documents_section",
+   "fieldtype": "Section Break",
+   "label": "Transaction Documents"
+  },
+  {
+   "default": "1",
+   "fieldname": "apply_to_sales_order",
+   "fieldtype": "Check",
+   "label": "Apply to Sales Order"
+  },
+  {
+   "default": "1",
+   "fieldname": "apply_to_quotation",
+   "fieldtype": "Check",
+   "label": "Apply to Quotation"
+  },
+  {
+   "default": "1",
+   "fieldname": "apply_to_sales_invoice",
+   "fieldtype": "Check",
+   "label": "Apply to Sales Invoice"
+  },
+  {
+   "fieldname": "features_section",
+   "fieldtype": "Section Break",
+   "label": "Features"
+  },
+  {
+   "default": "1",
+   "fieldname": "enable_select_item_shortcut",
+   "fieldtype": "Check",
+   "label": "Enable Select Item Shortcut"
+  },
+  {
+   "default": "Ctrl+Space",
+   "fieldname": "select_item_shortcut",
+   "fieldtype": "Data",
+   "label": "Select Item Shortcut"
+  },
+  {
+   "default": "1",
+   "fieldname": "enable_select_item_dialog",
+   "fieldtype": "Check",
+   "label": "Enable Select Item Dialog"
+  },
+  {
+   "default": "1",
+   "fieldname": "enable_moulding_dialog",
+   "fieldtype": "Check",
+   "label": "Enable Moulding Dialog"
+  },
+  {
+   "fieldname": "column_break_features",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "1",
+   "fieldname": "enable_stone_sqft_calculation",
+   "fieldtype": "Check",
+   "label": "Enable Stone Square Foot Calculation"
+  },
+  {
+   "default": "1",
+   "fieldname": "enable_moulding_quantity_calculation",
+   "fieldtype": "Check",
+   "label": "Enable Moulding Quantity Calculation"
+  },
+  {
+   "default": "Ctrl+Enter",
+   "fieldname": "dialog_submit_shortcut",
+   "fieldtype": "Data",
+   "label": "Dialog Submit Shortcut"
+  },
+  {
+   "default": "custom_height",
+   "fieldname": "post_dialog_focus_field",
+   "fieldtype": "Data",
+   "label": "Post Dialog Focus Field"
+  },
+  {
+   "fieldname": "timing_section",
+   "fieldtype": "Section Break",
+   "label": "Timing"
+  },
+  {
+   "default": "200",
+   "fieldname": "focus_delay_ms",
+   "fieldtype": "Int",
+   "label": "Focus Delay (ms)"
+  },
+  {
+   "default": "300",
+   "fieldname": "calculation_debounce_ms",
+   "fieldtype": "Int",
+   "label": "Calculation Debounce (ms)"
+  },
+  {
+   "default": "2000",
+   "fieldname": "tax_merge_delay_ms",
+   "fieldtype": "Int",
+   "label": "Tax Merge Delay (ms)"
+  },
+  {
+   "fieldname": "select_item_section",
+   "fieldtype": "Section Break",
+   "label": "Select Item"
+  },
+  {
+   "default": "KOTA",
+   "fieldname": "default_item_template",
+   "fieldtype": "Data",
+   "label": "Default Item Template"
+  },
+  {
+   "default": "1",
+   "fieldname": "allow_manual_segment_edit",
+   "fieldtype": "Check",
+   "label": "Allow Manual Segment Editing"
+  },
+  {
+   "fieldname": "manual_segment_default",
+   "fieldtype": "Check",
+   "label": "Manual Segment Editing Default"
+  },
+  {
+   "fieldname": "column_break_select_item",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "Exact Match",
+   "fieldname": "item_lookup_mode",
+   "fieldtype": "Select",
+   "label": "Generated Item Lookup Mode",
+   "options": "Exact Match"
+  },
+  {
+   "default": "Clear Item",
+   "fieldname": "missing_item_behavior",
+   "fieldtype": "Select",
+   "label": "Missing Generated Item Behavior",
+   "options": "Clear Item\nKeep Existing\nShow Message Only"
+  },
+  {
+   "fieldname": "calculation_constants_section",
+   "fieldtype": "Section Break",
+   "label": "Calculation Constants"
+  },
+  {
+   "default": "24",
+   "fieldname": "small_height_threshold",
+   "fieldtype": "Float",
+   "label": "Small Height Threshold"
+  },
+  {
+   "default": "144",
+   "fieldname": "area_divisor",
+   "fieldtype": "Float",
+   "label": "Area Divisor"
+  },
+  {
+   "default": "12",
+   "fieldname": "inch_to_foot_divisor",
+   "fieldtype": "Float",
+   "label": "Inch to Foot Divisor"
+  },
+  {
+   "default": "4",
+   "fieldname": "quantity_precision",
+   "fieldtype": "Int",
+   "label": "Quantity Precision"
+  },
+  {
+   "fieldname": "column_break_calculation_constants",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "6",
+   "fieldname": "height_segment_multiple",
+   "fieldtype": "Float",
+   "label": "Height Segment Multiple"
+  },
+  {
+   "default": "3",
+   "fieldname": "default_granite_multiple",
+   "fieldtype": "Float",
+   "label": "Default Granite Multiple"
+  },
+  {
+   "default": "6",
+   "fieldname": "kaddpa_multiple",
+   "fieldtype": "Float",
+   "label": "Kaddpa Multiple"
+  },
+  {
+   "default": "24",
+   "fieldname": "kaddpa_min_cut_width",
+   "fieldtype": "Float",
+   "label": "Kaddpa Minimum Cut Width"
+  },
+  {
+   "default": "24",
+   "fieldname": "standard_min_cut_width",
+   "fieldtype": "Float",
+   "label": "Standard Minimum Cut Width"
+  },
+  {
+   "default": "6",
+   "fieldname": "pati_height_multiple",
+   "fieldtype": "Float",
+   "label": "Pati Height Multiple"
+  },
+  {
+   "default": "3",
+   "fieldname": "pati_width_multiple",
+   "fieldtype": "Float",
+   "label": "Pati Width Multiple"
+  },
+  {
+   "default": "12",
+   "fieldname": "pati_min_cut_width",
+   "fieldtype": "Float",
+   "label": "Pati Minimum Cut Width"
+  },
+  {
+   "fieldname": "date_tax_section",
+   "fieldtype": "Section Break",
+   "label": "Date and Tax Automation"
+  },
+  {
+   "default": "1",
+   "fieldname": "enable_sales_order_date_from_last_order",
+   "fieldtype": "Check",
+   "label": "Sales Order Date From Last Order"
+  },
+  {
+   "default": "1",
+   "fieldname": "enable_quotation_date_from_last_quotation",
+   "fieldtype": "Check",
+   "label": "Quotation Date From Last Quotation"
+  },
+  {
+   "default": "1",
+   "fieldname": "quotation_valid_till_months",
+   "fieldtype": "Int",
+   "label": "Quotation Valid Till Months"
+  },
+  {
+   "fieldname": "column_break_date_tax",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "1",
+   "fieldname": "enable_sales_order_tax_merge",
+   "fieldtype": "Check",
+   "label": "Enable Sales Order Tax Merge"
+  },
+  {
+   "default": "1",
+   "fieldname": "enable_sales_invoice_tax_merge",
+   "fieldtype": "Check",
+   "label": "Enable Sales Invoice Tax Merge"
+  },
+  {
+   "default": "1",
+   "fieldname": "show_force_tax_merge_button",
+   "fieldtype": "Check",
+   "label": "Show Force Tax Merge Button"
+  },
+  {
+   "default": "1",
+   "fieldname": "auto_merge_after_get_items",
+   "fieldtype": "Check",
+   "label": "Auto Merge After Get Items"
+  },
+  {
+   "fieldname": "item_templates_section",
+   "fieldtype": "Section Break",
+   "label": "Item Templates"
+  },
+  {
+   "fieldname": "item_templates",
+   "fieldtype": "Table",
+   "label": "Item Templates",
+   "options": "Auto Filler Item Template"
+  },
+  {
+   "fieldname": "finish_options_section",
+   "fieldtype": "Section Break",
+   "label": "Finish Options"
+  },
+  {
+   "fieldname": "finish_options",
+   "fieldtype": "Table",
+   "label": "Finish Options",
+   "options": "Auto Filler Finish Option"
+  },
+  {
+   "fieldname": "attribute_suffix_rules_section",
+   "fieldtype": "Section Break",
+   "label": "Attribute Suffix Rules"
+  },
+  {
+   "fieldname": "attribute_suffix_rules",
+   "fieldtype": "Table",
+   "label": "Attribute Suffix Rules",
+   "options": "Auto Filler Attribute Suffix Rule"
+  },
+  {
+   "fieldname": "item_match_rules_section",
+   "fieldtype": "Section Break",
+   "label": "Item Match Rules"
+  },
+  {
+   "fieldname": "item_match_rules",
+   "fieldtype": "Table",
+   "label": "Item Match Rules",
+   "options": "Auto Filler Item Match Rule"
+  },
+  {
+   "fieldname": "width_rules_section",
+   "fieldtype": "Section Break",
+   "label": "Width Rules"
+  },
+  {
+   "fieldname": "width_rules",
+   "fieldtype": "Table",
+   "label": "Width Rules",
+   "options": "Auto Filler Width Rule"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "issingle": 1,
+ "links": [],
+ "modified": "2026-07-01 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Auto Filler",
+ "name": "Auto Filler Settings",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

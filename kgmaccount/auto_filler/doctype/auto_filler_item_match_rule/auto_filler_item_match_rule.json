@@ -1,0 +1,108 @@
+{
+ "actions": [],
+ "creation": "2026-07-01 00:00:00.000000",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "enabled",
+  "rule_group",
+  "priority",
+  "rule_name",
+  "match_type",
+  "item_code",
+  "keyword",
+  "secondary_keyword",
+  "calculation_branch",
+  "rounding_factor",
+  "default_sides"
+ ],
+ "fields": [
+  {
+   "default": "1",
+   "fieldname": "enabled",
+   "fieldtype": "Check",
+   "in_list_view": 1,
+   "label": "Enabled"
+  },
+  {
+   "fieldname": "rule_group",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Rule Group",
+   "options": "Moulding Dialog Item\nMoulding Job Work\nMoulding Quantity Factor\nSquare Foot Exclusion\nStone Calculation Branch",
+   "reqd": 1
+  },
+  {
+   "default": "10",
+   "fieldname": "priority",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Priority"
+  },
+  {
+   "fieldname": "rule_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Rule Name",
+   "reqd": 1
+  },
+  {
+   "default": "Contains Keyword",
+   "fieldname": "match_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Match Type",
+   "options": "Exact Item Code\nContains Keyword\nStarts With\nContains All Keywords\nDefault",
+   "reqd": 1
+  },
+  {
+   "fieldname": "item_code",
+   "fieldtype": "Link",
+   "label": "Item Code",
+   "options": "Item"
+  },
+  {
+   "fieldname": "keyword",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Keyword"
+  },
+  {
+   "fieldname": "secondary_keyword",
+   "fieldtype": "Data",
+   "label": "Secondary Keyword"
+  },
+  {
+   "fieldname": "calculation_branch",
+   "fieldtype": "Select",
+   "label": "Calculation Branch",
+   "options": "\nPati\nRaj Kota\nKota\nKaddpa\nDefault Granite"
+  },
+  {
+   "fieldname": "rounding_factor",
+   "fieldtype": "Int",
+   "label": "Rounding Factor"
+  },
+  {
+   "default": "Keep Row Values",
+   "fieldname": "default_sides",
+   "fieldtype": "Select",
+   "label": "Default Sides",
+   "options": "Keep Row Values\nSelect All\nSelect None"
+  }
+ ],
+ "grid_page_length": 50,
+ "istable": 1,
+ "links": [],
+ "modified": "2026-07-01 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Auto Filler",
+ "name": "Auto Filler Item Match Rule",
+ "owner": "Administrator",
+ "permissions": [],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

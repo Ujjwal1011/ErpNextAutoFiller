@@ -1,0 +1,51 @@
+# Task List
+
+- [x] Create artifact folder.
+- [x] Save review task details.
+- [x] Save initial Client Script inventory.
+- [x] Narrow scope to settings for `Sales Order`, `Quotation`, and `Sales Invoice` only.
+- [ ] Review scoped exported Client Scripts in `kgmaccount/fixtures/client_script.json`.
+  - [x] Out of scope: 1. `Chat Interface`
+  - [x] Out of scope: 2. `Llm_based Sales Order`
+  - [x] 3. `sales_order Focus Button`
+  - [x] 4. `Sales Invoice Focus Button`
+  - [x] 5. `Quotation Focus Button`
+  - [x] 6. `Sales-Order Moulding Dialog Box`
+  - [x] 7. `Sales-Order Select Item`
+  - [x] 8. `Sales-Order Kota Kaddpaa Granite Neno Calculation`
+  - [x] 9. `Sales-Order Kota Granite Moulding Calculation`
+  - [x] 10. `Quotation Kota Kaddpaa Granite Neno Calculation`
+  - [x] 11. `Quotation Select Item`
+  - [x] 12. `Qutotation Kota Granite Moulding Calculation`
+  - [x] 13. `Quotation Moulding Dialog Box`
+  - [ ] 14. `Sales-Invoice Select Item`
+  - [ ] 15. `Sales-Invoice Moulding Dialog Box`
+  - [ ] 16. `Sales-Invoice Kota Granite Moulding Calculation`
+  - [ ] 17. `Sales-Invoice Kota Kaddpaa Granite Neno Calculation`
+  - [ ] 18. `Quotation-New-Quotation`
+  - [ ] 19. `sales order Date Changing`
+  - [ ] 20. `Qutotation Date Changing`
+  - [x] Out of scope: 21. `Buttons whatsapp connection`
+  - [x] Out of scope: 22. `WhatsApp Group Button`
+  - [ ] 23. `Sales-Order-Merging-Quotation`
+  - [ ] 24. `Sales-Invoice-Merging-TaxAndCharges`
+- [ ] Review scoped app JavaScript files outside the Client Script fixture.
+  - [ ] `kgmaccount/public/js/sales_order.js`
+  - [x] Out of scope: WhatsApp page/doctype JavaScript.
+  - [x] Out of scope unless requested: Sales Order Fast Entry page JavaScript.
+  - [x] Out of scope unless requested: Sales Order Batch Print JavaScript.
+- [ ] Identify hardcoded values and business rules.
+- [ ] Classify each candidate as settings-worthy or code-only.
+- [x] Propose and create the transaction Settings DocType structure.
+- [x] Map major current script behavior to setting fields.
+- [x] Prioritize implementation phases.
+- [x] Add `Auto Filler Settings` to the Auto Filler workspace.
+- [ ] Refactor Client Scripts to consume settings.
+  - Deferred: current request is to create settings only.
+
+## Output Files
+
+- `client_script_inventory.md`
+- `script_review_notes.md`
+- `proposed_settings_fields.md`
+- `implementation_checklist.md`

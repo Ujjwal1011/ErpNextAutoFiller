@@ -1,0 +1,67 @@
+{
+ "actions": [],
+ "creation": "2026-07-01 00:00:00.000000",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "enabled",
+  "finish_label",
+  "finish_value",
+  "suffix",
+  "checkbox_field",
+  "is_default"
+ ],
+ "fields": [
+  {
+   "default": "1",
+   "fieldname": "enabled",
+   "fieldtype": "Check",
+   "in_list_view": 1,
+   "label": "Enabled"
+  },
+  {
+   "fieldname": "finish_label",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Finish Label",
+   "reqd": 1
+  },
+  {
+   "fieldname": "finish_value",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Finish Value",
+   "reqd": 1
+  },
+  {
+   "fieldname": "suffix",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Item Code Suffix"
+  },
+  {
+   "fieldname": "checkbox_field",
+   "fieldtype": "Data",
+   "label": "Target Checkbox Field"
+  },
+  {
+   "fieldname": "is_default",
+   "fieldtype": "Check",
+   "label": "Default"
+  }
+ ],
+ "grid_page_length": 50,
+ "istable": 1,
+ "links": [],
+ "modified": "2026-07-01 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Auto Filler",
+ "name": "Auto Filler Finish Option",
+ "owner": "Administrator",
+ "permissions": [],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

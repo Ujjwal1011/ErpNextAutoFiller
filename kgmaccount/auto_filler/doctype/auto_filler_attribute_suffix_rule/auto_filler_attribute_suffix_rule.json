@@ -1,0 +1,77 @@
+{
+ "actions": [],
+ "creation": "2026-07-01 00:00:00.000000",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "enabled",
+  "priority",
+  "attribute_label",
+  "checkbox_field",
+  "suffix",
+  "dimension_source",
+  "mutually_exclusive_with"
+ ],
+ "fields": [
+  {
+   "default": "1",
+   "fieldname": "enabled",
+   "fieldtype": "Check",
+   "in_list_view": 1,
+   "label": "Enabled"
+  },
+  {
+   "default": "10",
+   "fieldname": "priority",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Priority"
+  },
+  {
+   "fieldname": "attribute_label",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Attribute Label",
+   "reqd": 1
+  },
+  {
+   "fieldname": "checkbox_field",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Checkbox Field",
+   "reqd": 1
+  },
+  {
+   "fieldname": "suffix",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Item Code Suffix"
+  },
+  {
+   "default": "Cut Dimensions",
+   "fieldname": "dimension_source",
+   "fieldtype": "Select",
+   "label": "Dimension Source",
+   "options": "Cut Dimensions\nActual Dimensions\nActual If No Gadela"
+  },
+  {
+   "fieldname": "mutually_exclusive_with",
+   "fieldtype": "Data",
+   "label": "Mutually Exclusive With"
+  }
+ ],
+ "grid_page_length": 50,
+ "istable": 1,
+ "links": [],
+ "modified": "2026-07-01 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Auto Filler",
+ "name": "Auto Filler Attribute Suffix Rule",
+ "owner": "Administrator",
+ "permissions": [],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
