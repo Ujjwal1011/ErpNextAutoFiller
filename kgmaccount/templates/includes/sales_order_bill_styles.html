@@ -27,35 +27,48 @@
     }
 
     .kgm-bill-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
+        display: table;
+        width: 100%;
         border-bottom: 1px solid #000;
         padding-bottom: 4px;
         margin-bottom: 8px;
     }
 
     .kgm-batch-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
+        display: table;
+        width: 100%;
         border-bottom: 1px solid #000;
         padding-bottom: 4px;
         margin-bottom: 8px;
     }
 
     .kgm-order-strip {
-        display: flex;
-        justify-content: flex-end;
-        gap: 16px;
+        text-align: right;
         border-bottom: 1px solid #000;
         padding-bottom: 3px;
         margin-bottom: 4px;
         font-size: 7pt;
     }
 
-    .kgm-bill-customer { padding-left: 10px; }
-    .kgm-bill-meta { text-align: right; padding-right: 10px; }
+    .kgm-order-strip div {
+        display: inline-block;
+        margin-left: 16px;
+    }
+
+    .kgm-bill-customer {
+        display: table-cell;
+        width: 62%;
+        padding-left: 10px;
+        vertical-align: top;
+    }
+
+    .kgm-bill-meta {
+        display: table-cell;
+        width: 38%;
+        text-align: right;
+        padding-right: 10px;
+        vertical-align: top;
+    }
     .kgm-customer-name { font-size: 13pt; font-weight: bold; }
     .kgm-doc-title { font-size: 10pt; font-weight: bold; text-transform: uppercase; margin-bottom: 3px; }
     .kgm-muted-label { color: #666; font-weight: bold; text-transform: uppercase; font-size: 6.5pt; }
@@ -135,14 +148,14 @@
 
     .summary-box {
         margin-top: 8px;
-        display: flex;
-        justify-content: flex-end;
+        text-align: right;
     }
 
     .summary-table {
         width: 280px;
         border-collapse: collapse;
         font-size: 8pt;
+        text-align: left;
     }
 
     .summary-table td {
@@ -165,8 +178,7 @@
 
     .sign-grid {
         margin-top: 30px;
-        display: flex;
-        justify-content: space-between;
+        width: 100%;
         padding-top: 4px;
     }
 
@@ -183,8 +195,7 @@
     }
 
     .kgm-batch-total {
-        display: flex;
-        justify-content: flex-end;
         margin-top: 10px;
+        text-align: right;
     }
 </style>

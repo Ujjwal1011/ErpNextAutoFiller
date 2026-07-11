@@ -1,0 +1,102 @@
+{
+ "actions": [],
+ "creation": "2026-07-04 00:00:00.000000",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "sales_order",
+  "transaction_date",
+  "docstatus_at_send",
+  "sales_order_status",
+  "grand_total_at_send",
+  "modified_at_send",
+  "current_status",
+  "current_grand_total",
+  "has_changed",
+  "change_summary"
+ ],
+ "fields": [
+  {
+   "fieldname": "sales_order",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Sales Order",
+   "options": "Sales Order",
+   "reqd": 1
+  },
+  {
+   "fieldname": "transaction_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Date",
+   "read_only": 1
+  },
+  {
+   "fieldname": "docstatus_at_send",
+   "fieldtype": "Int",
+   "label": "Docstatus At Send",
+   "read_only": 1
+  },
+  {
+   "fieldname": "sales_order_status",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Status At Send",
+   "read_only": 1
+  },
+  {
+   "fieldname": "grand_total_at_send",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Grand Total At Send",
+   "read_only": 1
+  },
+  {
+   "fieldname": "modified_at_send",
+   "fieldtype": "Datetime",
+   "label": "Modified At Send",
+   "read_only": 1
+  },
+  {
+   "fieldname": "current_status",
+   "fieldtype": "Data",
+   "label": "Current Status",
+   "read_only": 1
+  },
+  {
+   "fieldname": "current_grand_total",
+   "fieldtype": "Currency",
+   "label": "Current Grand Total",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "has_changed",
+   "fieldtype": "Check",
+   "in_list_view": 1,
+   "label": "Changed",
+   "read_only": 1
+  },
+  {
+   "fieldname": "change_summary",
+   "fieldtype": "Small Text",
+   "label": "Change Summary",
+   "read_only": 1
+  }
+ ],
+ "grid_page_length": 50,
+ "istable": 1,
+ "links": [],
+ "modified": "2026-07-04 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Whatsapp Suite",
+ "name": "WhatsApp Statement Send Item",
+ "owner": "Administrator",
+ "permissions": [],
+ "row_format": "Dynamic",
+ "rows_threshold_for_grid_search": 20,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

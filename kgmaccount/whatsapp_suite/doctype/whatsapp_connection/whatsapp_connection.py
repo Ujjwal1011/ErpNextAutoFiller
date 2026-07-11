@@ -1,3 +1,5 @@
+import base64
+
 import frappe
 from frappe.model.document import Document
 from waha_python import WAHAClient, WAHAAuthenticationError, WAHANotFoundError
@@ -49,6 +51,33 @@ def _waha_base_urls(ip):
             candidates.append(url)
 
     return candidates
+
+
+def _normalize_qr_data(qr_response):
+    if not qr_response:
+        return None
+
+    mimetype = "image/png"
+    data = qr_response
+    if isinstance(qr_response, dict):
+        mimetype = (
+            qr_response.get("mimetype")
+            or qr_response.get("mimeType")
+            or qr_response.get("contentType")
+            or mimetype
+        )
+        data = qr_response.get("data") or qr_response.get("base64") or qr_response.get("qr")
+
+    if isinstance(data, bytes):
+        data = base64.b64encode(data).decode("utf-8")
+
+    data = str(data or "").strip()
+    if not data:
+        return None
+    if data.startswith("data:") or data.startswith("http://") or data.startswith("https://"):
+        return data
+
+    return f"data:{mimetype};base64,{data}"
 
 @frappe.whitelist()
 def test_waha_connection(ip, session_name, api_key, docname=None):
@@ -105,9 +134,12 @@ def generate_qr_code(ip, session_name, api_key, docname=None):
         try:
             client = WAHAClient(base_url=base_url, api_key=api_key)
             qr_data = client.sessions.get_qr(session_name, accept_json=True)
+            qr_src = _normalize_qr_data(qr_data)
+            if not qr_src:
+                return {"status": "error", "message": "WAHA did not return QR image data."}
 
             logger.info(f"QR Code successfully fetched from WAHA via {base_url}.")
-            return {"status": "success", "qr_data": qr_data.get("data")}
+            return {"status": "success", "qr_data": qr_src}
 
         except WAHAAuthenticationError as e:
             error_msg = f"Authentication Error while fetching QR: {str(e)}"
@@ -305,27 +337,20 @@ def handle_incoming_webhook():
 
         logger.info(f"Webhook received — event: {event}, session: {session}")
 
+        if event == "message.ack":
+            from kgmaccount.whatsapp_suite import statement_sender
+
+            return statement_sender.handle_message_ack(event, session, msg)
+
         if event != "message":
             logger.info(f"Ignoring non-message event: {event}")
             return {"status": "ignored", "event": event}
 
-        chat_id = msg.get("from") or msg.get("chatId")
-        body    = msg.get("body", "")
-        msg_id  = msg.get("id")
-        if isinstance(msg_id, dict):
-            msg_id = msg_id.get("_serialized")
+        from kgmaccount.whatsapp_suite import statement_sender
 
-        doc             = frappe.new_doc("WhatsApp Message")
-        doc.whatsapp_id = chat_id
-        doc.message_id  = msg_id
-        doc.message     = body
-        doc.session_name = session
-        doc.direction   = "Incoming"
-        doc.insert(ignore_permissions=True)
-        frappe.db.commit()
-
-        logger.info(f"Saved incoming message from {chat_id}.")
-        return {"status": "ok", "message": "Saved"}
+        result = statement_sender.handle_incoming_message(event, session, msg)
+        logger.info(f"Saved incoming message from {msg.get('from') or msg.get('chatId')}.")
+        return result
 
     except Exception as e:
         error_msg = f"Webhook processing error: {str(e)}"

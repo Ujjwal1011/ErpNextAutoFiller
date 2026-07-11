@@ -1,0 +1,2 @@
+from kgmaccount.whatsapp_suite.statement_sender import get_dashboard_data
+

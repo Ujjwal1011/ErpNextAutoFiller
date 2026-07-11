@@ -18,6 +18,7 @@ import unittest
 from unittest.mock import Mock, patch
 
 from kgmaccount.tests.whatsapp.whatsapp_test_utils import FakeDb, FakeDoc, NoopLogger, call_whitelisted
+from kgmaccount.whatsapp_suite import statement_sender
 from kgmaccount.whatsapp_suite.doctype.whatsapp_connection import whatsapp_connection
 
 
@@ -46,6 +47,28 @@ class TestWhatsAppConnectionFunctions(unittest.TestCase):
 
     def test_generate_qr_code_returns_qr_data(self):
         """Generate QR Code button should return the QR image data from WAHA."""
+        fake_client = Mock()
+        fake_client.sessions.get_qr.return_value = {"data": "abc", "mimetype": "image/png"}
+        fake_frappe = types.SimpleNamespace(
+            logger=lambda *args, **kwargs: NoopLogger(),
+            log_error=Mock(),
+        )
+
+        with patch.object(whatsapp_connection, "WAHAClient", return_value=fake_client), patch.object(
+            whatsapp_connection, "frappe", fake_frappe
+        ), patch.object(whatsapp_connection, "assert_whatsapp_admin", lambda: None):
+            result = call_whitelisted(
+                whatsapp_connection.generate_qr_code,
+                "localhost:3000",
+                "default",
+                "secret",
+            )
+
+        self.assertEqual(result["status"], "success")
+        self.assertEqual(result["qr_data"], "data:image/png;base64,abc")
+
+    def test_generate_qr_code_keeps_existing_data_uri(self):
+        """Generate QR Code should keep an already browser-ready image data URI."""
         fake_client = Mock()
         fake_client.sessions.get_qr.return_value = {"data": "data:image/png;base64,abc"}
         fake_frappe = types.SimpleNamespace(
@@ -93,7 +116,7 @@ class TestWhatsAppConnectionFunctions(unittest.TestCase):
         inserted_docs = []
 
         def fake_new_doc(doctype):
-            doc = FakeDoc(doctype=doctype)
+            doc = FakeDoc(doctype=doctype, name="WA-MSG-1")
             doc.insert = lambda ignore_permissions=False, doc=doc: inserted_docs.append(doc) or doc
             return doc
 
@@ -110,12 +133,17 @@ class TestWhatsAppConnectionFunctions(unittest.TestCase):
                 }
             ),
             new_doc=fake_new_doc,
+            get_all=lambda *args, **kwargs: [],
             db=fake_db,
             logger=lambda *args, **kwargs: NoopLogger(),
             log_error=Mock(),
         )
 
-        with patch.object(whatsapp_connection, "frappe", fake_frappe):
+        with patch.object(whatsapp_connection, "frappe", fake_frappe), patch.object(
+            statement_sender, "frappe", fake_frappe
+        ), patch.object(
+            statement_sender, "now", lambda: "2026-07-04 10:00:00"
+        ):
             result = call_whitelisted(whatsapp_connection.handle_incoming_webhook)
 
         self.assertEqual(result["status"], "ok")

@@ -1,7 +1,7 @@
 {
  "charts": [],
- "content": "[{\"id\":\"wa_header\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>WhatsApp Suite</b></span>\",\"col\":12}},{\"id\":\"wa_chat_shortcut\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"WhatsApp Chat\",\"col\":3}},{\"id\":\"wa_group_shortcut\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"WhatsApp Group\",\"col\":3}},{\"id\":\"wa_message_shortcut\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"WhatsApp Message\",\"col\":3}},{\"id\":\"wa_staging_shortcut\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"WhatsApp Order Staging\",\"col\":3}},{\"id\":\"wa_spacer\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"wa_masters_header\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Setup &amp; Access</b></span>\",\"col\":12}},{\"id\":\"wa_operations_card\",\"type\":\"card\",\"data\":{\"card_name\":\"Operations\",\"col\":4}},{\"id\":\"wa_setup_card\",\"type\":\"card\",\"data\":{\"card_name\":\"Setup\",\"col\":4}},{\"id\":\"wa_access_card\",\"type\":\"card\",\"data\":{\"card_name\":\"Access\",\"col\":4}}]",
- "creation": "2026-06-13 00:00:00.000000",
+ "content": "[{\"id\":\"wa_header\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>WhatsApp Suite</b></span>\",\"col\":12}},{\"id\":\"wa_chat_shortcut\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"WhatsApp Chat\",\"col\":3}},{\"id\":\"wa_group_shortcut\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"WhatsApp Group\",\"col\":3}},{\"id\":\"wa_message_shortcut\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"WhatsApp Message\",\"col\":3}},{\"id\":\"wa_staging_shortcut\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"WhatsApp Order Staging\",\"col\":3}},{\"id\":\"wa_spacer\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"wa_masters_header\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Setup &amp; Access</b></span>\",\"col\":12}},{\"id\":\"wa_operations_card\",\"type\":\"card\",\"data\":{\"card_name\":\"Operations\",\"col\":4}},{\"id\":\"Fun-hI8jN3\",\"type\":\"card\",\"data\":{\"card_name\":\"Whatsapp Sending\",\"col\":4}},{\"id\":\"wa_setup_card\",\"type\":\"card\",\"data\":{\"card_name\":\"Setup\",\"col\":4}},{\"id\":\"wa_access_card\",\"type\":\"card\",\"data\":{\"card_name\":\"Access\",\"col\":4}}]",
+ "creation": "2026-06-13 17:18:09.675777",
  "custom_blocks": [],
  "docstatus": 0,
  "doctype": "Workspace",
@@ -112,12 +112,41 @@
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Whatsapp Sending",
+   "link_count": 2,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "WhatsApp Statement Send",
+   "link_count": 0,
+   "link_to": "WhatsApp Statement Send",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "whatsapp-statement-dashboard",
+   "link_count": 0,
+   "link_to": "whatsapp-statement-dashboard",
+   "link_type": "Page",
+   "onboard": 0,
+   "type": "Link"
   }
  ],
- "modified": "2026-06-13 00:00:00.000000",
+ "modified": "2026-07-04 23:28:14.316475",
  "modified_by": "Administrator",
  "module": "Whatsapp Suite",
- "name": "Whatsapp Suite",
+ "name": "WhatsApp Suite",
  "number_cards": [],
  "owner": "Administrator",
  "parent_page": "",

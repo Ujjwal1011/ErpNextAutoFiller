@@ -15,6 +15,19 @@
   "message",
   "timestamp",
   "session_name",
+  "tracking_section",
+  "send_status",
+  "ack_status",
+  "to_chat_id",
+  "reference_doctype",
+  "reference_name",
+  "whatsapp_statement_send",
+  "sent_at",
+  "delivered_at",
+  "read_at",
+  "replied_at",
+  "failed_at",
+  "last_error",
   "media_url",
   "section_break_yesb",
   "has_media",
@@ -74,6 +87,87 @@
    "fieldname": "session_name",
    "fieldtype": "Data",
    "label": "Session Name"
+  },
+  {
+   "fieldname": "tracking_section",
+   "fieldtype": "Section Break",
+   "label": "Tracking"
+  },
+  {
+   "fieldname": "send_status",
+   "fieldtype": "Select",
+   "label": "Send Status",
+   "options": "Draft\nQueued\nSending\nSent\nDelivered\nRead\nReplied\nFailed",
+   "read_only": 1
+  },
+  {
+   "fieldname": "ack_status",
+   "fieldtype": "Data",
+   "label": "Ack Status",
+   "read_only": 1
+  },
+  {
+   "fieldname": "to_chat_id",
+   "fieldtype": "Data",
+   "label": "To Chat ID",
+   "read_only": 1
+  },
+  {
+   "fieldname": "reference_doctype",
+   "fieldtype": "Link",
+   "label": "Reference DocType",
+   "options": "DocType",
+   "read_only": 1
+  },
+  {
+   "fieldname": "reference_name",
+   "fieldtype": "Dynamic Link",
+   "label": "Reference Name",
+   "options": "reference_doctype",
+   "read_only": 1
+  },
+  {
+   "fieldname": "whatsapp_statement_send",
+   "fieldtype": "Link",
+   "label": "WhatsApp Statement Send",
+   "options": "WhatsApp Statement Send",
+   "read_only": 1
+  },
+  {
+   "fieldname": "sent_at",
+   "fieldtype": "Datetime",
+   "label": "Sent At",
+   "read_only": 1
+  },
+  {
+   "fieldname": "delivered_at",
+   "fieldtype": "Datetime",
+   "label": "Delivered At",
+   "read_only": 1
+  },
+  {
+   "fieldname": "read_at",
+   "fieldtype": "Datetime",
+   "label": "Read At",
+   "read_only": 1
+  },
+  {
+   "fieldname": "replied_at",
+   "fieldtype": "Datetime",
+   "label": "Replied At",
+   "read_only": 1
+  },
+  {
+   "fieldname": "failed_at",
+   "fieldtype": "Datetime",
+   "label": "Failed At",
+   "read_only": 1
+  },
+  {
+   "fieldname": "last_error",
+   "fieldtype": "Small Text",
+   "label": "Last Error",
+   "read_only": 1
   },
   {
    "fieldname": "media_url",
