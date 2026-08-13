@@ -1,48 +1,41 @@
-"""Guard tests for the shared CSV data used by Sales Order Client Script tests.
-
-Input:
-- Reads `/workspace/development/frappe-bench/apps/kgmaccount/sales order item list.csv`.
-- Uses the named cases declared in the shared helper for Raj Kota, Kota without
-  Raj, without Kota, Kaddpa, Mould, and MouldG.
-
-How it checks:
-- Confirms the CSV file exists.
-- Confirms every named case can be found by `Item Name`, `Height`, `Width`,
-  and `Quantity`.
-
-Why this file exists:
-- Other Client Script tests depend on this CSV. If the file is missing or one
-  required row is changed, this test fails first with a clear message.
-"""
+"""Guard the analyzed CSV source and its minimal dbt-style row contracts."""
 
 import unittest
 
+from kgmaccount.tests.client_scripts.sales_order.dbt_unit_test_utils import (
+    UNIT_TEST_YAML,
+    load_unit_tests,
+    validate_unit_test_sources,
+)
 from kgmaccount.tests.client_scripts.shared.client_script_test_utils import (
-    REQUIRED_CSV_CASES,
     SALES_ORDER_ITEM_CSV,
-    get_item_csv_row,
 )
 
 
-class TestSalesOrderCsvTestData(unittest.TestCase):
-    def test_required_csv_file_exists(self):
-        """The user-provided item list CSV must be present."""
-        self.assertTrue(
-            SALES_ORDER_ITEM_CSV.exists(),
-            f"Missing Client Script test data CSV: {SALES_ORDER_ITEM_CSV}",
-        )
+EXPECTED_SQFT_UNIT_TESTS = 55
 
-    def test_required_csv_cases_exist(self):
-        """Every named test case must be backed by a row in the CSV."""
-        for case_name, case in REQUIRED_CSV_CASES.items():
-            with self.subTest(case=case_name):
-                row = get_item_csv_row(
-                    case["item_name"],
-                    case["height"],
-                    case["width"],
-                    case["quantity"],
-                )
-                self.assertEqual(row["Item Name"], case["item_name"])
+
+class TestSalesOrderUnitTestData(unittest.TestCase):
+    def test_source_csv_and_unit_test_yaml_exist(self):
+        self.assertTrue(SALES_ORDER_ITEM_CSV.exists(), f"Missing source CSV: {SALES_ORDER_ITEM_CSV}")
+        self.assertTrue(UNIT_TEST_YAML.exists(), f"Missing unit-test YAML: {UNIT_TEST_YAML}")
+
+    def test_every_selected_row_contains_all_source_columns(self):
+        problems = validate_unit_test_sources()
+        self.assertEqual(problems, [], "\n".join(problems))
+
+    def test_sqft_has_55_independent_row_contracts(self):
+        definitions = load_unit_tests()
+        sqft_contract_count = sum(
+            len(definition["given"]["rows"])
+            for definition in definitions.values()
+            if definition["kind"] == "sqft"
+        )
+        self.assertEqual(
+            sqft_contract_count,
+            EXPECTED_SQFT_UNIT_TESTS,
+            "Update the data-analysis report when the representative set changes",
+        )
 
 
 if __name__ == "__main__":

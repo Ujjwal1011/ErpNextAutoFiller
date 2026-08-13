@@ -1,0 +1,1320 @@
+version: 2
+
+# dbt-style row contracts selected from the analysis in
+# `sales_order_item_data_analysis.md`.
+#
+# Every case embeds all 13 columns copied from its source CSV record. These are
+# editable unit-test contracts: the guard requires all columns but allows the
+# values to be changed for a scenario.
+unit_tests:
+  - name: sqft_pati
+    description: Dedicated PATI calculation branch.
+    kind: sqft
+    script_key: sqft_script
+    event: item_code
+    given:
+      rows:
+        - case: pati_positive_quantity
+          source_row:
+            Sales Order: SAL-ORD-2026-00702
+            Order Date: 28-05-2026
+            Customer Name: Reva Mohit
+            Item Name: KOTA PATI
+            Height: 23.0
+            Width: 3.0
+            Cut From Height: 24.0
+            Cut From Width: 12.0
+            Quantity: 25.0
+            SQFT: 50.0
+            Rate: 12.0
+            Amount: 600.0
+            Status: To Deliver and Bill
+        - case: pati_second_order_quantity
+          source_row:
+            Sales Order: SAL-ORD-2026-00685
+            Order Date: 23-05-2026
+            Customer Name: Majjisha Rishi
+            Item Name: KOTA PATI
+            Height: 23.0
+            Width: 3.0
+            Cut From Height: 24.0
+            Cut From Width: 12.0
+            Quantity: 15.0
+            SQFT: 30.0
+            Rate: 12.0
+            Amount: 360.0
+            Status: To Deliver and Bill
+        - case: pati_large_quantity
+          source_row:
+            Sales Order: SAL-ORD-2026-00419
+            Order Date: 15-05-2026
+            Customer Name: Cash x Carry
+            Item Name: KOTA PATI
+            Height: 23.0
+            Width: 3.0
+            Cut From Height: 24.0
+            Cut From Width: 12.0
+            Quantity: 50.0
+            SQFT: 100.0
+            Rate: 12.5
+            Amount: 1250.0
+            Status: To Deliver and Bill
+    expect:
+      source: sales_order_item_csv
+      fields:
+        cut_from_height: Cut From Height
+        cut_from_width: Cut From Width
+        qty: SQFT
+  - name: sqft_rajasthan_kota
+    description: Rajasthan Kota plus-six rounding branch.
+    kind: sqft
+    script_key: sqft_script
+    event: item_code
+    given:
+      rows:
+        - case: raj_gadela
+          source_row:
+            Sales Order: SAL-ORD-2026-00556
+            Order Date: 30-05-2026
+            Customer Name: Natural Granite
+            Item Name: KOTA 24x18 RAJ G
+            Height: 23.0
+            Width: 17.0
+            Cut From Height: 24.0
+            Cut From Width: 18.0
+            Quantity: 15.0
+            SQFT: 45.0
+            Rate: 36.0
+            Amount: 1620.0
+            Status: Draft
+        - case: raj_patala
+          source_row:
+            Sales Order: SAL-ORD-2026-00556
+            Order Date: 30-05-2026
+            Customer Name: Natural Granite
+            Item Name: KOTA 22x16 RAJ P
+            Height: 22.0
+            Width: 16.0
+            Cut From Height: 24.0
+            Cut From Width: 18.0
+            Quantity: 18.0
+            SQFT: 54.0
+            Rate: 29.0
+            Amount: 1566.0
+            Status: Draft
+        - case: raj_rough_jada
+          source_row:
+            Sales Order: SAL-ORD-2026-00687
+            Order Date: 30-05-2026
+            Customer Name: Mukesh G G
+            Item Name: KOTA 22x22 RAJ RUF J
+            Height: 22.0
+            Width: 22.0
+            Cut From Height: 24.0
+            Cut From Width: 24.0
+            Quantity: 150.0
+            SQFT: 600.0
+            Rate: 31.0
+            Amount: 18600.0
+            Status: To Deliver and Bill
+        - case: raj_jada
+          source_row:
+            Sales Order: SAL-ORD-2026-00688
+            Order Date: 30-05-2026
+            Customer Name: Bharat Chamunda Stone
+            Item Name: KOTA 23x17 RAJ J
+            Height: 23.0
+            Width: 17.0
+            Cut From Height: 24.0
+            Cut From Width: 18.0
+            Quantity: 191.0
+            SQFT: 573.0
+            Rate: 33.0
+            Amount: 18909.0
+            Status: To Deliver and Bill
+        - case: raj_rough_without_jada
+          source_row:
+            Sales Order: SAL-ORD-2026-00690
+            Order Date: 30-05-2026
+            Customer Name: Bharat Chamunda Stone
+            Item Name: KOTA 22x16 RAJ RUF
+            Height: 22.0
+            Width: 16.0
+            Cut From Height: 24.0
+            Cut From Width: 18.0
+            Quantity: 60.0
+            SQFT: 180.0
+            Rate: 29.0
+            Amount: 5220.0
+            Status: To Deliver and Bill
+        - case: raj_small_width
+          source_row:
+            Sales Order: SAL-ORD-2026-00679
+            Order Date: 28-05-2026
+            Customer Name: Majjisha Rishi
+            Item Name: KOTA 11x11 RAJ
+            Height: 11.0
+            Width: 11.0
+            Cut From Height: 12.0
+            Cut From Width: 12.0
+            Quantity: 15.0
+            SQFT: 15.0
+            Rate: 25.0
+            Amount: 375.0
+            Status: To Deliver and Bill
+        - case: raj_mirror
+          source_row:
+            Sales Order: SAL-ORD-2026-00658
+            Order Date: 21-05-2026
+            Customer Name: Vijay Marble Bablu
+            Item Name: KOTA 22X22 RAJ MIR
+            Height: 22.0
+            Width: 22.0
+            Cut From Height: 24.0
+            Cut From Width: 24.0
+            Quantity: 80.0
+            SQFT: 320.0
+            Rate: 62.0
+            Amount: 19840.0
+            Status: To Deliver and Bill
+        - case: raj_rough_before_raj_suffix_order
+          source_row:
+            Sales Order: SAL-ORD-2026-00384
+            Order Date: 12-05-2026
+            Customer Name: Natural Granite
+            Item Name: KOTA 22x22 RUF RAJ J
+            Height: 22.0
+            Width: 22.0
+            Cut From Height: 24.0
+            Cut From Width: 24.0
+            Quantity: 85.0
+            SQFT: 340.0
+            Rate: 30.0
+            Amount: 10200.0
+            Status: To Deliver and Bill
+    expect:
+      source: sales_order_item_csv
+      fields:
+        cut_from_height: Cut From Height
+        cut_from_width: Cut From Width
+        qty: SQFT
+  - name: sqft_kota_short_height_width_bands
+    description: One source row for every width band used when Kota height is below 24.
+    kind: sqft
+    script_key: sqft_script
+    event: item_code
+    given:
+      rows:
+        - case: width_below_6
+          source_row:
+            Sales Order: SAL-ORD-2026-00343-1
+            Order Date: 09-05-2026
+            Customer Name: Peral G
+            Item Name: KOTA 24x24
+            Height: 23.0
+            Width: 3.0
+            Cut From Height: 24.0
+            Cut From Width: 24.0
+            Quantity: 240.0
+            SQFT: 480.0
+            Rate: 12.0
+            Amount: 5760.0
+            Status: To Deliver and Bill
+        - case: width_6_to_12
+          source_row:
+            Sales Order: SAL-ORD-2026-00505
+            Order Date: 25-05-2026
+            Customer Name: Cash x Carry
+            Item Name: KOTA 24x18
+            Height: 18.0
+            Width: 11.0
+            Cut From Height: 24.0
+            Cut From Width: 18.0
+            Quantity: 3.0
+            SQFT: 9.0
+            Rate: 40.0
+            Amount: 360.0
+            Status: To Deliver and Bill
+        - case: width_12_to_15
+          source_row:
+            Sales Order: SAL-ORD-2026-00195-1
+            Order Date: 02-05-2026
+            Customer Name: Abhishek Marble Puranji
+            Item Name: KOTA 24x24
+            Height: 20.0
+            Width: 13.0
+            Cut From Height: 24.0
+            Cut From Width: 24.0
+            Quantity: 1.0
+            SQFT: 3.0
+            Rate: 36.0
+            Amount: 108.0
+            Status: To Deliver and Bill
+        - case: width_exactly_15
+          source_row:
+            Sales Order: SAL-ORD-2026-00716
+            Order Date: 19-05-2026
+            Customer Name: Vikas ji Shahibaug
+            Item Name: KOTA 24x18
+            Height: 19.0
+            Width: 15.0
+            Cut From Height: 24.0
+            Cut From Width: 18.0
+            Quantity: 1.0
+            SQFT: 3.0
+            Rate: 37.0
+            Amount: 111.0
+            Status: Draft
+        - case: width_15_to_18
+          source_row:
+            Sales Order: SAL-ORD-2026-00565
+            Order Date: 30-05-2026
+            Customer Name: Majjisha Rishi
+            Item Name: KOTA 24x18
+            Height: 23.0
+            Width: 17.0
+            Cut From Height: 24.0
+            Cut From Width: 18.0
+            Quantity: 6.0
+            SQFT: 18.0
+            Rate: 36.0
+            Amount: 648.0
+            Status: To Deliver and Bill
+        - case: width_18_or_more_river_polish
+          source_row:
+            Sales Order: SAL-ORD-2026-00537
+            Order Date: 28-05-2026
+            Customer Name: Reva Mohit
+            Item Name: KOTA 24x24 RIV
+            Height: 22.0
+            Width: 22.0
+            Cut From Height: 24.0
+            Cut From Width: 24.0
+            Quantity: 69.0
+            SQFT: 276.0
+            Rate: 40.0
+            Amount: 11040.0
+            Status: To Deliver and Bill
+        - case: rough_polish_branch_recognition
+          source_row:
+            Sales Order: SAL-ORD-2026-00521
+            Order Date: 26-05-2026
+            Customer Name: Vijay Marble Bablu
+            Item Name: KOTA 24x24 RUF
+            Height: 22.0
+            Width: 22.0
+            Cut From Height: 24.0
+            Cut From Width: 24.0
+            Quantity: 25.0
+            SQFT: 100.0
+            Rate: 31.0
+            Amount: 3100.0
+            Status: To Deliver and Bill
+    expect:
+      source: sales_order_item_csv
+      fields:
+        cut_from_height: Cut From Height
+        cut_from_width: Cut From Width
+        qty: SQFT
+  - name: sqft_kota_tall_height_width_and_quantity_bands
+    description: Six tall-Kota rows cover every width band plus single, even, and odd quantities.
+    kind: sqft
+    script_key: sqft_script
+    event: item_code
+    given:
+      rows:
+        - case: width_below_6_single
+          source_row:
+            Sales Order: SAL-ORD-2026-00602
+            Order Date: 29-05-2026
+            Customer Name: Cash x Carry
+            Item Name: KOTA 72x24
+            Height: 71.0
+            Width: 5.0
+            Cut From Height: 72.0
+            Cut From Width: 24.0
+            Quantity: 1.0
+            SQFT: 3.0
+            Rate: 65.0
+            Amount: 195.0
+            Status: To Deliver and Bill
+        - case: width_6_to_12_even_mirror_polish
+          source_row:
+            Sales Order: SAL-ORD-2026-00665
+            Order Date: 23-05-2026
+            Customer Name: Chirag Tirupati Balaji
+            Item Name: KOTA 36x30 MIR
+            Height: 35.0
+            Width: 10.0
+            Cut From Height: 36.0
+            Cut From Width: 24.0
+            Quantity: 4.0
+            SQFT: 15.0
+            Rate: 68.0
+            Amount: 1020.0
+            Status: To Deliver and Bill
+        - case: width_12_to_15_odd_dp_polish
+          source_row:
+            Sales Order: SAL-ORD-2026-00364
+            Order Date: 11-05-2026
+            Customer Name: Navkar Sumit
+            Item Name: KOTA 36x30 DP
+            Height: 33.0
+            Width: 13.0
+            Cut From Height: 36.0
+            Cut From Width: 30.0
+            Quantity: 3.0
+            SQFT: 13.5
+            Rate: 66.0
+            Amount: 891.0
+            Status: To Deliver and Bill
+        - case: width_exactly_15_even
+          source_row:
+            Sales Order: SAL-ORD-2026-00494
+            Order Date: 25-05-2026
+            Customer Name: Peral G
+            Item Name: KOTA 48x24
+            Height: 43.5
+            Width: 15.0
+            Cut From Height: 48.0
+            Cut From Width: 30.0
+            Quantity: 12.0
+            SQFT: 72.0
+            Rate: 49.0
+            Amount: 3528.0
+            Status: To Deliver and Bill
+        - case: width_15_to_18_even
+          source_row:
+            Sales Order: SAL-ORD-2026-00296
+            Order Date: 06-05-2026
+            Customer Name: Hanuman Granite
+            Item Name: KOTA 96x24
+            Height: 92.0
+            Width: 16.0
+            Cut From Height: 96.0
+            Cut From Width: 24.0
+            Quantity: 16.0
+            SQFT: 192.0
+            Rate: 75.0
+            Amount: 14400.0
+            Status: To Deliver and Bill
+        - case: width_18_or_more_single_ledhar_polish
+          source_row:
+            Sales Order: SAL-ORD-2026-00611
+            Order Date: 27-05-2026
+            Customer Name: Rocks Studio
+            Item Name: KOTA 42x36 LDR
+            Height: 36.0
+            Width: 32.0
+            Cut From Height: 42.0
+            Cut From Width: 36.0
+            Quantity: 1.0
+            SQFT: 10.5
+            Rate: 110.0
+            Amount: 1155.0
+            Status: To Deliver and Bill
+        - case: width_18_or_more_even_uncut_polish
+          source_row:
+            Sales Order: SAL-ORD-2026-00605
+            Order Date: 28-05-2026
+            Customer Name: Hariom
+            Item Name: KOTA 78x24 UNC
+            Height: 77.0
+            Width: 23.0
+            Cut From Height: 78.0
+            Cut From Width: 24.0
+            Quantity: 12.0
+            SQFT: 156.0
+            Rate: 62.0
+            Amount: 9672.0
+            Status: To Deliver and Bill
+        - case: exact_height_multiple_single
+          source_row:
+            Sales Order: SAL-ORD-2026-00555
+            Order Date: 30-05-2026
+            Customer Name: Sachiyay Granite
+            Item Name: KOTA 30x24
+            Height: 24.0
+            Width: 18.0
+            Cut From Height: 30.0
+            Cut From Width: 24.0
+            Quantity: 1.0
+            SQFT: 5.0
+            Rate: 43.0
+            Amount: 215.0
+            Status: To Deliver and Bill
+        - case: width_18_or_more_odd_fine_polish
+          source_row:
+            Sales Order: SAL-ORD-2026-00506
+            Order Date: 26-05-2026
+            Customer Name: Salachar G
+            Item Name: KOTA 42x24 FIN
+            Height: 40.0
+            Width: 21.0
+            Cut From Height: 42.0
+            Cut From Width: 24.0
+            Quantity: 3.0
+            SQFT: 21.0
+            Rate: 57.0
+            Amount: 1197.0
+            Status: To Deliver and Bill
+        - case: width_12_to_15_single
+          source_row:
+            Sales Order: SAL-ORD-2026-00536
+            Order Date: 28-05-2026
+            Customer Name: Motiram
+            Item Name: KOTA 54x30
+            Height: 53.0
+            Width: 14.5
+            Cut From Height: 54.0
+            Cut From Width: 30.0
+            Quantity: 1.0
+            SQFT: 6.75
+            Rate: 66.0
+            Amount: 445.5
+            Status: To Deliver and Bill
+        - case: width_12_to_15_even
+          source_row:
+            Sales Order: SAL-ORD-2026-00548
+            Order Date: 29-05-2026
+            Customer Name: Salachar G
+            Item Name: KOTA 54x30
+            Height: 50.0
+            Width: 13.0
+            Cut From Height: 54.0
+            Cut From Width: 30.0
+            Quantity: 6.0
+            SQFT: 33.75
+            Rate: 66.0
+            Amount: 2227.5
+            Status: To Deliver and Bill
+        - case: width_exactly_15_single
+          source_row:
+            Sales Order: SAL-ORD-2026-00444
+            Order Date: 18-05-2026
+            Customer Name: Natural Granite
+            Item Name: KOTA 90x24
+            Height: 87.0
+            Width: 15.0
+            Cut From Height: 90.0
+            Cut From Width: 24.0
+            Quantity: 1.0
+            SQFT: 15.0
+            Rate: 69.0
+            Amount: 1035.0
+            Status: To Deliver and Bill
+        - case: width_15_to_18_odd_dp_polish
+          source_row:
+            Sales Order: SAL-ORD-2026-00526
+            Order Date: 27-05-2026
+            Customer Name: Natural Granite
+            Item Name: KOTA 78x24 DP
+            Height: 73.0
+            Width: 17.0
+            Cut From Height: 78.0
+            Cut From Width: 24.0
+            Quantity: 3.0
+            SQFT: 39.0
+            Rate: 70.0
+            Amount: 2730.0
+            Status: To Deliver and Bill
+    expect:
+      source: sales_order_item_csv
+      fields:
+        cut_from_height: Cut From Height
+        cut_from_width: Cut From Width
+        qty: SQFT
+  - name: sqft_kaddpa_observed_width_bands
+    description: Kaddpa has only three observed width bands in the source data.
+    kind: sqft
+    script_key: sqft_script
+    event: item_code
+    given:
+      rows:
+        - case: width_below_6
+          source_row:
+            Sales Order: SAL-ORD-2026-00393
+            Order Date: 13-05-2026
+            Customer Name: Ambika Goutam
+            Item Name: Kaddpa 24x24
+            Height: 24.0
+            Width: 1.0
+            Cut From Height: 0.0
+            Cut From Width: 0.0
+            Quantity: 40.0
+            SQFT: 80.0
+            Rate: 10.0
+            Amount: 800.0
+            Status: To Deliver and Bill
+        - case: width_exactly_15_ledhar_polish
+          source_row:
+            Sales Order: SAL-ORD-2026-00680
+            Order Date: 30-05-2026
+            Customer Name: Subam
+            Item Name: Kaddpa 30x24 LDR
+            Height: 29.0
+            Width: 15.0
+            Cut From Height: 30.0
+            Cut From Width: 24.0
+            Quantity: 10.0
+            SQFT: 50.0
+            Rate: 45.0
+            Amount: 2250.0
+            Status: To Deliver and Bill
+        - case: width_18_or_more
+          source_row:
+            Sales Order: SAL-ORD-2026-00602
+            Order Date: 29-05-2026
+            Customer Name: Cash x Carry
+            Item Name: Kaddpa 42x24
+            Height: 41.0
+            Width: 23.0
+            Cut From Height: 42.0
+            Cut From Width: 24.0
+            Quantity: 1.0
+            SQFT: 7.0
+            Rate: 55.0
+            Amount: 385.0
+            Status: To Deliver and Bill
+        - case: rough_22_by_22
+          source_row:
+            Sales Order: SAL-ORD-2026-00550
+            Order Date: 29-05-2026
+            Customer Name: Salachar G
+            Item Name: Kaddpa 24x24 ROU
+            Height: 22.0
+            Width: 22.0
+            Cut From Height: 24.0
+            Cut From Width: 24.0
+            Quantity: 100.0
+            SQFT: 400.0
+            Rate: 32.0
+            Amount: 12800.0
+            Status: To Deliver and Bill
+        - case: exact_dimension_multiples
+          source_row:
+            Sales Order: SAL-ORD-2026-00550
+            Order Date: 29-05-2026
+            Customer Name: Salachar G
+            Item Name: Kaddpa 42x24 ROU
+            Height: 42.0
+            Width: 24.0
+            Cut From Height: 0.0
+            Cut From Width: 0.0
+            Quantity: 60.0
+            SQFT: 420.0
+            Rate: 32.0
+            Amount: 13440.0
+            Status: To Deliver and Bill
+        - case: tall_single_quantity
+          source_row:
+            Sales Order: SAL-ORD-2026-00602
+            Order Date: 29-05-2026
+            Customer Name: Cash x Carry
+            Item Name: Kaddpa 72x24
+            Height: 71.0
+            Width: 23.0
+            Cut From Height: 72.0
+            Cut From Width: 24.0
+            Quantity: 1.0
+            SQFT: 12.0
+            Rate: 70.0
+            Amount: 840.0
+            Status: To Deliver and Bill
+        - case: rough_width_19
+          source_row:
+            Sales Order: SAL-ORD-2026-00411
+            Order Date: 15-05-2026
+            Customer Name: Reva Mohit
+            Item Name: Kaddpa 24x24 ROU
+            Height: 23.0
+            Width: 19.0
+            Cut From Height: 24.0
+            Cut From Width: 24.0
+            Quantity: 20.0
+            SQFT: 80.0
+            Rate: 36.0
+            Amount: 2880.0
+            Status: To Deliver and Bill
+    expect:
+      source: sales_order_item_csv
+      fields:
+        cut_from_height: Cut From Height
+        cut_from_width: Cut From Width
+        qty: SQFT
+  - name: sqft_default_granite_rounding
+    description: Default branch covers exact, fractional, and large-dimension inputs.
+    kind: sqft
+    script_key: sqft_script
+    event: item_code
+    given:
+      rows:
+        - case: exact_three_inch_multiples
+          source_row:
+            Sales Order: SAL-ORD-2026-00553
+            Order Date: 30-05-2026
+            Customer Name: Saras Granite
+            Item Name: Lakha Red
+            Height: 66.0
+            Width: 12.0
+            Cut From Height: 0.0
+            Cut From Width: 0.0
+            Quantity: 2.0
+            SQFT: 11.0
+            Rate: 165.0
+            Amount: 1815.0
+            Status: To Deliver and Bill
+        - case: dimensions_need_rounding
+          source_row:
+            Sales Order: SAL-ORD-2026-00553
+            Order Date: 30-05-2026
+            Customer Name: Saras Granite
+            Item Name: Lakha Red
+            Height: 40.0
+            Width: 7.0
+            Cut From Height: 0.0
+            Cut From Width: 0.0
+            Quantity: 1.0
+            SQFT: 2.625
+            Rate: 165.0
+            Amount: 433.12
+            Status: To Deliver and Bill
+        - case: large_dimensions
+          source_row:
+            Sales Order: SAL-ORD-2026-00719
+            Order Date: 29-05-2026
+            Customer Name: Dr Sumit Patel
+            Item Name: R Black
+            Height: 113.0
+            Width: 34.0
+            Cut From Height: 0.0
+            Cut From Width: 0.0
+            Quantity: 4.0
+            SQFT: 106.72
+            Rate: 75.0
+            Amount: 8004.0
+            Status: To Deliver and Bill
+        - case: width_below_6
+          source_row:
+            Sales Order: SAL-ORD-2026-00561
+            Order Date: 30-05-2026
+            Customer Name: Vikash Tiles
+            Item Name: R Black
+            Height: 70.0
+            Width: 3.0
+            Cut From Height: 0.0
+            Cut From Width: 0.0
+            Quantity: 1.0
+            SQFT: 1.5
+            Rate: 80.0
+            Amount: 120.0
+            Status: To Deliver and Bill
+        - case: width_exactly_15
+          source_row:
+            Sales Order: SAL-ORD-2026-00461
+            Order Date: 20-05-2026
+            Customer Name: Ramlalji C
+            Item Name: Neno White
+            Height: 54.75
+            Width: 15.0
+            Cut From Height: 0.0
+            Cut From Width: 0.0
+            Quantity: 1.0
+            SQFT: 5.938
+            Rate: 430.0
+            Amount: 2553.34
+            Status: To Deliver and Bill
+        - case: width_15_to_18
+          source_row:
+            Sales Order: SAL-ORD-2026-00559
+            Order Date: 30-05-2026
+            Customer Name: Ambamani Ramesh
+            Item Name: Neno White
+            Height: 54.5
+            Width: 17.0
+            Cut From Height: 0.0
+            Cut From Width: 0.0
+            Quantity: 1.0
+            SQFT: 7.125
+            Rate: 400.0
+            Amount: 2850.0
+            Status: To Deliver and Bill
+        - case: exact_large_multiples
+          source_row:
+            Sales Order: SAL-ORD-2026-00563
+            Order Date: 30-05-2026
+            Customer Name: Motiram
+            Item Name: P White
+            Height: 45.0
+            Width: 27.0
+            Cut From Height: 0.0
+            Cut From Width: 0.0
+            Quantity: 4.0
+            SQFT: 33.75
+            Rate: 65.0
+            Amount: 2193.75
+            Status: To Deliver and Bill
+        - case: odd_quantity
+          source_row:
+            Sales Order: SAL-ORD-2026-00563
+            Order Date: 30-05-2026
+            Customer Name: Motiram
+            Item Name: P White
+            Height: 34.0
+            Width: 27.0
+            Cut From Height: 0.0
+            Cut From Width: 0.0
+            Quantity: 7.0
+            SQFT: 47.25
+            Rate: 65.0
+            Amount: 3071.25
+            Status: To Deliver and Bill
+    expect:
+      source: sales_order_item_csv
+      fields:
+        qty: SQFT
+  - name: sqft_excluded_items
+    description: Representative mould, job-work, and other exclusion keywords are not mutated.
+    kind: sqft
+    script_key: sqft_script
+    event: item_code
+    given:
+      rows:
+        - case: mould
+          source_row:
+            Sales Order: SAL-ORD-2026-00556
+            Order Date: 30-05-2026
+            Customer Name: Natural Granite
+            Item Name: Dhar Mould
+            Height: 35.0
+            Width: 29.0
+            Cut From Height: 0.0
+            Cut From Width: 0.0
+            Quantity: 1.0
+            SQFT: 5.5
+            Rate: 10.0
+            Amount: 55.0
+            Status: Draft
+        - case: mouldg
+          source_row:
+            Sales Order: SAL-ORD-2026-00561
+            Order Date: 30-05-2026
+            Customer Name: Vikash Tiles
+            Item Name: Dhar MouldG
+            Height: 70.0
+            Width: 3.0
+            Cut From Height: 0.0
+            Cut From Width: 0.0
+            Quantity: 1.0
+            SQFT: 12.0
+            Rate: 10.0
+            Amount: 120.0
+            Status: To Deliver and Bill
+        - case: job_work
+          source_row:
+            Sales Order: SAL-ORD-2026-00612
+            Order Date: 26-05-2026
+            Customer Name: Ramesh D D Tiles
+            Item Name: Tiles Job Work
+            Height: 31.2
+            Width: 17.5
+            Cut From Height: 0.0
+            Cut From Width: 0.0
+            Quantity: 1.0
+            SQFT: 8.5
+            Rate: 15.0
+            Amount: 127.5
+            Status: To Deliver and Bill
+        - case: tiles
+          source_row:
+            Sales Order: SAL-ORD-2026-00179-1
+            Order Date: 02-05-2026
+            Customer Name: Jigar Panchal
+            Item Name: Tiles
+            Height: 94.0
+            Width: 31.0
+            Cut From Height: 0.0
+            Cut From Width: 0.0
+            Quantity: 1.0
+            SQFT: 22.0
+            Rate: 210.0
+            Amount: 4620.0
+            Status: To Deliver and Bill
+        - case: hole
+          source_row:
+            Sales Order: SAL-ORD-2026-00179-1
+            Order Date: 02-05-2026
+            Customer Name: Jigar Panchal
+            Item Name: Hole
+            Height: 0.0
+            Width: 0.0
+            Cut From Height: 0.0
+            Cut From Width: 0.0
+            Quantity: 0.0
+            SQFT: 1.0
+            Rate: 150.0
+            Amount: 150.0
+            Status: To Deliver and Bill
+        - case: farma
+          source_row:
+            Sales Order: SAL-ORD-2026-00529
+            Order Date: 27-05-2026
+            Customer Name: Himal Symbol Interior
+            Item Name: Farma
+            Height: 0.0
+            Width: 0.0
+            Cut From Height: 0.0
+            Cut From Width: 0.0
+            Quantity: 1.0
+            SQFT: 1.0
+            Rate: 600.0
+            Amount: 600.0
+            Status: To Deliver and Bill
+    expect:
+      absent_fields:
+        - cut_from_height
+        - cut_from_width
+        - qty
+  - name: sqft_recalculation_events
+    description: Dimension and quantity edits must run the same formula as item selection.
+    kind: sqft
+    script_key: sqft_script
+    event: item_code
+    given:
+      rows:
+        - case: custom_height_event_dp_polish
+          source_row:
+            Sales Order: SAL-ORD-2026-00552
+            Order Date: 30-05-2026
+            Customer Name: Umiya Sales Vithal Bhai
+            Item Name: KOTA 42x24 DP
+            Height: 41.0
+            Width: 23.0
+            Cut From Height: 42.0
+            Cut From Width: 24.0
+            Quantity: 2.0
+            SQFT: 14.0
+            Rate: 57.0
+            Amount: 798.0
+            Status: To Deliver and Bill
+          event: custom_height
+        - case: custom_width_event_raj_gadela
+          source_row:
+            Sales Order: SAL-ORD-2026-00556
+            Order Date: 30-05-2026
+            Customer Name: Natural Granite
+            Item Name: KOTA 24x18 RAJ G
+            Height: 23.0
+            Width: 17.0
+            Cut From Height: 24.0
+            Cut From Width: 18.0
+            Quantity: 15.0
+            SQFT: 45.0
+            Rate: 36.0
+            Amount: 1620.0
+            Status: Draft
+          event: custom_width
+        - case: custom_quantity_event_kaddpa
+          source_row:
+            Sales Order: SAL-ORD-2026-00602
+            Order Date: 29-05-2026
+            Customer Name: Cash x Carry
+            Item Name: Kaddpa 42x24
+            Height: 41.0
+            Width: 23.0
+            Cut From Height: 42.0
+            Cut From Width: 24.0
+            Quantity: 1.0
+            SQFT: 7.0
+            Rate: 55.0
+            Amount: 385.0
+            Status: To Deliver and Bill
+          event: custom_quantity
+    expect:
+      source: sales_order_item_csv
+      fields:
+        cut_from_height: Cut From Height
+        cut_from_width: Cut From Width
+        qty: SQFT
+  - name: select_item_kota_dimension_boundaries
+    description: Minimal rows cover both height paths and all relevant dialog width boundaries.
+    kind: select_item
+    script_key: select_script
+    event: custom_select_item
+    given:
+      rows:
+        - case: short_width_below_6
+          source_row:
+            Sales Order: SAL-ORD-2026-00343-1
+            Order Date: 09-05-2026
+            Customer Name: Peral G
+            Item Name: KOTA 24x24
+            Height: 23.0
+            Width: 3.0
+            Cut From Height: 24.0
+            Cut From Width: 24.0
+            Quantity: 240.0
+            SQFT: 480.0
+            Rate: 12.0
+            Amount: 5760.0
+            Status: To Deliver and Bill
+        - case: short_width_6_to_12
+          source_row:
+            Sales Order: SAL-ORD-2026-00505
+            Order Date: 25-05-2026
+            Customer Name: Cash x Carry
+            Item Name: KOTA 24x18
+            Height: 18.0
+            Width: 11.0
+            Cut From Height: 24.0
+            Cut From Width: 18.0
+            Quantity: 3.0
+            SQFT: 9.0
+            Rate: 40.0
+            Amount: 360.0
+            Status: To Deliver and Bill
+        - case: short_width_12_to_15
+          source_row:
+            Sales Order: SAL-ORD-2026-00195-1
+            Order Date: 02-05-2026
+            Customer Name: Abhishek Marble Puranji
+            Item Name: KOTA 24x24
+            Height: 20.0
+            Width: 13.0
+            Cut From Height: 24.0
+            Cut From Width: 24.0
+            Quantity: 1.0
+            SQFT: 3.0
+            Rate: 36.0
+            Amount: 108.0
+            Status: To Deliver and Bill
+        - case: short_width_15_to_18
+          source_row:
+            Sales Order: SAL-ORD-2026-00565
+            Order Date: 30-05-2026
+            Customer Name: Majjisha Rishi
+            Item Name: KOTA 24x18
+            Height: 23.0
+            Width: 17.0
+            Cut From Height: 24.0
+            Cut From Width: 18.0
+            Quantity: 6.0
+            SQFT: 18.0
+            Rate: 36.0
+            Amount: 648.0
+            Status: To Deliver and Bill
+        - case: tall_width_exactly_15
+          source_row:
+            Sales Order: SAL-ORD-2026-00494
+            Order Date: 25-05-2026
+            Customer Name: Peral G
+            Item Name: KOTA 48x24
+            Height: 43.5
+            Width: 15.0
+            Cut From Height: 48.0
+            Cut From Width: 30.0
+            Quantity: 12.0
+            SQFT: 72.0
+            Rate: 49.0
+            Amount: 3528.0
+            Status: To Deliver and Bill
+        - case: tall_width_18_or_more
+          source_row:
+            Sales Order: SAL-ORD-2026-00564
+            Order Date: 31-05-2026
+            Customer Name: Manish (Saras Granite)
+            Item Name: KOTA 42x24
+            Height: 41.0
+            Width: 23.0
+            Cut From Height: 42.0
+            Cut From Width: 24.0
+            Quantity: 2.0
+            SQFT: 14.0
+            Rate: 49.0
+            Amount: 686.0
+            Status: To Deliver and Bill
+    expect:
+      source: sales_order_item_csv
+      fields:
+        item_code: Item Name
+        custom_cut_from_height: Cut From Height
+        custom_cut_from_width: Cut From Width
+  - name: select_item_kota_finish_categories
+    description: Standard, mirror-flag, and rough finish behavior without testing every repeated suffix
+      row.
+    kind: select_item
+    script_key: select_script
+    event: custom_select_item
+    given:
+      rows:
+        - case: standard_finish_dp
+          source_row:
+            Sales Order: SAL-ORD-2026-00552
+            Order Date: 30-05-2026
+            Customer Name: Umiya Sales Vithal Bhai
+            Item Name: KOTA 42x24 DP
+            Height: 41.0
+            Width: 23.0
+            Cut From Height: 42.0
+            Cut From Width: 24.0
+            Quantity: 2.0
+            SQFT: 14.0
+            Rate: 57.0
+            Amount: 798.0
+            Status: To Deliver and Bill
+        - case: mirror_finish
+          source_row:
+            Sales Order: SAL-ORD-2026-00520
+            Order Date: 26-05-2026
+            Customer Name: Saaras G Manish
+            Item Name: KOTA 42x30 MIR
+            Height: 38.0
+            Width: 12.5
+            Cut From Height: 42.0
+            Cut From Width: 30.0
+            Quantity: 2.0
+            SQFT: 8.75
+            Rate: 70.0
+            Amount: 612.5
+            Status: Draft
+        - case: rough_finish
+          source_row:
+            Sales Order: SAL-ORD-2026-00521
+            Order Date: 26-05-2026
+            Customer Name: Vijay Marble Bablu
+            Item Name: KOTA 24x24 RUF
+            Height: 22.0
+            Width: 22.0
+            Cut From Height: 24.0
+            Cut From Width: 24.0
+            Quantity: 25.0
+            SQFT: 100.0
+            Rate: 31.0
+            Amount: 3100.0
+            Status: To Deliver and Bill
+    expect:
+      source: sales_order_item_csv
+      fields:
+        item_code: Item Name
+        custom_cut_from_height: Cut From Height
+        custom_cut_from_width: Cut From Width
+  - name: select_item_rajasthan_property_categories
+    description: Gadela uses cut dimensions; non-Gadela properties use actual dimensions and suffix flags.
+    kind: select_item
+    script_key: select_script
+    event: custom_select_item
+    given:
+      rows:
+        - case: gadela
+          source_row:
+            Sales Order: SAL-ORD-2026-00556
+            Order Date: 30-05-2026
+            Customer Name: Natural Granite
+            Item Name: KOTA 24x18 RAJ G
+            Height: 23.0
+            Width: 17.0
+            Cut From Height: 24.0
+            Cut From Width: 18.0
+            Quantity: 15.0
+            SQFT: 45.0
+            Rate: 36.0
+            Amount: 1620.0
+            Status: Draft
+        - case: patala
+          source_row:
+            Sales Order: SAL-ORD-2026-00556
+            Order Date: 30-05-2026
+            Customer Name: Natural Granite
+            Item Name: KOTA 22x16 RAJ P
+            Height: 22.0
+            Width: 16.0
+            Cut From Height: 24.0
+            Cut From Width: 18.0
+            Quantity: 18.0
+            SQFT: 54.0
+            Rate: 29.0
+            Amount: 1566.0
+            Status: Draft
+        - case: rough_jada
+          source_row:
+            Sales Order: SAL-ORD-2026-00687
+            Order Date: 30-05-2026
+            Customer Name: Mukesh G G
+            Item Name: KOTA 22x22 RAJ RUF J
+            Height: 22.0
+            Width: 22.0
+            Cut From Height: 24.0
+            Cut From Width: 24.0
+            Quantity: 150.0
+            SQFT: 600.0
+            Rate: 31.0
+            Amount: 18600.0
+            Status: To Deliver and Bill
+        - case: source_suffix_order
+          source_row:
+            Sales Order: SAL-ORD-2026-00384
+            Order Date: 12-05-2026
+            Customer Name: Natural Granite
+            Item Name: KOTA 22x22 RUF RAJ J
+            Height: 22.0
+            Width: 22.0
+            Cut From Height: 24.0
+            Cut From Width: 24.0
+            Quantity: 85.0
+            SQFT: 340.0
+            Rate: 30.0
+            Amount: 10200.0
+            Status: To Deliver and Bill
+    expect:
+      source: sales_order_item_csv
+      fields:
+        item_code: Item Name
+        custom_cut_from_height: Cut From Height
+        custom_cut_from_width: Cut From Width
+  - name: select_item_kaddpa_categories
+    description: Plain Kaddpa, a standard finish, and the source ROU rough alias.
+    kind: select_item
+    script_key: select_script
+    event: custom_select_item
+    given:
+      rows:
+        - case: plain
+          source_row:
+            Sales Order: SAL-ORD-2026-00602
+            Order Date: 29-05-2026
+            Customer Name: Cash x Carry
+            Item Name: Kaddpa 42x24
+            Height: 41.0
+            Width: 23.0
+            Cut From Height: 42.0
+            Cut From Width: 24.0
+            Quantity: 1.0
+            SQFT: 7.0
+            Rate: 55.0
+            Amount: 385.0
+            Status: To Deliver and Bill
+        - case: ledhar
+          source_row:
+            Sales Order: SAL-ORD-2026-00680
+            Order Date: 30-05-2026
+            Customer Name: Subam
+            Item Name: Kaddpa 30x24 LDR
+            Height: 29.0
+            Width: 15.0
+            Cut From Height: 30.0
+            Cut From Width: 24.0
+            Quantity: 10.0
+            SQFT: 50.0
+            Rate: 45.0
+            Amount: 2250.0
+            Status: To Deliver and Bill
+        - case: rough_alias
+          source_row:
+            Sales Order: SAL-ORD-2026-00550
+            Order Date: 29-05-2026
+            Customer Name: Salachar G
+            Item Name: Kaddpa 24x24 ROU
+            Height: 22.0
+            Width: 22.0
+            Cut From Height: 24.0
+            Cut From Width: 24.0
+            Quantity: 100.0
+            SQFT: 400.0
+            Rate: 32.0
+            Amount: 12800.0
+            Status: To Deliver and Bill
+    expect:
+      source: sales_order_item_csv
+      fields:
+        item_code: Item Name
+        custom_cut_from_height: Cut From Height
+        custom_cut_from_width: Cut From Width
+  - name: mould_factor_six
+    description: Standard mould rounds to six inches and adds one width plus one height side.
+    kind: mould
+    script_key: mould_script
+    event: custom_quantity
+    given:
+      rows:
+        - case: standard_mould
+          source_row:
+            Sales Order: SAL-ORD-2026-00556
+            Order Date: 30-05-2026
+            Customer Name: Natural Granite
+            Item Name: Dhar Mould
+            Height: 35.0
+            Width: 29.0
+            Cut From Height: 0.0
+            Cut From Width: 0.0
+            Quantity: 1.0
+            SQFT: 5.5
+            Rate: 10.0
+            Amount: 55.0
+            Status: Draft
+          row:
+            custom_left: 1
+            custom_top: 1
+    expect:
+      source: sales_order_item_csv
+      fields:
+        qty: SQFT
+  - name: mouldg_factor_three
+    description: MouldG rounds to three inches; two height sides reproduce the selected source row.
+    kind: mould
+    script_key: mould_script
+    event: custom_quantity
+    given:
+      rows:
+        - case: mouldg_two_height_sides
+          source_row:
+            Sales Order: SAL-ORD-2026-00561
+            Order Date: 30-05-2026
+            Customer Name: Vikash Tiles
+            Item Name: Dhar MouldG
+            Height: 70.0
+            Width: 3.0
+            Cut From Height: 0.0
+            Cut From Width: 0.0
+            Quantity: 1.0
+            SQFT: 12.0
+            Rate: 10.0
+            Amount: 120.0
+            Status: To Deliver and Bill
+          row:
+            custom_top: 1
+            custom_bottom: 1
+    expect:
+      source: sales_order_item_csv
+      fields:
+        qty: SQFT
+  - name: job_work_all_sides
+    description: Job work uses factor three and the dialog's all-sides default.
+    kind: mould
+    script_key: mould_script
+    event: custom_quantity
+    given:
+      rows:
+        - case: tiles_job_work
+          source_row:
+            Sales Order: SAL-ORD-2026-00612
+            Order Date: 26-05-2026
+            Customer Name: Ramesh D D Tiles
+            Item Name: Tiles Job Work
+            Height: 31.2
+            Width: 17.5
+            Cut From Height: 0.0
+            Cut From Width: 0.0
+            Quantity: 1.0
+            SQFT: 8.5
+            Rate: 15.0
+            Amount: 127.5
+            Status: To Deliver and Bill
+          row:
+            custom_left: 1
+            custom_right: 1
+            custom_top: 1
+            custom_bottom: 1
+    expect:
+      source: sales_order_item_csv
+      fields:
+        qty: SQFT
