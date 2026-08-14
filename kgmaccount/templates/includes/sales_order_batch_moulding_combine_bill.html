@@ -1,0 +1,157 @@
+{% set bill = bill_doc %}
+<div class="kgm-bill">
+    <div class="kgm-order-strip">
+        <div>
+            <span class="kgm-muted-label">Order No:</span>
+            <strong>{{ bill.name[-3:] }}</strong>
+        </div>
+        <div>
+            <span class="kgm-muted-label">Date:</span>
+            {{ bill.get_formatted("transaction_date") }}
+        </div>
+    </div>
+
+    <table class="table-main">
+        <thead>
+            <tr>
+                <th style="width: 18px;">SR</th>
+                <th>Item & Services</th>
+                <th style="width: 50px;">Size</th>
+                <th style="text-align: center; width: 40px;">Edges</th>
+                <th style="width: 22px;">Qty</th>
+                <th style="width: 65px;">Measurement</th>
+                <th style="width: 50px;">Rate (Rs.)</th>
+                <th style="text-align: right; width: 60px;">Amount (Rs.)</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% set sr_counter = namespace(val=1) %}
+            {% set skipped_items = namespace(list=[]) %}
+            {% set combined_mould_rates = namespace(list=[]) %}
+
+            {% for item in bill.items %}
+                {% if item.name not in skipped_items.list %}
+                    {% set item_is_moulding = 'mould' in ((item.item_code or '')|lower) %}
+                    {% if not item_is_moulding %}
+                    {% set edge = namespace(top=False, bottom=False, left=False, right=False, stop=False, letters=[]) %}
+                    {% for sub in bill.items %}
+                        {% if sub.idx > item.idx and not edge.stop %}
+                            {% set sub_code = sub.item_code or '' %}
+                            {% set sub_is_moulding = 'mould' in (sub_code|lower) %}
+                            {% if sub_is_moulding and (sub.custom_width|int) == (item.custom_width|int) and (sub.custom_height|int) == (item.custom_height|int) %}
+                                {% set _ = skipped_items.list.append(sub.name) %}
+                                {% set mould_rate = sub.rate or 0 %}
+                                {% if mould_rate not in combined_mould_rates.list %}
+                                    {% set _ = combined_mould_rates.list.append(mould_rate) %}
+                                {% endif %}
+                                {% if sub_code %}{% set _ = edge.letters.append(sub_code[0]|upper) %}{% endif %}
+                                {% if sub.custom_top %}{% set edge.top = True %}{% endif %}
+                                {% if sub.custom_bottom %}{% set edge.bottom = True %}{% endif %}
+                                {% if sub.custom_left %}{% set edge.left = True %}{% endif %}
+                                {% if sub.custom_right %}{% set edge.right = True %}{% endif %}
+                            {% else %}
+                                {% set edge.stop = True %}
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+
+                    <tr class="stone-row">
+                        <td>{{ sr_counter.val }}</td>
+                        <td class="service-cell">{{ item.item_name }}</td>
+                        <td style="white-space: nowrap;">{{ item.custom_width|int }} &times; {{ item.custom_height|int }}</td>
+                        <td style="text-align: center;">
+                            {% if edge.top or edge.bottom or edge.left or edge.right or item.custom_top or item.custom_bottom or item.custom_left or item.custom_right %}
+                            <div class="edge-wrap">
+                                <div class="edge-box" style="
+                                    {% if item.custom_top or edge.top %} border-top: 2pt solid #000; {% endif %}
+                                    {% if item.custom_bottom or edge.bottom %} border-bottom: 2pt solid #000; {% endif %}
+                                    {% if item.custom_left or edge.left %} border-left: 2pt solid #000; {% endif %}
+                                    {% if item.custom_right or edge.right %} border-right: 2pt solid #000; {% endif %}
+                                "></div>
+                                {% if edge.letters %}<span class="edge-code-letter">{{ edge.letters|join('') }}</span>{% endif %}
+                            </div>
+                            {% endif %}
+                        </td>
+                        <td>{{ item.custom_quantity|int }}</td>
+                        <td>{{ "%.3f"|format(item.qty) }} <small>{{ item.uom }}</small></td>
+                        <td>{{ "%.2f"|format(item.rate) }}</td>
+                        <td style="text-align: right;">{{ "%.2f"|format(item.amount) }}</td>
+                    </tr>
+                    {% set sr_counter.val = sr_counter.val + 1 %}
+                    {% else %}
+                    <tr class="moulding-row">
+                        <td>{{ sr_counter.val }}</td>
+                        <td class="indent-content service-cell"><span class="mould-symbol">&#8627;</span>{{ item.item_name }}</td>
+                        <td style="font-size: 6.5pt; color: #888; white-space: nowrap;">{{ item.custom_width|int }} &times; {{ item.custom_height|int }}</td>
+                        <td>
+                            <div class="edge-box" style="
+                                {% if item.custom_top %} border-top: 2pt solid #000; {% endif %}
+                                {% if item.custom_bottom %} border-bottom: 2pt solid #000; {% endif %}
+                                {% if item.custom_left %} border-left: 2pt solid #000; {% endif %}
+                                {% if item.custom_right %} border-right: 2pt solid #000; {% endif %}
+                            "></div>
+                        </td>
+                        <td>{{ item.custom_quantity|int }}</td>
+                        <td>{{ "%.3f"|format(item.qty) }} <small>{{ item.uom }}</small></td>
+                        <td>{{ "%.2f"|format(item.rate) }}</td>
+                        <td style="text-align: right;">{{ "%.2f"|format(item.amount) }}</td>
+                    </tr>
+                    {% set sr_counter.val = sr_counter.val + 1 %}
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+
+            {% for mould_rate in combined_mould_rates.list %}
+                {% set combined_mould = namespace(amount=0, measurement=0, quantity=0, uom='', mixed_uom=False) %}
+                {% for mould_item in bill.items %}
+                    {% set mould_item_is_moulding = 'mould' in ((mould_item.item_code or '')|lower) %}
+                    {% if mould_item_is_moulding and mould_item.name in skipped_items.list and (mould_item.rate or 0) == mould_rate %}
+                        {% set combined_mould.amount = combined_mould.amount + (mould_item.amount or 0) %}
+                        {% set combined_mould.measurement = combined_mould.measurement + (mould_item.qty or 0) %}
+                        {% set combined_mould.quantity = combined_mould.quantity + (mould_item.custom_quantity or 0) %}
+                        {% if not combined_mould.uom %}
+                            {% set combined_mould.uom = mould_item.uom %}
+                        {% elif combined_mould.uom != mould_item.uom %}
+                            {% set combined_mould.mixed_uom = True %}
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+                <tr class="mould-total-row">
+                    <td>{{ sr_counter.val }}</td>
+                    <td class="service-cell">Combined Moulding</td>
+                    <td style="font-size: 6.5pt;">Mixed</td>
+                    <td></td>
+                    <td>{{ combined_mould.quantity|int }}</td>
+                    <td>
+                        {{ "%.3f"|format(combined_mould.measurement) }}
+                        <small>{{ "Mixed" if combined_mould.mixed_uom else combined_mould.uom }}</small>
+                    </td>
+                    <td>{{ "%.2f"|format(mould_rate) }}</td>
+                    <td style="text-align: right;">{{ "%.2f"|format(combined_mould.amount) }}</td>
+                </tr>
+                {% set sr_counter.val = sr_counter.val + 1 %}
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="summary-box">
+        <table class="summary-table" align="right">
+            <tr>
+                <td style="font-weight: bold; width: 60%;">Net Total</td>
+                <td style="text-align: right; font-weight: bold; width: 40%;">{{ "%.2f"|format(bill.total) }}</td>
+            </tr>
+            {% for tax in bill.taxes %}
+                {% if tax.tax_amount %}
+                <tr>
+                    <td style="color: #666;">{{ tax.description }}</td>
+                    <td style="text-align: right;">{{ "%.2f"|format(tax.tax_amount) }}</td>
+                </tr>
+                {% endif %}
+            {% endfor %}
+            <tr>
+                <td class="grand-total-label">GRAND TOTAL</td>
+                <td class="grand-total-value">{{ "%.2f"|format(bill.grand_total) }}</td>
+            </tr>
+        </table>
+    </div>
+</div>

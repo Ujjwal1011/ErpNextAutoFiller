@@ -81,6 +81,5 @@ class TestBillPrintFormats(unittest.TestCase):
                 self.assertIn("GST", rendered)
                 self.assertIn("Eight Hundred Seventy Four only", rendered)
 
-
 if __name__ == "__main__":
     unittest.main()
