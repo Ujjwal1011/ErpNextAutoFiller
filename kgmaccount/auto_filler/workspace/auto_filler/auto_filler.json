@@ -1,6 +1,6 @@
 {
  "charts": [],
- "content": "[{\"id\":\"auto_filler_header\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Auto Filler</b></span>\",\"col\":12}},{\"id\":\"sales_order_fast_entry_shortcut\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Sales Order Fast Entry\",\"col\":3}},{\"id\":\"sales_order_shortcut\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Sales Order\",\"col\":3}},{\"id\":\"quotation_shortcut\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Quotation\",\"col\":3}},{\"id\":\"sales_invoice_shortcut\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Sales Invoice\",\"col\":3}}]",
+ "content": "[{\"id\":\"auto_filler_header\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Auto Filler</b></span>\",\"col\":12}},{\"id\":\"sales_order_fast_entry_shortcut\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Sales Order Fast Entry\",\"col\":3}},{\"id\":\"sales_order_shortcut\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Sales Order\",\"col\":3}},{\"id\":\"quotation_shortcut\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Quotation\",\"col\":3}},{\"id\":\"sales_invoice_shortcut\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Sales Invoice\",\"col\":3}},{\"id\":\"cash_receipt_fast_entry_shortcut\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Cash Receipt Fast Entry\",\"col\":3}},{\"id\":\"payment_fast_entry_shortcut\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Payment Fast Entry\",\"col\":3}},{\"id\":\"ledger_book_shortcut\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Ledger Book\",\"col\":3}}]",
  "creation": "2026-06-26 00:00:00.000000",
  "custom_blocks": [],
  "docstatus": 0,
@@ -63,9 +63,50 @@
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Accounting",
+   "link_count": 0,
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Cash Receipt Fast Entry",
+   "link_count": 0,
+   "link_to": "cash-receipt-fast-entry",
+   "link_type": "Page",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Payment Fast Entry",
+   "link_count": 0,
+   "link_to": "payment-fast-entry",
+   "link_type": "Page",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Ledger Book",
+   "link_count": 0,
+   "link_to": "ledger-book",
+   "link_type": "Page",
+   "onboard": 0,
+   "type": "Link"
   }
  ],
- "modified": "2026-06-26 00:00:00.000000",
+ "modified": "2026-09-24 22:00:00.000000",
  "modified_by": "Administrator",
  "module": "Auto Filler",
  "name": "Auto Filler",
@@ -100,6 +141,21 @@
    "label": "Sales Invoice",
    "link_to": "Sales Invoice",
    "type": "DocType"
+  },
+  {
+   "label": "Cash Receipt Fast Entry",
+   "link_to": "cash-receipt-fast-entry",
+   "type": "Page"
+  },
+  {
+   "label": "Payment Fast Entry",
+   "link_to": "payment-fast-entry",
+   "type": "Page"
+  },
+  {
+   "label": "Ledger Book",
+   "link_to": "ledger-book",
+   "type": "Page"
   }
  ],
  "title": "Auto Filler"

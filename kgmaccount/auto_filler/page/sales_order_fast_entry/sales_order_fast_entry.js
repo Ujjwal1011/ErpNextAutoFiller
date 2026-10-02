@@ -11,6 +11,7 @@ frappe.pages["sales-order-fast-entry"].on_page_load = function(wrapper) {
 		taxes: [],
 		workItems: [],
 		lastGeneratedItemCode: "",
+		itemDetailsRequest: 0,
 		lastOperationItemCode: "",
 		lastSalesOrder: null,
 		livePreviewTimer: null,
@@ -25,39 +26,64 @@ frappe.pages["sales-order-fast-entry"].on_page_load = function(wrapper) {
 	const $main = $(wrapper).find(".layout-main-section");
 	$main.html(`
 		<style>
-			.kgm-fast-shell { min-height: calc(100vh - 150px); background: #f6f8fb; border: 1px solid #dde4ec; border-radius: 8px; overflow: hidden; }
-			.kgm-fast-band { background: #ffffff; border-bottom: 1px solid #dde4ec; padding: 14px; }
+			#page-sales-order-fast-entry .layout-main-section { padding: 0; }
+			#page-sales-order-fast-entry .layout-main { margin: 0; }
+			.kgm-fast-shell { display: flex; flex-direction: column; min-height: calc(100vh - 150px); background: #ffffff; border: 1px solid #d8e1e8; border-radius: 8px; overflow: hidden; color: #24323d; }
+			.kgm-fast-band { background: #ffffff; border-bottom: 1px solid #d5e9df; padding: 10px 12px; }
+			.kgm-fast-band:first-child { background: #f3faf7; }
 			.kgm-fast-header { display: grid; grid-template-columns: minmax(220px, 1.35fr) repeat(4, minmax(120px, 0.75fr)); gap: 12px; align-items: end; }
 			.kgm-entry-band { overflow: visible; }
 			.kgm-entry-grid { display: grid; grid-template-columns: 110px minmax(220px, 1fr) repeat(4, minmax(88px, 130px)); gap: 10px; align-items: end; }
 			.kgm-entry-grid.second { grid-template-columns: 118px minmax(300px, 1.15fr) minmax(90px, 105px) minmax(120px, 140px) minmax(240px, 1fr) minmax(100px, 120px) minmax(120px, 150px); margin-top: 10px; }
 			.kgm-field { min-width: 0; }
-			.kgm-field label { display: block; margin: 0 0 5px; color: #52616f; font-size: 11px; font-weight: 700; text-transform: uppercase; }
-			.kgm-field input, .kgm-field select { width: 100%; height: 34px; border: 1px solid #cbd5e1; border-radius: 6px; padding: 5px 8px; background: #fff; color: #1f2933; }
-			.kgm-generated { min-height: 34px; display: flex; align-items: center; gap: 8px; padding: 5px 9px; border: 1px solid #cbd5e1; border-radius: 6px; background: #f8fafc; font-weight: 700; color: #1f2933; overflow: hidden; }
+			.kgm-field label { display: block; margin: 0 0 4px; color: #405751; font-size: 11px; font-weight: 700; }
+			.kgm-field input, .kgm-field select { width: 100%; height: 32px; border: 1px solid #bdcbd5; border-radius: 4px; padding: 4px 7px; background: #fff; color: #24323d; }
+			.kgm-fast-shell .frappe-control { margin-bottom: 0; }
+			.kgm-fast-shell .control-label { margin-bottom: 4px; color: #405751; font-size: 11px; font-weight: 700; }
+			.kgm-fast-shell .form-control { min-height: 32px; height: 32px; border-color: #bdcbd5; border-radius: 4px; background: #fff; color: #24323d; }
+			.kgm-fast-shell input:focus, .kgm-fast-shell select:focus, .kgm-fast-shell .form-control:focus { border-color: #55a97d; box-shadow: 0 0 0 2px rgba(34, 139, 89, 0.12); }
+			.kgm-generated { min-height: 32px; display: flex; align-items: center; gap: 8px; padding: 4px 8px; border: 1px solid #bdcbd5; border-radius: 4px; background: #f8fbfa; font-weight: 700; color: #24323d; overflow: hidden; }
 			.kgm-generated span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 			.kgm-generated.missing { border-color: #f59e0b; background: #fff7ed; color: #92400e; }
 			.kgm-segment, .kgm-sides { display: flex; flex-wrap: nowrap; gap: 6px; max-width: 100%; overflow-x: auto; }
-			.kgm-segment button, .kgm-sides button, .kgm-action { min-height: 32px; border: 1px solid #cbd5e1; border-radius: 6px; background: #ffffff; color: #334155; padding: 5px 9px; font-size: 12px; font-weight: 700; }
-			.kgm-segment button, .kgm-sides button, .kgm-entry-buttons button { flex: 0 0 auto; white-space: nowrap; }
-			.kgm-segment button.active, .kgm-sides button.active { background: #0f766e; border-color: #0f766e; color: #ffffff; }
-			.kgm-action.primary { background: #0f766e; border-color: #0f766e; color: #ffffff; }
-			.kgm-action.danger { color: #991b1b; border-color: #fecaca; background: #fffafa; }
-			.kgm-entry-buttons, .kgm-row-actions { display: flex; gap: 6px; align-items: center; flex-wrap: nowrap; }
+			.kgm-segment button, .kgm-sides button, .kgm-action { min-height: 34px; border: 1px solid #c5d4ce; border-radius: 7px; background: #ffffff; color: #285044; padding: 6px 10px; font-size: 12px; font-weight: 650; line-height: 1.25; cursor: pointer; transition: background-color 120ms ease, border-color 120ms ease, box-shadow 120ms ease; }
+			.kgm-segment button, .kgm-sides button { flex: 0 0 auto; white-space: nowrap; }
+			.kgm-action { display: inline-flex; align-items: center; justify-content: center; gap: 8px; white-space: nowrap; }
+			.kgm-action kbd { display: inline-block; border: 1px solid #c5d4ce; border-radius: 4px; background: #f4f8f6; color: #456257; padding: 2px 5px; font-family: inherit; font-size: 10px; font-weight: 600; line-height: 1.2; white-space: nowrap; }
+			.kgm-action.primary kbd { border-color: rgba(255,255,255,.35); background: rgba(255,255,255,.14); color: #ffffff; }
+			.kgm-shortcuts { display: inline-flex; align-items: center; gap: 4px; }
+			.kgm-shortcuts > span { font-size: 10px; opacity: .8; }
+			.kgm-segment button:hover, .kgm-sides button:hover, .kgm-action:not(.primary):hover { background: #edf7f2; border-color: #69aa88; }
+			.kgm-segment button.active, .kgm-sides button.active { background: #18765a; border-color: #18765a; color: #ffffff; }
+			.kgm-action.primary { background: #18765a; border-color: #18765a; color: #ffffff; box-shadow: 0 2px 5px rgba(24,118,90,.16); }
+			.kgm-action.primary:hover { background: #125f48; border-color: #125f48; box-shadow: 0 3px 8px rgba(24,118,90,.22); }
+			.kgm-action.danger { color: #a43232; border-color: #edc7c7; background: #fffafa; }
+			.kgm-action.danger:hover { color: #8e2222; border-color: #dfaaaa; background: #fff0f0; }
+			.kgm-segment button:focus-visible, .kgm-sides button:focus-visible, .kgm-action:focus-visible { outline: 2px solid #18765a; outline-offset: 2px; }
+			.kgm-action:disabled { opacity: .55; cursor: not-allowed; box-shadow: none; }
+			.kgm-entry-buttons, .kgm-row-actions { display: flex; gap: 6px; align-items: center; }
+			.kgm-entry-buttons { width: 100%; flex-wrap: wrap; }
+			#kgm-add-entry { width: 100%; min-height: 48px; flex-direction: column; gap: 3px; padding: 5px 7px; }
+			#kgm-cancel-edit { width: 100%; }
+			.kgm-row-actions { flex-wrap: nowrap; }
+			.kgm-row-actions .kgm-action { min-height: 30px; padding: 5px 8px; font-size: 11px; }
 			.kgm-actions { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
-			.kgm-preview-wrap { overflow-x: auto; background: #ffffff; }
+			.kgm-footer-buttons { display: flex; align-items: center; gap: 8px; }
+			.kgm-footer-buttons .kgm-action { min-height: 38px; padding: 8px 12px; }
+			.kgm-preview-wrap { flex: 1 0 auto; overflow: auto; background: #ffffff; }
 			.kgm-preview { width: 100%; min-width: 980px; border-collapse: collapse; table-layout: fixed; }
-			.kgm-preview th, .kgm-preview td { border-bottom: 1px solid #edf2f7; padding: 8px 9px; vertical-align: middle; color: #1f2933; font-size: 12px; }
-			.kgm-preview th { color: #52616f; background: #f8fafc; font-weight: 800; text-transform: uppercase; font-size: 11px; }
+			.kgm-preview th, .kgm-preview td { border-bottom: 1px solid #e8edf0; padding: 6px 8px; vertical-align: middle; color: #24323d; font-size: 11px; }
+			.kgm-preview th { position: sticky; top: 0; z-index: 2; color: #405751; background: #edf5f2; border-bottom-color: #b9c9c3; font-weight: 800; font-size: 10px; }
 			.kgm-preview .stone-row td { font-weight: 700; }
-			.kgm-preview .work-row td { background: #fbfcfe; color: #334155; }
-			.kgm-preview .editing-row td { background: #ecfeff; }
+			.kgm-preview .work-row td { background: #f8fbfa; color: #405751; }
+			.kgm-preview .editing-row td { background: #fff2bf; }
 			.kgm-muted { color: #64748b; font-size: 12px; }
-			.kgm-totals { display: flex; gap: 18px; flex-wrap: wrap; color: #334155; font-weight: 800; }
+			.kgm-totals { display: flex; gap: 18px; flex-wrap: wrap; color: #173d30; font-weight: 800; }
 			.kgm-tax-grid { display: grid; grid-template-columns: minmax(220px, 1fr) minmax(130px, 0.45fr) minmax(120px, 0.4fr) minmax(120px, 0.4fr) minmax(120px, 0.4fr); gap: 10px; align-items: end; }
 			.kgm-tax-list { margin-top: 10px; display: flex; gap: 8px; flex-wrap: wrap; }
-			.kgm-tax-pill { display: inline-flex; align-items: center; gap: 8px; border: 1px solid #d9e2ec; border-radius: 6px; background: #f8fafc; padding: 6px 8px; color: #334155; font-size: 12px; }
+			.kgm-tax-pill { display: inline-flex; align-items: center; gap: 8px; border: 1px solid #d5e9df; border-radius: 4px; background: #f3faf7; padding: 5px 8px; color: #405751; font-size: 11px; }
 			.kgm-tax-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+			.kgm-actions { position: sticky; bottom: 0; z-index: 4; background: #f3faf7; border-top: 1px solid #d5e9df; padding-top: 12px; padding-bottom: 12px; }
 			.kgm-hidden { display: none !important; }
 			@media (max-width: 1100px) {
 				.kgm-fast-header, .kgm-entry-grid, .kgm-entry-grid.second, .kgm-tax-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -65,6 +91,9 @@ frappe.pages["sales-order-fast-entry"].on_page_load = function(wrapper) {
 			@media (max-width: 620px) {
 				.kgm-fast-header, .kgm-entry-grid, .kgm-entry-grid.second, .kgm-tax-grid { grid-template-columns: 1fr; }
 				.kgm-fast-band { padding: 10px; }
+				.kgm-actions { align-items: stretch; }
+				.kgm-footer-buttons { width: 100%; }
+				#kgm-save { flex: 1; }
 			}
 		</style>
 		<div class="kgm-fast-shell">
@@ -162,7 +191,10 @@ frappe.pages["sales-order-fast-entry"].on_page_load = function(wrapper) {
 					<div class="kgm-field">
 						<label>&nbsp;</label>
 						<div class="kgm-entry-buttons">
-							<button class="kgm-action primary" id="kgm-add-entry" type="button">${__("Add Entry")}</button>
+							<button class="kgm-action primary" id="kgm-add-entry" type="button" title="${__("Enter in a number field or Ctrl+Enter anywhere on this page")}">
+								<span class="kgm-action-label">${__("Add Entry")}</span>
+								<span class="kgm-shortcuts"><kbd>Enter</kbd><span>/</span><kbd>Ctrl+Enter</kbd></span>
+							</button>
 							<button class="kgm-action kgm-hidden" id="kgm-cancel-edit" type="button">${__("Cancel")}</button>
 						</div>
 					</div>
@@ -223,9 +255,9 @@ frappe.pages["sales-order-fast-entry"].on_page_load = function(wrapper) {
 			</div>
 			<div class="kgm-fast-band kgm-actions">
 				<div class="kgm-totals" id="kgm-totals"></div>
-				<div>
+				<div class="kgm-footer-buttons">
 					<button class="kgm-action" id="kgm-clear" type="button">${__("Clear")}</button>
-					<button class="kgm-action primary" id="kgm-save" type="button">${__("Save Draft")}</button>
+					<button class="kgm-action primary" id="kgm-save" type="button"><span>${__("Save Draft")}</span><kbd>Ctrl+S</kbd></button>
 				</div>
 			</div>
 		</div>
@@ -400,6 +432,21 @@ frappe.pages["sales-order-fast-entry"].on_page_load = function(wrapper) {
 			event.preventDefault();
 			addEntry();
 		});
+		const pageConfig = frappe.pages["sales-order-fast-entry"];
+		if (pageConfig.saveShortcut) {
+			document.removeEventListener("keydown", pageConfig.saveShortcut, true);
+		}
+		pageConfig.saveShortcut = function(event) {
+			if (
+				frappe.get_route()[0] !== "sales-order-fast-entry" ||
+				!(event.ctrlKey || event.metaKey) || event.altKey || event.shiftKey ||
+				event.key.toLowerCase() !== "s"
+			) return;
+			event.preventDefault();
+			event.stopPropagation();
+			saveDraft();
+		};
+		document.addEventListener("keydown", pageConfig.saveShortcut, true);
 	}
 
 	function loadWorkItems() {
@@ -470,6 +517,38 @@ frappe.pages["sales-order-fast-entry"].on_page_load = function(wrapper) {
 	function getPositiveFloat(selector, fallback) {
 		const value = parseFloat($main.find(selector).val());
 		return value > 0 ? value : (fallback || 0);
+	}
+
+	function getManualBillRate(itemCode, work = false) {
+		if ($main.find("#kgm-template").val() !== "MANUAL" || !itemCode) return null;
+		for (let index = state.entries.length - 1; index >= 0; index--) {
+			if (index === state.editingIndex) continue;
+			const entry = state.entries[index].input;
+			if (entry.form_state?.template !== "MANUAL") continue;
+			const row = work ? (entry.operations || [])[0] : entry.stone;
+			if (row?.item_code === itemCode && Number(row.rate) > 0) return Number(row.rate);
+		}
+		return null;
+	}
+
+	function syncManualBillRates(changedEntry) {
+		if (changedEntry.input.form_state?.template !== "MANUAL") return;
+		const stone = changedEntry.input.stone;
+		const work = (changedEntry.input.operations || [])[0];
+		for (const entry of state.entries) {
+			if (entry.input.form_state?.template !== "MANUAL") continue;
+			if (stone.rate > 0 && entry.input.stone.item_code === stone.item_code) {
+				entry.input.stone.rate = stone.rate;
+				entry.rows[0].rate = stone.rate;
+				entry.rows[0].amount = Math.round((Number(entry.rows[0].qty) || 0) * stone.rate * 100) / 100;
+			}
+			const entryWork = (entry.input.operations || [])[0];
+			if (work?.rate > 0 && entryWork?.item_code === work.item_code && entry.rows[1]) {
+				entryWork.rate = work.rate;
+				entry.rows[1].rate = work.rate;
+				entry.rows[1].amount = Math.round((Number(entry.rows[1].qty) || 0) * work.rate * 100) / 100;
+			}
+		}
 	}
 
 	function formatNumber(value) {
@@ -608,17 +687,24 @@ frappe.pages["sales-order-fast-entry"].on_page_load = function(wrapper) {
 
 		if (itemCode && itemCode !== state.lastGeneratedItemCode) {
 			state.lastGeneratedItemCode = itemCode;
-			$main.find("#kgm-rate").val("");
+			const requestId = ++state.itemDetailsRequest;
+			const billRate = getManualBillRate(itemCode);
+			$main.find("#kgm-rate").val(billRate === null ? "" : formatNumber(billRate));
 			frappe.call({
 				method: methodRoot + "get_item_details",
 				args: { item_code: itemCode },
 				callback: function(r) {
+					if (requestId !== state.itemDetailsRequest) return;
 					const details = r.message || {};
+					if (getStoneSelection().item_code !== itemCode) return;
 					if (details.exists === false) {
 						$generated.addClass("missing");
 						return;
 					}
-					$main.find("#kgm-rate").val(details.rate || "");
+					if (getStoneSelection().item_code === itemCode && !$main.find("#kgm-rate").val()) {
+						const currentBillRate = getManualBillRate(itemCode);
+						$main.find("#kgm-rate").val(currentBillRate === null ? (details.rate || "") : formatNumber(currentBillRate));
+					}
 				},
 			});
 		}
@@ -632,7 +718,9 @@ frappe.pages["sales-order-fast-entry"].on_page_load = function(wrapper) {
 	function refreshLivePreview() {
 		const stone = getStoneSelection();
 		const $summary = $main.find("#kgm-live-summary");
-		if (!stone.item_code || !stone.custom_height || !stone.custom_width || !stone.custom_quantity) {
+		const manualItem = $main.find("#kgm-template").val() === "MANUAL";
+		const hasManualSqft = state.sqftManual && getPositiveFloat("#kgm-sqft") > 0;
+		if (!stone.item_code || !stone.custom_quantity || ((!stone.custom_height || !stone.custom_width) && !(manualItem && hasManualSqft))) {
 			$summary.text("");
 			return;
 		}
@@ -748,9 +836,15 @@ frappe.pages["sales-order-fast-entry"].on_page_load = function(wrapper) {
 
 	function refreshOperationRate() {
 		const itemCode = $main.find("#kgm-operation").val();
-		if (!itemCode || itemCode === state.lastOperationItemCode) return;
+		if (!itemCode) {
+			state.lastOperationItemCode = "";
+			return;
+		}
+		if (itemCode === state.lastOperationItemCode) return;
 		state.lastOperationItemCode = itemCode;
-		$main.find("#kgm-operation-rate").val("");
+		const billRate = getManualBillRate(itemCode, true);
+		$main.find("#kgm-operation-rate").val(billRate === null ? "" : formatNumber(billRate));
+		if (billRate !== null) return;
 		const optionRate = parseFloat($main.find("#kgm-operation option:selected").data("rate")) || 0;
 		if (optionRate) {
 			$main.find("#kgm-operation-rate").val(optionRate);
@@ -762,7 +856,10 @@ frappe.pages["sales-order-fast-entry"].on_page_load = function(wrapper) {
 			callback: function(r) {
 				const details = r.message || {};
 				if (details.exists === false) return;
-				$main.find("#kgm-operation-rate").val(details.rate || "");
+				if ($main.find("#kgm-operation").val() === itemCode && !$main.find("#kgm-operation-rate").val()) {
+					const currentBillRate = getManualBillRate(itemCode, true);
+					$main.find("#kgm-operation-rate").val(currentBillRate === null ? (details.rate || "") : formatNumber(currentBillRate));
+				}
 			},
 		});
 	}
@@ -780,6 +877,7 @@ frappe.pages["sales-order-fast-entry"].on_page_load = function(wrapper) {
 
 	function buildEntryPayload() {
 		const stone = getStoneSelection();
+		const manualItem = $main.find("#kgm-template").val() === "MANUAL";
 		if (state.sqftManual) {
 			stone.qty = getPositiveFloat("#kgm-sqft");
 			stone.manual_qty = 1;
@@ -789,8 +887,8 @@ frappe.pages["sales-order-fast-entry"].on_page_load = function(wrapper) {
 			frappe.msgprint(__("Select an item."));
 			return null;
 		}
-		if (!stone.custom_height || !stone.custom_width || !stone.custom_quantity) {
-			frappe.msgprint(__("Height, width, and pcs are required."));
+		if (!stone.custom_quantity || ((!stone.custom_height || !stone.custom_width) && !(manualItem && state.sqftManual && stone.qty > 0))) {
+			frappe.msgprint(manualItem ? __("Enter pcs and Sqft when height or width is blank.") : __("Height, width, and pcs are required."));
 			return null;
 		}
 		if (isJobWorkItem(stone.item_code)) {
@@ -836,11 +934,13 @@ frappe.pages["sales-order-fast-entry"].on_page_load = function(wrapper) {
 			args: { entry },
 			callback: function(r) {
 				const rows = (r.message && r.message.rows) || [];
+				const savedEntry = { input: entry, rows };
 				if (Number.isInteger(state.editingIndex) && state.entries[state.editingIndex]) {
-					state.entries[state.editingIndex] = { input: entry, rows };
+					state.entries[state.editingIndex] = savedEntry;
 				} else {
-					state.entries.push({ input: entry, rows });
+					state.entries.push(savedEntry);
 				}
+				syncManualBillRates(savedEntry);
 				renderPreview();
 				state.editingIndex = null;
 				resetEntryInputs({ focusItem: false });
@@ -858,7 +958,7 @@ frappe.pages["sales-order-fast-entry"].on_page_load = function(wrapper) {
 
 	function updateEntryMode() {
 		const isEditing = Number.isInteger(state.editingIndex) && state.entries[state.editingIndex];
-		$main.find("#kgm-add-entry").text(isEditing ? __("Update Entry") : __("Add Entry"));
+		$main.find("#kgm-add-entry .kgm-action-label").text(isEditing ? __("Update Entry") : __("Add Entry"));
 		$main.find("#kgm-cancel-edit").toggleClass("kgm-hidden", !isEditing);
 	}
 
@@ -882,18 +982,27 @@ frappe.pages["sales-order-fast-entry"].on_page_load = function(wrapper) {
 		}, 80);
 	}
 
-	function resetEntryInputs({ focusItem = true } = {}) {
+	function resetEntryInputs({ focusItem = true, resetItem = false } = {}) {
+		if (resetItem) {
+			$main.find("#kgm-template").val("KOTA");
+			controls.manual_item.set_value("");
+		}
 		$main.find("#kgm-height").val("");
 		$main.find("#kgm-width").val("");
 		$main.find("#kgm-quantity").val("1");
 		$main.find("#kgm-sqft").val("");
 		$main.find("#kgm-rate").val("");
+		$main.find("#kgm-finish").val("");
 		$main.find("#kgm-operation").val("");
 		$main.find("#kgm-operation-rate").val("");
 		$main.find("#kgm-attrs button, #kgm-sides button").removeClass("active");
-		state.lastGeneratedItemCode = "";
+		state.itemDetailsRequest += 1;
+		state.lastGeneratedItemCode = getStoneSelection().item_code || "";
 		state.lastOperationItemCode = "";
 		state.sqftManual = false;
+		clearTimeout(state.livePreviewTimer);
+		state.livePreviewRequest += 1;
+		$main.find("#kgm-live-summary").text("");
 		refreshGeneratedItem();
 		updateOperationControls({ focusAddEntry: false });
 		updateEntryMode();
@@ -929,11 +1038,11 @@ frappe.pages["sales-order-fast-entry"].on_page_load = function(wrapper) {
 		$main.find("#kgm-quantity").val(formatNumber(stone.custom_quantity || 1));
 		$main.find("#kgm-sqft").val(stone.qty ? formatNumber(stone.qty) : "");
 		state.sqftManual = Boolean(stone.manual_qty);
-		$main.find("#kgm-rate").val(stone.rate ? formatNumber(stone.rate) : "");
 		$main.find("#kgm-finish").val(formState.finish || "");
 		setActiveAttrs(formState.attrs || []);
 		state.lastGeneratedItemCode = "";
 		refreshGeneratedItem();
+		$main.find("#kgm-rate").val(stone.rate ? formatNumber(stone.rate) : "");
 
 		$main.find("#kgm-operation").val(operation.item_code || "");
 		$main.find("#kgm-operation-rate").val(operation.rate ? formatNumber(operation.rate) : "");
@@ -1102,6 +1211,7 @@ frappe.pages["sales-order-fast-entry"].on_page_load = function(wrapper) {
 		}
 
 		const $button = $main.find("#kgm-save");
+		if ($button.prop("disabled")) return;
 		$button.prop("disabled", true);
 		frappe.call({
 			method: methodRoot + "save_sales_order",
@@ -1114,9 +1224,25 @@ frappe.pages["sales-order-fast-entry"].on_page_load = function(wrapper) {
 			freeze_message: __("Saving Sales Order"),
 			callback: function(r) {
 				const result = r.message || {};
+				if (!result.name) return;
 				state.lastSalesOrder = result.name;
 				frappe.show_alert({ message: __("Saved {0}", [result.name]), indicator: "green" });
-				frappe.set_route("Form", "Sales Order", result.name);
+				state.entries = [];
+				state.taxes = [];
+				state.editingIndex = null;
+				controls.customer.set_value("");
+				controls.cash_customer.set_value("");
+				controls.phone.set_value("");
+				controls.tax_account.set_value("");
+				$main.find("#kgm-tax-charge-type").val("On Net Total");
+				$main.find("#kgm-tax-rate, #kgm-tax-amount").val("");
+				resetEntryInputs({ focusItem: false, resetItem: true });
+				updateTaxControls();
+				loadDefaults();
+				setTaxPanelOpen(false);
+				renderPreview();
+				renderTaxes();
+				controls.customer.set_focus();
 			},
 			always: function() {
 				$button.prop("disabled", false);

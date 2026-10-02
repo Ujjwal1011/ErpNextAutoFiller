@@ -1,0 +1,5 @@
+frappe.pages["payment-fast-entry"].on_page_load = function(wrapper) {
+	frappe.require("/assets/kgmaccount/js/accounting_fast_entry.js").then(() => window.kgmaccount.accountingFastEntry.make(wrapper, {
+		flow: "payment", route: "payment-fast-entry", title: "Payment Fast Entry", subtitle: "Pay a supplier, customer, expense, or asset such as Suspense Account, or move money between cash and bank accounts. Bank payments get an internal AUTO-PAY reference.", sourceLabel: "Paid From Cash / Bank", sourceTypes: ["Cash", "Bank"], counterpartLabel: "Paid To Account", debitLabel: "Debit · Paid to", creditLabel: "Credit · Cash / Bank", debitAccount: "counterpart", creditAccount: "source", partyType: "Supplier", partyLabel: "Supplier", partyAccountType: "Payable", invoiceDoctype: "Purchase Invoice", invoiceTitle: "Allocate to open Purchase Invoices", invoiceHelp: "The amount fills the latest supplier bill first, then earlier bills. You can adjust allocations.", autoAllocate: true, customerPayment: true,
+	}));
+};
