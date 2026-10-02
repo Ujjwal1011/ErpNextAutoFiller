@@ -1,0 +1,5 @@
+actual_cut_height,actual_cut_width,actual_sqft,csv_row,expected_cut_height,expected_cut_width,expected_sqft,height,item,quantity,sales_order,sqft_delta,width
+30.0,18.0,37.5,2,30.0,24.0,50.0,29.0,Kaddpa 30x24 LDR,10.0,SAL-ORD-2026-00680,-12.5,15.0
+48.0,24.0,96.0,9,48.0,30.0,72.0,43.5,KOTA 48x24,12.0,SAL-ORD-2026-00494,24.0,15.0
+30.0,15.0,25.0,21,0.0,0.0,40.0,29.0,DP,8.0,SAL-ORD-2026-00588,-15.0,15.0
+48.0,24.0,400.0,28,48.0,30.0,300.0,43.5,KOTA 48x30,50.0,SAL-ORD-2026-00343-1,100.0,15.0

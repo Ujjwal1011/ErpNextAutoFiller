@@ -1,0 +1,317 @@
+{
+  "failed_row_count": 31,
+  "failed_rows": [
+    {
+      "actual_sqft": 37.5,
+      "csv_row": 50,
+      "expected_sqft": 50.0,
+      "height": "29.0",
+      "item": "Kaddpa 30x24 LDR",
+      "quantity": "10.0",
+      "sales_order": "SAL-ORD-2026-00680",
+      "width": "15.0"
+    },
+    {
+      "actual_sqft": 114.0,
+      "csv_row": 99,
+      "expected_sqft": 106.72,
+      "height": "113.0",
+      "item": "R Black",
+      "quantity": "4.0",
+      "sales_order": "SAL-ORD-2026-00719",
+      "width": "34.0"
+    },
+    {
+      "actual_sqft": 17.25,
+      "csv_row": 100,
+      "expected_sqft": 16.05,
+      "height": "68.0",
+      "item": "R Black",
+      "quantity": "1.0",
+      "sales_order": "SAL-ORD-2026-00719",
+      "width": "34.0"
+    },
+    {
+      "actual_sqft": 214.5,
+      "csv_row": 157,
+      "expected_sqft": 189.0,
+      "height": "130.0",
+      "item": "J D Brown",
+      "quantity": "6.0",
+      "sales_order": "SAL-ORD-2026-00527",
+      "width": "38.0"
+    },
+    {
+      "actual_sqft": 6.0,
+      "csv_row": 273,
+      "expected_sqft": 9.0,
+      "height": "18.0",
+      "item": "KOTA 24x18",
+      "quantity": "3.0",
+      "sales_order": "SAL-ORD-2026-00505",
+      "width": "11.0"
+    },
+    {
+      "actual_sqft": 12.0,
+      "csv_row": 310,
+      "expected_sqft": 15.0,
+      "height": "35.0",
+      "item": "KOTA 36x30 MIR",
+      "quantity": "4.0",
+      "sales_order": "SAL-ORD-2026-00665",
+      "width": "10.0"
+    },
+    {
+      "actual_sqft": 12.0,
+      "csv_row": 312,
+      "expected_sqft": 15.0,
+      "height": "35.0",
+      "item": "DP",
+      "quantity": "4.0",
+      "sales_order": "SAL-ORD-2026-00665",
+      "width": "10.0"
+    },
+    {
+      "actual_sqft": 344.25,
+      "csv_row": 314,
+      "expected_sqft": 459.0,
+      "height": "16.0",
+      "item": "KOTA 24x18",
+      "quantity": "153.0",
+      "sales_order": "SAL-ORD-2026-00666",
+      "width": "16.0"
+    },
+    {
+      "actual_sqft": 344.25,
+      "csv_row": 402,
+      "expected_sqft": 459.0,
+      "height": "16.0",
+      "item": "KOTA 24x18",
+      "quantity": "153.0",
+      "sales_order": "SAL-ORD-2026-00598",
+      "width": "16.0"
+    },
+    {
+      "actual_sqft": 16.25,
+      "csv_row": 510,
+      "expected_sqft": 15.0,
+      "height": "72.0",
+      "item": "KOTA 78x30",
+      "quantity": "1.0",
+      "sales_order": "SAL-ORD-2026-00452",
+      "width": "27.0"
+    },
+    {
+      "actual_sqft": 27.5,
+      "csv_row": 658,
+      "expected_sqft": 33.0,
+      "height": "65.0",
+      "item": "KOTA 66x24",
+      "quantity": "4.0",
+      "sales_order": "SAL-ORD-2026-00419",
+      "width": "14.0"
+    },
+    {
+      "actual_sqft": 40.0,
+      "csv_row": 722,
+      "expected_sqft": 80.0,
+      "height": "24.0",
+      "item": "Kaddpa 24x24",
+      "quantity": "40.0",
+      "sales_order": "SAL-ORD-2026-00393",
+      "width": "1.0"
+    },
+    {
+      "actual_sqft": 30.0,
+      "csv_row": 731,
+      "expected_sqft": 20.0,
+      "height": "59.0",
+      "item": "KOTA 60x24",
+      "quantity": "12.0",
+      "sales_order": "SAL-ORD-2026-00397",
+      "width": "3.0"
+    },
+    {
+      "actual_sqft": 107.25,
+      "csv_row": 732,
+      "expected_sqft": 66.0,
+      "height": "65.0",
+      "item": "KOTA 66x24",
+      "quantity": "39.0",
+      "sales_order": "SAL-ORD-2026-00397",
+      "width": "3.0"
+    },
+    {
+      "actual_sqft": 25.0,
+      "csv_row": 747,
+      "expected_sqft": 40.0,
+      "height": "29.0",
+      "item": "DP",
+      "quantity": "8.0",
+      "sales_order": "SAL-ORD-2026-00588",
+      "width": "15.0"
+    },
+    {
+      "actual_sqft": 30.0,
+      "csv_row": 749,
+      "expected_sqft": 40.0,
+      "height": "29.0",
+      "item": "KOTA 30x24 MIR",
+      "quantity": "8.0",
+      "sales_order": "SAL-ORD-2026-00588",
+      "width": "15.0"
+    },
+    {
+      "actual_sqft": 49.0,
+      "csv_row": 752,
+      "expected_sqft": 64.0,
+      "height": "42.0",
+      "item": "DP",
+      "quantity": "8.0",
+      "sales_order": "SAL-ORD-2026-00588",
+      "width": "21.0"
+    },
+    {
+      "actual_sqft": 12.0,
+      "csv_row": 794,
+      "expected_sqft": 13.5,
+      "height": "33.0",
+      "item": "KOTA 36x30 DP",
+      "quantity": "3.0",
+      "sales_order": "SAL-ORD-2026-00364",
+      "width": "13.0"
+    },
+    {
+      "actual_sqft": 16.0,
+      "csv_row": 795,
+      "expected_sqft": 18.0,
+      "height": "47.0",
+      "item": "KOTA 48x30 DP",
+      "quantity": "3.0",
+      "sales_order": "SAL-ORD-2026-00364",
+      "width": "13.0"
+    },
+    {
+      "actual_sqft": 105.0,
+      "csv_row": 895,
+      "expected_sqft": 85.5,
+      "height": "118.0",
+      "item": "Steel Gray",
+      "quantity": "3.0",
+      "sales_order": "SAL-ORD-2026-00585",
+      "width": "40.0"
+    },
+    {
+      "actual_sqft": 97.5,
+      "csv_row": 896,
+      "expected_sqft": 87.75,
+      "height": "120.0",
+      "item": "Steel Gray",
+      "quantity": "3.0",
+      "sales_order": "SAL-ORD-2026-00585",
+      "width": "39.0"
+    },
+    {
+      "actual_sqft": 240.0,
+      "csv_row": 910,
+      "expected_sqft": 480.0,
+      "height": "23.0",
+      "item": "KOTA 24x24",
+      "quantity": "240.0",
+      "sales_order": "SAL-ORD-2026-00343-1",
+      "width": "3.0"
+    },
+    {
+      "actual_sqft": 180.0,
+      "csv_row": 950,
+      "expected_sqft": 240.0,
+      "height": "16.0",
+      "item": "KOTA 24x24",
+      "quantity": "80.0",
+      "sales_order": "SAL-ORD-2026-00333-1",
+      "width": "16.0"
+    },
+    {
+      "actual_sqft": 256.0,
+      "csv_row": 1026,
+      "expected_sqft": 192.0,
+      "height": "92.0",
+      "item": "KOTA 96x24",
+      "quantity": "16.0",
+      "sales_order": "SAL-ORD-2026-00296",
+      "width": "16.0"
+    },
+    {
+      "actual_sqft": 140.0,
+      "csv_row": 1030,
+      "expected_sqft": 105.0,
+      "height": "81.0",
+      "item": "KOTA 84x24",
+      "quantity": "10.0",
+      "sales_order": "SAL-ORD-2026-00296",
+      "width": "16.0"
+    },
+    {
+      "actual_sqft": 44.0,
+      "csv_row": 1032,
+      "expected_sqft": 33.0,
+      "height": "60.0",
+      "item": "KOTA 66x24",
+      "quantity": "4.0",
+      "sales_order": "SAL-ORD-2026-00296",
+      "width": "16.0"
+    },
+    {
+      "actual_sqft": 33.0,
+      "csv_row": 1035,
+      "expected_sqft": 24.75,
+      "height": "64.0",
+      "item": "KOTA 66x24",
+      "quantity": "3.0",
+      "sales_order": "SAL-ORD-2026-00296",
+      "width": "16.0"
+    },
+    {
+      "actual_sqft": 33.0,
+      "csv_row": 1036,
+      "expected_sqft": 24.75,
+      "height": "60.0",
+      "item": "KOTA 66x24",
+      "quantity": "3.0",
+      "sales_order": "SAL-ORD-2026-00296",
+      "width": "16.0"
+    },
+    {
+      "actual_sqft": 2.5,
+      "csv_row": 1180,
+      "expected_sqft": 3.0,
+      "height": "20.0",
+      "item": "KOTA 24x24",
+      "quantity": "1.0",
+      "sales_order": "SAL-ORD-2026-00195-1",
+      "width": "13.0"
+    },
+    {
+      "actual_sqft": 5.25,
+      "csv_row": 1182,
+      "expected_sqft": 7.0,
+      "height": "40.0",
+      "item": "KOTA 42x24",
+      "quantity": "1.0",
+      "sales_order": "SAL-ORD-2026-00195-1",
+      "width": "15.0"
+    },
+    {
+      "actual_sqft": 10.0,
+      "csv_row": 1205,
+      "expected_sqft": 7.5,
+      "height": "24.0",
+      "item": "KOTA 30x24 DP",
+      "quantity": "2.0",
+      "sales_order": "SAL-ORD-2026-00150",
+      "width": "16.0"
+    }
+  ],
+  "profile": "quotation",
+  "source_csv": "/workspace/development/frappe-bench/apps/kgmaccount/sales order item list.csv"
+}

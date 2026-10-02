@@ -1,0 +1,217 @@
+{
+  "failed_row_count": 7,
+  "failed_rows": [
+    {
+      "actual_cut_height": 30.0,
+      "actual_cut_width": 24.0,
+      "csv_row": 50,
+      "dialog_values": {
+        "custom_cut_from_height": 30,
+        "custom_cut_from_width": 24,
+        "custom_height": 29,
+        "custom_is_gadela": 0,
+        "custom_is_jada": 0,
+        "custom_is_patala": 0,
+        "custom_is_rajsthan": 0,
+        "custom_is_rough": 0,
+        "custom_width": 15,
+        "item_template_filter": "KADDPA",
+        "manual_segments_toggle": 0,
+        "polish_type": "Ledhar"
+      },
+      "expected_cut_height": 30.0,
+      "expected_cut_width": 24.0,
+      "expected_item_code": "Kaddpa 30x24 LDR",
+      "generated_item_code": "KADDPA 30x24 LDR",
+      "height": "29.0",
+      "messages": [
+        "Item not found: KADDPA 30x24 LDR. Please create this item or adjust the inputs."
+      ],
+      "row_item_code_after_lookup": null,
+      "sales_order": "SAL-ORD-2026-00680",
+      "width": "15.0"
+    },
+    {
+      "actual_cut_height": 24.0,
+      "actual_cut_width": 24.0,
+      "csv_row": 69,
+      "dialog_values": {
+        "custom_cut_from_height": 24,
+        "custom_cut_from_width": 24,
+        "custom_height": 22,
+        "custom_is_gadela": 0,
+        "custom_is_jada": 0,
+        "custom_is_patala": 0,
+        "custom_is_rajsthan": 0,
+        "custom_is_rough": 0,
+        "custom_width": 22,
+        "item_template_filter": "KADDPA",
+        "manual_segments_toggle": 0,
+        "polish_type": "Rough"
+      },
+      "expected_cut_height": 24.0,
+      "expected_cut_width": 24.0,
+      "expected_item_code": "Kaddpa 24x24 ROU",
+      "generated_item_code": "KADDPA 24x24 RUF",
+      "height": "22.0",
+      "messages": [
+        "Item not found: KADDPA 24x24 RUF. Please create this item or adjust the inputs."
+      ],
+      "row_item_code_after_lookup": null,
+      "sales_order": "SAL-ORD-2026-00550",
+      "width": "22.0"
+    },
+    {
+      "actual_cut_height": 48.0,
+      "actual_cut_width": 30.0,
+      "csv_row": 70,
+      "dialog_values": {
+        "custom_cut_from_height": 48,
+        "custom_cut_from_width": 30,
+        "custom_height": 42,
+        "custom_is_gadela": 0,
+        "custom_is_jada": 0,
+        "custom_is_patala": 0,
+        "custom_is_rajsthan": 0,
+        "custom_is_rough": 0,
+        "custom_width": 24,
+        "item_template_filter": "KADDPA",
+        "manual_segments_toggle": 0,
+        "polish_type": "Rough"
+      },
+      "expected_cut_height": 0.0,
+      "expected_cut_width": 0.0,
+      "expected_item_code": "Kaddpa 42x24 ROU",
+      "generated_item_code": "KADDPA 48x30 RUF",
+      "height": "42.0",
+      "messages": [
+        "Item not found: KADDPA 48x30 RUF. Please create this item or adjust the inputs."
+      ],
+      "row_item_code_after_lookup": null,
+      "sales_order": "SAL-ORD-2026-00550",
+      "width": "24.0"
+    },
+    {
+      "actual_cut_height": 72.0,
+      "actual_cut_width": 24.0,
+      "csv_row": 80,
+      "dialog_values": {
+        "custom_cut_from_height": 72,
+        "custom_cut_from_width": 24,
+        "custom_height": 71,
+        "custom_is_gadela": 0,
+        "custom_is_jada": 0,
+        "custom_is_patala": 0,
+        "custom_is_rajsthan": 0,
+        "custom_is_rough": 0,
+        "custom_width": 23,
+        "item_template_filter": "KADDPA",
+        "manual_segments_toggle": 0,
+        "polish_type": ""
+      },
+      "expected_cut_height": 72.0,
+      "expected_cut_width": 24.0,
+      "expected_item_code": "Kaddpa 72x24",
+      "generated_item_code": "KADDPA 72x24",
+      "height": "71.0",
+      "messages": [
+        "Item not found: KADDPA 72x24. Please create this item or adjust the inputs."
+      ],
+      "row_item_code_after_lookup": null,
+      "sales_order": "SAL-ORD-2026-00602",
+      "width": "23.0"
+    },
+    {
+      "actual_cut_height": 42.0,
+      "actual_cut_width": 24.0,
+      "csv_row": 85,
+      "dialog_values": {
+        "custom_cut_from_height": 42,
+        "custom_cut_from_width": 24,
+        "custom_height": 41,
+        "custom_is_gadela": 0,
+        "custom_is_jada": 0,
+        "custom_is_patala": 0,
+        "custom_is_rajsthan": 0,
+        "custom_is_rough": 0,
+        "custom_width": 23,
+        "item_template_filter": "KADDPA",
+        "manual_segments_toggle": 0,
+        "polish_type": ""
+      },
+      "expected_cut_height": 42.0,
+      "expected_cut_width": 24.0,
+      "expected_item_code": "Kaddpa 42x24",
+      "generated_item_code": "KADDPA 42x24",
+      "height": "41.0",
+      "messages": [
+        "Item not found: KADDPA 42x24. Please create this item or adjust the inputs."
+      ],
+      "row_item_code_after_lookup": null,
+      "sales_order": "SAL-ORD-2026-00602",
+      "width": "23.0"
+    },
+    {
+      "actual_cut_height": 24.0,
+      "actual_cut_width": 24.0,
+      "csv_row": 629,
+      "dialog_values": {
+        "custom_cut_from_height": 24,
+        "custom_cut_from_width": 24,
+        "custom_height": 23,
+        "custom_is_gadela": 0,
+        "custom_is_jada": 0,
+        "custom_is_patala": 0,
+        "custom_is_rajsthan": 0,
+        "custom_is_rough": 0,
+        "custom_width": 19,
+        "item_template_filter": "KADDPA",
+        "manual_segments_toggle": 0,
+        "polish_type": "Rough"
+      },
+      "expected_cut_height": 24.0,
+      "expected_cut_width": 24.0,
+      "expected_item_code": "Kaddpa 24x24 ROU",
+      "generated_item_code": "KADDPA 24x24 RUF",
+      "height": "23.0",
+      "messages": [
+        "Item not found: KADDPA 24x24 RUF. Please create this item or adjust the inputs."
+      ],
+      "row_item_code_after_lookup": null,
+      "sales_order": "SAL-ORD-2026-00411",
+      "width": "19.0"
+    },
+    {
+      "actual_cut_height": 30.0,
+      "actual_cut_width": 24.0,
+      "csv_row": 722,
+      "dialog_values": {
+        "custom_cut_from_height": 30,
+        "custom_cut_from_width": 24,
+        "custom_height": 24,
+        "custom_is_gadela": 0,
+        "custom_is_jada": 0,
+        "custom_is_patala": 0,
+        "custom_is_rajsthan": 0,
+        "custom_is_rough": 0,
+        "custom_width": 1,
+        "item_template_filter": "KADDPA",
+        "manual_segments_toggle": 0,
+        "polish_type": ""
+      },
+      "expected_cut_height": 0.0,
+      "expected_cut_width": 0.0,
+      "expected_item_code": "Kaddpa 24x24",
+      "generated_item_code": "KADDPA 30x24",
+      "height": "24.0",
+      "messages": [
+        "Item not found: KADDPA 30x24. Please create this item or adjust the inputs."
+      ],
+      "row_item_code_after_lookup": null,
+      "sales_order": "SAL-ORD-2026-00393",
+      "width": "1.0"
+    }
+  ],
+  "profile": "quotation",
+  "source_csv": "/workspace/development/frappe-bench/apps/kgmaccount/sales order item list.csv"
+}

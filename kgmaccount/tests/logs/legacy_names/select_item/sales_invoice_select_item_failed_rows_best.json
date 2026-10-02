@@ -1,0 +1,1591 @@
+{
+  "failed_row_count": 53,
+  "failed_rows": [
+    {
+      "actual_cut_height": 12.0,
+      "actual_cut_width": 12.0,
+      "csv_row": 120,
+      "dialog_values": {
+        "custom_cut_from_height": 12,
+        "custom_cut_from_width": 12,
+        "custom_height": 11,
+        "custom_is_gadela": 0,
+        "custom_is_jada": 0,
+        "custom_is_patala": 0,
+        "custom_is_rajsthan": 0,
+        "custom_is_rough": 0,
+        "custom_width": 11,
+        "item_template_filter": "KOTA",
+        "manual_segments_toggle": 0,
+        "polish_type": "Rough"
+      },
+      "expected_cut_height": 12.0,
+      "expected_cut_width": 12.0,
+      "expected_item_code": "KOTA 24x24 RUF",
+      "generated_item_code": "KOTA 12x12 RUF",
+      "height": "11.0",
+      "messages": [
+        "Item not found: KOTA 12x12 RUF. Please create this item or adjust the inputs."
+      ],
+      "row_item_code_after_lookup": null,
+      "sales_order": "SAL-ORD-2026-00604",
+      "width": "11.0"
+    },
+    {
+      "actual_cut_height": 12.0,
+      "actual_cut_width": 12.0,
+      "csv_row": 122,
+      "dialog_values": {
+        "custom_cut_from_height": 12,
+        "custom_cut_from_width": 12,
+        "custom_height": 11,
+        "custom_is_gadela": 0,
+        "custom_is_jada": 0,
+        "custom_is_patala": 0,
+        "custom_is_rajsthan": 1,
+        "custom_is_rough": 0,
+        "custom_width": 11,
+        "item_template_filter": "KOTA",
+        "manual_segments_toggle": 0,
+        "polish_type": ""
+      },
+      "expected_cut_height": 0.0,
+      "expected_cut_width": 0.0,
+      "expected_item_code": "KOTA 11x11 RAJ",
+      "generated_item_code": "KOTA 11x11 RAJ",
+      "height": "11.0",
+      "messages": [],
+      "row_item_code_after_lookup": "KOTA 11x11 RAJ",
+      "sales_order": "SAL-ORD-2026-00679",
+      "width": "11.0"
+    },
+    {
+      "actual_cut_height": 48.0,
+      "actual_cut_width": 30.0,
+      "csv_row": 219,
+      "dialog_values": {
+        "custom_cut_from_height": 48,
+        "custom_cut_from_width": 30,
+        "custom_height": 43.5,
+        "custom_is_gadela": 0,
+        "custom_is_jada": 0,
+        "custom_is_patala": 0,
+        "custom_is_rajsthan": 0,
+        "custom_is_rough": 0,
+        "custom_width": 15,
+        "item_template_filter": "KOTA",
+        "manual_segments_toggle": 0,
+        "polish_type": ""
+      },
+      "expected_cut_height": 48.0,
+      "expected_cut_width": 30.0,
+      "expected_item_code": "KOTA 48x24",
+      "generated_item_code": "KOTA 48x30",
+      "height": "43.5",
+      "messages": [
+        "Item not found: KOTA 48x30. Please create this item or adjust the inputs."
+      ],
+      "row_item_code_after_lookup": null,
+      "sales_order": "SAL-ORD-2026-00494",
+      "width": "15.0"
+    },
+    {
+      "actual_cut_height": 48.0,
+      "actual_cut_width": 30.0,
+      "csv_row": 239,
+      "dialog_values": {
+        "custom_cut_from_height": 48,
+        "custom_cut_from_width": 30,
+        "custom_height": 47,
+        "custom_is_gadela": 0,
+        "custom_is_jada": 0,
+        "custom_is_patala": 0,
+        "custom_is_rajsthan": 0,
+        "custom_is_rough": 0,
+        "custom_width": 12,
+        "item_template_filter": "KOTA",
+        "manual_segments_toggle": 0,
+        "polish_type": ""
+      },
+      "expected_cut_height": 48.0,
+      "expected_cut_width": 24.0,
+      "expected_item_code": "KOTA 48x24",
+      "generated_item_code": "KOTA 48x30",
+      "height": "47.0",
+      "messages": [
+        "Item not found: KOTA 48x30. Please create this item or adjust the inputs."
+      ],
+      "row_item_code_after_lookup": null,
+      "sales_order": "SAL-ORD-2026-00505",
+      "width": "12.0"
+    },
+    {
+      "actual_cut_height": 36.0,
+      "actual_cut_width": 30.0,
+      "csv_row": 240,
+      "dialog_values": {
+        "custom_cut_from_height": 36,
+        "custom_cut_from_width": 30,
+        "custom_height": 35,
+        "custom_is_gadela": 0,
+        "custom_is_jada": 0,
+        "custom_is_patala": 0,
+        "custom_is_rajsthan": 0,
+        "custom_is_rough": 0,
+        "custom_width": 12,
+        "item_template_filter": "KOTA",
+        "manual_segments_toggle": 0,
+        "polish_type": ""
+      },
+      "expected_cut_height": 36.0,
+      "expected_cut_width": 24.0,
+      "expected_item_code": "KOTA 36x24",
+      "generated_item_code": "KOTA 36x30",
+      "height": "35.0",
+      "messages": [
+        "Item not found: KOTA 36x30. Please create this item or adjust the inputs."
+      ],
+      "row_item_code_after_lookup": null,
+      "sales_order": "SAL-ORD-2026-00505",
+      "width": "12.0"
+    },
+    {
+      "actual_cut_height": 24.0,
+      "actual_cut_width": 12.0,
+      "csv_row": 241,
+      "dialog_values": {
+        "custom_cut_from_height": 24,
+        "custom_cut_from_width": 12,
+        "custom_height": 18,
+        "custom_is_gadela": 0,
+        "custom_is_jada": 0,
+        "custom_is_patala": 0,
+        "custom_is_rajsthan": 0,
+        "custom_is_rough": 0,
+        "custom_width": 11,
+        "item_template_filter": "KOTA",
+        "manual_segments_toggle": 0,
+        "polish_type": ""
+      },
+      "expected_cut_height": 24.0,
+      "expected_cut_width": 18.0,
+      "expected_item_code": "KOTA 24x18",
+      "generated_item_code": "KOTA 24x12",
+      "height": "18.0",
+      "messages": [
+        "Item not found: KOTA 24x12. Please create this item or adjust the inputs."
+      ],
+      "row_item_code_after_lookup": null,
+      "sales_order": "SAL-ORD-2026-00505",
+      "width": "11.0"
+    },
+    {
+      "actual_cut_height": 36.0,
+      "actual_cut_width": 24.0,
+      "csv_row": 275,
+      "dialog_values": {
+        "custom_cut_from_height": 36,
+        "custom_cut_from_width": 24,
+        "custom_height": 35,
+        "custom_is_gadela": 0,
+        "custom_is_jada": 0,
+        "custom_is_patala": 0,
+        "custom_is_rajsthan": 0,
+        "custom_is_rough": 0,
+        "custom_width": 10,
+        "item_template_filter": "KOTA",
+        "manual_segments_toggle": 0,
+        "polish_type": "Mirror"
+      },
+      "expected_cut_height": 36.0,
+      "expected_cut_width": 24.0,
+      "expected_item_code": "KOTA 36x30 MIR",
+      "generated_item_code": "KOTA 36x24 MIR",
+      "height": "35.0",
+      "messages": [
+        "Item not found: KOTA 36x24 MIR. Please create this item or adjust the inputs."
+      ],
+      "row_item_code_after_lookup": null,
+      "sales_order": "SAL-ORD-2026-00665",
+      "width": "10.0"
+    },
+    {
+      "actual_cut_height": 18.0,
+      "actual_cut_width": 18.0,
+      "csv_row": 280,
+      "dialog_values": {
+        "custom_cut_from_height": 18,
+        "custom_cut_from_width": 18,
+        "custom_height": 16,
+        "custom_is_gadela": 0,
+        "custom_is_jada": 0,
+        "custom_is_patala": 0,
+        "custom_is_rajsthan": 0,
+        "custom_is_rough": 0,
+        "custom_width": 16,
+        "item_template_filter": "KOTA",
+        "manual_segments_toggle": 0,
+        "polish_type": ""
+      },
+      "expected_cut_height": 18.0,
+      "expected_cut_width": 18.0,
+      "expected_item_code": "KOTA 24x18",
+      "generated_item_code": "KOTA 18x18",
+      "height": "16.0",
+      "messages": [
+        "Item not found: KOTA 18x18. Please create this item or adjust the inputs."
+      ],
+      "row_item_code_after_lookup": null,
+      "sales_order": "SAL-ORD-2026-00666",
+      "width": "16.0"
+    },
+    {
+      "actual_cut_height": 24.0,
+      "actual_cut_width": 12.0,
+      "csv_row": 286,
+      "dialog_values": {
+        "custom_cut_from_height": 24,
+        "custom_cut_from_width": 12,
+        "custom_height": 23,
+        "custom_is_gadela": 0,
+        "custom_is_jada": 0,
+        "custom_is_patala": 0,
+        "custom_is_rajsthan": 0,
+        "custom_is_rough": 0,
+        "custom_width": 7.5,
+        "item_template_filter": "KOTA",
+        "manual_segments_toggle": 0,
+        "polish_type": ""
+      },
+      "expected_cut_height": 24.0,
+      "expected_cut_width": 24.0,
+      "expected_item_code": "KOTA 24x24",
+      "generated_item_code": "KOTA 24x12",
+      "height": "23.0",
+      "messages": [
+        "Item not found: KOTA 24x12. Please create this item or adjust the inputs."
+      ],
+      "row_item_code_after_lookup": null,
+      "sales_order": "SAL-ORD-2026-00685",
+      "width": "7.5"
+    },
+    {
+      "actual_cut_height": 24.0,
+      "actual_cut_width": 6.0,
+      "csv_row": 289,
+      "dialog_values": {
+        "custom_cut_from_height": 24,
+        "custom_cut_from_width": 6,
+        "custom_height": 23,
+        "custom_is_gadela": 0,
+        "custom_is_jada": 0,
+        "custom_is_patala": 0,
+        "custom_is_rajsthan": 0,
+        "custom_is_rough": 0,
+        "custom_width": 3,
+        "item_template_filter": "KOTA",
+        "manual_segments_toggle": 0,
+        "polish_type": ""
+      },
+      "expected_cut_height": 0.0,
+      "expected_cut_width": 0.0,
+      "expected_item_code": "KOTA PATI",
+      "generated_item_code": "KOTA 24x6",
+      "height": "23.0",
+      "messages": [
+        "Item not found: KOTA 24x6. Please create this item or adjust the inputs."
+      ],
+      "row_item_code_after_lookup": null,
+      "sales_order": "SAL-ORD-2026-00685",
+      "width": "3.0"
+    },
+    {
+      "actual_cut_height": 24.0,
+      "actual_cut_width": 6.0,
+      "csv_row": 321,
+      "dialog_values": {
+        "custom_cut_from_height": 24,
+        "custom_cut_from_width": 6,
+        "custom_height": 23,
+        "custom_is_gadela": 0,
+        "custom_is_jada": 0,
+        "custom_is_patala": 0,
+        "custom_is_rajsthan": 0,
+        "custom_is_rough": 0,
+        "custom_width": 3,
+        "item_template_filter": "KOTA",
+        "manual_segments_toggle": 0,
+        "polish_type": ""
+      },
+      "expected_cut_height": 0.0,
+      "expected_cut_width": 0.0,
+      "expected_item_code": "KOTA PATI",
+      "generated_item_code": "KOTA 24x6",
+      "height": "23.0",
+      "messages": [
+        "Item not found: KOTA 24x6. Please create this item or adjust the inputs."
+      ],
+      "row_item_code_after_lookup": null,
+      "sales_order": "SAL-ORD-2026-00657",
+      "width": "3.0"
+    },
+    {
+      "actual_cut_height": 24.0,
+      "actual_cut_width": 24.0,
+      "csv_row": 322,
+      "dialog_values": {
+        "custom_cut_from_height": 24,
+        "custom_cut_from_width": 24,
+        "custom_height": 22,
+        "custom_is_gadela": 0,
+        "custom_is_jada": 0,
+        "custom_is_patala": 0,
+        "custom_is_rajsthan": 1,
+        "custom_is_rough": 0,
+        "custom_width": 22,
+        "item_template_filter": "KOTA",
+        "manual_segments_toggle": 0,
+        "polish_type": ""
+      },
+      "expected_cut_height": 0.0,
+      "expected_cut_width": 0.0,
+      "expected_item_code": "KOTA 22X22 RAJ MIR",
+      "generated_item_code": "KOTA 22x22 RAJ",
+      "height": "22.0",
+      "messages": [
+        "Item not found: KOTA 22x22 RAJ. Please create this item or adjust the inputs."
+      ],
+      "row_item_code_after_lookup": null,
+      "sales_order": "SAL-ORD-2026-00658",
+      "width": "22.0"
+    },
+    {
+      "actual_cut_height": 18.0,
+      "actual_cut_width": 18.0,
+      "csv_row": 361,
+      "dialog_values": {
+        "custom_cut_from_height": 18,
+        "custom_cut_from_width": 18,
+        "custom_height": 16,
+        "custom_is_gadela": 0,
+        "custom_is_jada": 0,
+        "custom_is_patala": 0,
+        "custom_is_rajsthan": 0,
+        "custom_is_rough": 0,
+        "custom_width": 16,
+        "item_template_filter": "KOTA",
+        "manual_segments_toggle": 0,
+        "polish_type": ""
+      },
+      "expected_cut_height": 24.0,
+      "expected_cut_width": 18.0,
+      "expected_item_code": "KOTA 24x18",
+      "generated_item_code": "KOTA 18x18",
+      "height": "16.0",
+      "messages": [
+        "Item not found: KOTA 18x18. Please create this item or adjust the inputs."
+      ],
+      "row_item_code_after_lookup": null,
+      "sales_order": "SAL-ORD-2026-00598",
+      "width": "16.0"
+    },
+    {
+      "actual_cut_height": 0.0,
+      "actual_cut_width": 0.0,
+      "csv_row": 366,
+      "dialog_values": {
+        "custom_cut_from_height": 0,
+        "custom_cut_from_width": 0,
+        "custom_height": 0,
+        "custom_is_gadela": 0,
+        "custom_is_jada": 0,
+        "custom_is_patala": 0,
+        "custom_is_rajsthan": 0,
+        "custom_is_rough": 0,
+        "custom_width": 0,
+        "item_template_filter": "KOTA",
+        "manual_segments_toggle": 0,
+        "polish_type": ""
+      },
+      "expected_cut_height": 0.0,
+      "expected_cut_width": 0.0,
+      "expected_item_code": "KOTA 36x24",
+      "generated_item_code": null,
+      "height": "0.0",
+      "messages": [
+        "Please select a Template and ensure positive Height and Width values are entered."
+      ],
+      "row_item_code_after_lookup": null,
+      "sales_order": "SAL-ORD-2026-00655",
+      "width": "0.0"
+    },
+    {
+      "actual_cut_height": 0.0,
+      "actual_cut_width": 0.0,
+      "csv_row": 459,
+      "dialog_values": {
+        "custom_cut_from_height": 0,
+        "custom_cut_from_width": 0,
+        "custom_height": 0,
+        "custom_is_gadela": 0,
+        "custom_is_jada": 0,
+        "custom_is_patala": 0,
+        "custom_is_rajsthan": 0,
+        "custom_is_rough": 0,
+        "custom_width": 0,
+        "item_template_filter": "KOTA",
+        "manual_segments_toggle": 0,
+        "polish_type": ""
+      },
+      "expected_cut_height": 0.0,
+      "expected_cut_width": 0.0,
+      "expected_item_code": "KOTA 36x24",
+      "generated_item_code": null,
+      "height": "0.0",
+      "messages": [
+        "Please select a Template and ensure positive Height and Width values are entered."
+      ],
+      "row_item_code_after_lookup": null,
+      "sales_order": "SAL-ORD-2026-00643",
+      "width": "0.0"
+    },
+    {
+      "actual_cut_height": 24.0,
+      "actual_cut_width": 24.0,
+      "csv_row": 463,
+      "dialog_values": {
+        "custom_cut_from_height": 24,
+        "custom_cut_from_width": 24,
+        "custom_height": 22,
+        "custom_is_gadela": 0,
+        "custom_is_jada": 0,
+        "custom_is_patala": 0,
+        "custom_is_rajsthan": 1,
+        "custom_is_rough": 0,
+        "custom_width": 22,
+        "item_template_filter": "KOTA",
+        "manual_segments_toggle": 0,
+        "polish_type": ""
+      },
+      "expected_cut_height": 0.0,
+      "expected_cut_width": 0.0,
+      "expected_item_code": "KOTA 22X22 RAJ MIR",
+      "generated_item_code": "KOTA 22x22 RAJ",
+      "height": "22.0",
+      "messages": [
+        "Item not found: KOTA 22x22 RAJ. Please create this item or adjust the inputs."
+      ],
+      "row_item_code_after_lookup": null,
+      "sales_order": "SAL-ORD-2026-00647",
+      "width": "22.0"
+    },
+    {
+      "actual_cut_height": 24.0,
+      "actual_cut_width": 24.0,
+      "csv_row": 555,
+      "dialog_values": {
+        "custom_cut_from_height": 24,
+        "custom_cut_from_width": 24,
+        "custom_height": 22,
+        "custom_is_gadela": 0,
+        "custom_is_jada": 0,
+        "custom_is_patala": 0,
+        "custom_is_rajsthan": 1,
+        "custom_is_rough": 0,
+        "custom_width": 22,
+        "item_template_filter": "KOTA",
+        "manual_segments_toggle": 0,
+        "polish_type": ""
+      },
+      "expected_cut_height": 0.0,
+      "expected_cut_width": 0.0,
+      "expected_item_code": "KOTA 22X22 RAJ MIR",
+      "generated_item_code": "KOTA 22x22 RAJ",
+      "height": "22.0",
+      "messages": [
+        "Item not found: KOTA 22x22 RAJ. Please create this item or adjust the inputs."
+      ],
+      "row_item_code_after_lookup": null,
+      "sales_order": "SAL-ORD-2026-00640",
+      "width": "22.0"
+    },
+    {
+      "actual_cut_height": 24.0,
+      "actual_cut_width": 24.0,
+      "csv_row": 588,
+      "dialog_values": {
+        "custom_cut_from_height": 24,
+        "custom_cut_from_width": 24,
+        "custom_height": 22,
+        "custom_is_gadela": 0,
+        "custom_is_jada": 0,
+        "custom_is_patala": 0,
+        "custom_is_rajsthan": 1,
+        "custom_is_rough": 0,
+        "custom_width": 22,
+        "item_template_filter": "KOTA",
+        "manual_segments_toggle": 0,
+        "polish_type": ""
+      },
+      "expected_cut_height": 0.0,
+      "expected_cut_width": 0.0,
+      "expected_item_code": "KOTA 22X22 RAJ MIR",
+      "generated_item_code": "KOTA 22x22 RAJ",
+      "height": "22.0",
+      "messages": [
+        "Item not found: KOTA 22x22 RAJ. Please create this item or adjust the inputs."
+      ],
+      "row_item_code_after_lookup": null,
+      "sales_order": "SAL-ORD-2026-00631",
+      "width": "22.0"
+    },
+    {
+      "actual_cut_height": 24.0,
+      "actual_cut_width": 6.0,
+      "csv_row": 593,
+      "dialog_values": {
+        "custom_cut_from_height": 24,
+        "custom_cut_from_width": 6,
+        "custom_height": 23,
+        "custom_is_gadela": 0,
+        "custom_is_jada": 0,
+        "custom_is_patala": 0,
+        "custom_is_rajsthan": 0,
+        "custom_is_rough": 0,
+        "custom_width": 3,
+        "item_template_filter": "KOTA",
+        "manual_segments_toggle": 0,
+        "polish_type": ""
+      },
+      "expected_cut_height": 0.0,
+      "expected_cut_width": 0.0,
+      "expected_item_code": "KOTA PATI",
+      "generated_item_code": "KOTA 24x6",
+      "height": "23.0",
+      "messages": [
+        "Item not found: KOTA 24x6. Please create this item or adjust the inputs."
+      ],
+      "row_item_code_after_lookup": null,
+      "sales_order": "SAL-ORD-2026-00636",
+      "width": "3.0"
+    },
+    {
+      "actual_cut_height": 24.0,
+      "actual_cut_width": 18.0,
+      "csv_row": 621,
+      "dialog_values": {
+        "custom_cut_from_height": 24,
+        "custom_cut_from_width": 18,
+        "custom_height": 23,
+        "custom_is_gadela": 0,
+        "custom_is_jada": 0,
+        "custom_is_patala": 0,
+        "custom_is_rajsthan": 0,
+        "custom_is_rough": 0,
+        "custom_width": 17,
+        "item_template_filter": "KOTA",
+        "manual_segments_toggle": 0,
+        "polish_type": "Fine"
+      },
+      "expected_cut_height": 24.0,
+      "expected_cut_width": 24.0,
+      "expected_item_code": "KOTA 24x24 FIN",
+      "generated_item_code": "KOTA 24x18 FIN",
+      "height": "23.0",
+      "messages": [
+        "Item not found: KOTA 24x18 FIN. Please create this item or adjust the inputs."
+      ],
+      "row_item_code_after_lookup": null,
+      "sales_order": "SAL-ORD-2026-00399",
+      "width": "17.0"
+    },
+    {
+      "actual_cut_height": 6.0,
+      "actual_cut_width": 0.0,
+      "csv_row": 628,
+      "dialog_values": {
+        "custom_cut_from_height": 6,
+        "custom_cut_from_width": 0,
+        "custom_height": 1,
+        "custom_is_gadela": 0,
+        "custom_is_jada": 0,
+        "custom_is_patala": 0,
+        "custom_is_rajsthan": 0,
+        "custom_is_rough": 0,
+        "custom_width": 1,
+        "item_template_filter": "KOTA",
+        "manual_segments_toggle": 0,
+        "polish_type": ""
+      },
+      "expected_cut_height": 0.0,
+      "expected_cut_width": 0.0,
+      "expected_item_code": "KOTA 66x30",
+      "generated_item_code": "KOTA 6x0",
+      "height": "1.0",
+      "messages": [
+        "Item not found: KOTA 6x0. Please create this item or adjust the inputs."
+      ],
+      "row_item_code_after_lookup": null,
+      "sales_order": "SAL-ORD-2026-00588",
+      "width": "1.0"
+    },
+    {
+      "actual_cut_height": 24.0,
+      "actual_cut_width": 24.0,
+      "csv_row": 633,
+      "dialog_values": {
+        "custom_cut_from_height": 24,
+        "custom_cut_from_width": 24,
+        "custom_height": 22,
+        "custom_is_gadela": 0,
+        "custom_is_jada": 0,
+        "custom_is_patala": 0,
+        "custom_is_rajsthan": 1,
+        "custom_is_rough": 0,
+        "custom_width": 22,
+        "item_template_filter": "KOTA",
+        "manual_segments_toggle": 0,
+        "polish_type": ""
+      },
+      "expected_cut_height": 0.0,
+      "expected_cut_width": 0.0,
+      "expected_item_code": "KOTA 22X22 RAJ MIR",
+      "generated_item_code": "KOTA 22x22 RAJ",
+      "height": "22.0",
+      "messages": [
+        "Item not found: KOTA 22x22 RAJ. Please create this item or adjust the inputs."
+      ],
+      "row_item_code_after_lookup": null,
+      "sales_order": "SAL-ORD-2026-00627",
+      "width": "22.0"
+    },
+    {
+      "actual_cut_height": 24.0,
+      "actual_cut_width": 24.0,
+      "csv_row": 639,
+      "dialog_values": {
+        "custom_cut_from_height": 24,
+        "custom_cut_from_width": 24,
+        "custom_height": 22,
+        "custom_is_gadela": 0,
+        "custom_is_jada": 1,
+        "custom_is_patala": 0,
+        "custom_is_rajsthan": 1,
+        "custom_is_rough": 1,
+        "custom_width": 22,
+        "item_template_filter": "KOTA",
+        "manual_segments_toggle": 0,
+        "polish_type": ""
+      },
+      "expected_cut_height": 24.0,
+      "expected_cut_width": 24.0,
+      "expected_item_code": "KOTA 22x22 RUF RAJ J",
+      "generated_item_code": "KOTA 22x22 RAJ RUF J",
+      "height": "22.0",
+      "messages": [
+        "Item not found: KOTA 22x22 RAJ RUF J. Please create this item or adjust the inputs."
+      ],
+      "row_item_code_after_lookup": null,
+      "sales_order": "SAL-ORD-2026-00384",
+      "width": "22.0"
+    },
+    {
+      "actual_cut_height": 24.0,
+      "actual_cut_width": 18.0,
+      "csv_row": 642,
+      "dialog_values": {
+        "custom_cut_from_height": 24,
+        "custom_cut_from_width": 18,
+        "custom_height": 23,
+        "custom_is_gadela": 0,
+        "custom_is_jada": 0,
+        "custom_is_patala": 0,
+        "custom_is_rajsthan": 0,
+        "custom_is_rough": 0,
+        "custom_width": 17,
+        "item_template_filter": "KOTA",
+        "manual_segments_toggle": 0,
+        "polish_type": "River"
+      },
+      "expected_cut_height": 24.0,
+      "expected_cut_width": 24.0,
+      "expected_item_code": "KOTA 24x24 RIV",
+      "generated_item_code": "KOTA 24x18 RIV",
+      "height": "23.0",
+      "messages": [
+        "Item not found: KOTA 24x18 RIV. Please create this item or adjust the inputs."
+      ],
+      "row_item_code_after_lookup": null,
+      "sales_order": "SAL-ORD-2026-00386",
+      "width": "17.0"
+    },
+    {
+      "actual_cut_height": 24.0,
+      "actual_cut_width": 6.0,
+      "csv_row": 776,
+      "dialog_values": {
+        "custom_cut_from_height": 24,
+        "custom_cut_from_width": 6,
+        "custom_height": 23,
+        "custom_is_gadela": 0,
+        "custom_is_jada": 0,
+        "custom_is_patala": 0,
+        "custom_is_rajsthan": 0,
+        "custom_is_rough": 0,
+        "custom_width": 3,
+        "item_template_filter": "KOTA",
+        "manual_segments_toggle": 0,
+        "polish_type": ""
+      },
+      "expected_cut_height": 0.0,
+      "expected_cut_width": 0.0,
+      "expected_item_code": "KOTA PATI",
+      "generated_item_code": "KOTA 24x6",
+      "height": "23.0",
+      "messages": [
+        "Item not found: KOTA 24x6. Please create this item or adjust the inputs."
+      ],
+      "row_item_code_after_lookup": null,
+      "sales_order": "SAL-ORD-2026-00618",
+      "width": "3.0"
+    },
+    {
+      "actual_cut_height": 24.0,
+      "actual_cut_width": 6.0,
+      "csv_row": 786,
+      "dialog_values": {
+        "custom_cut_from_height": 24,
+        "custom_cut_from_width": 6,
+        "custom_height": 23,
+        "custom_is_gadela": 0,
+        "custom_is_jada": 0,
+        "custom_is_patala": 0,
+        "custom_is_rajsthan": 0,
+        "custom_is_rough": 0,
+        "custom_width": 3,
+        "item_template_filter": "KOTA",
+        "manual_segments_toggle": 0,
+        "polish_type": ""
+      },
+      "expected_cut_height": 24.0,
+      "expected_cut_width": 24.0,
+      "expected_item_code": "KOTA 24x24",
+      "generated_item_code": "KOTA 24x6",
+      "height": "23.0",
+      "messages": [
+        "Item not found: KOTA 24x6. Please create this item or adjust the inputs."
+      ],
+      "row_item_code_after_lookup": null,
+      "sales_order": "SAL-ORD-2026-00343-1",
+      "width": "3.0"
+    },
+    {
+      "actual_cut_height": 18.0,
+      "actual_cut_width": 18.0,
+      "csv_row": 801,
+      "dialog_values": {
+        "custom_cut_from_height": 18,
+        "custom_cut_from_width": 18,
+        "custom_height": 16,
+        "custom_is_gadela": 0,
+        "custom_is_jada": 0,
+        "custom_is_patala": 0,
+        "custom_is_rajsthan": 0,
+        "custom_is_rough": 0,
+        "custom_width": 16,
+        "item_template_filter": "KOTA",
+        "manual_segments_toggle": 0,
+        "polish_type": ""
+      },
+      "expected_cut_height": 0.0,
+      "expected_cut_width": 0.0,
+      "expected_item_code": "KOTA 24x18",
+      "generated_item_code": "KOTA 18x18",
+      "height": "16.0",
+      "messages": [
+        "Item not found: KOTA 18x18. Please create this item or adjust the inputs."
+      ],
+      "row_item_code_after_lookup": null,
+      "sales_order": "SAL-ORD-2026-00583",
+      "width": "16.0"
+    },
+    {
+      "actual_cut_height": 24.0,
+      "actual_cut_width": 18.0,
+      "csv_row": 827,
+      "dialog_values": {
+        "custom_cut_from_height": 24,
+        "custom_cut_from_width": 18,
+        "custom_height": 23,
+        "custom_is_gadela": 0,
+        "custom_is_jada": 0,
+        "custom_is_patala": 0,
+        "custom_is_rajsthan": 0,
+        "custom_is_rough": 0,
+        "custom_width": 16,
+        "item_template_filter": "KOTA",
+        "manual_segments_toggle": 0,
+        "polish_type": ""
+      },
+      "expected_cut_height": 24.0,
+      "expected_cut_width": 24.0,
+      "expected_item_code": "KOTA 24x24",
+      "generated_item_code": "KOTA 24x18",
+      "height": "23.0",
+      "messages": [
+        "Item not found: KOTA 24x18. Please create this item or adjust the inputs."
+      ],
+      "row_item_code_after_lookup": null,
+      "sales_order": "SAL-ORD-2026-00333",
+      "width": "16.0"
+    },
+    {
+      "actual_cut_height": 24.0,
+      "actual_cut_width": 24.0,
+      "csv_row": 878,
+      "dialog_values": {
+        "custom_cut_from_height": 24,
+        "custom_cut_from_width": 24,
+        "custom_height": 22,
+        "custom_is_gadela": 0,
+        "custom_is_jada": 0,
+        "custom_is_patala": 0,
+        "custom_is_rajsthan": 1,
+        "custom_is_rough": 0,
+        "custom_width": 22,
+        "item_template_filter": "KOTA",
+        "manual_segments_toggle": 0,
+        "polish_type": ""
+      },
+      "expected_cut_height": 24.0,
+      "expected_cut_width": 24.0,
+      "expected_item_code": "KOTA 22X22 RAJ MIR",
+      "generated_item_code": "KOTA 22x22 RAJ",
+      "height": "22.0",
+      "messages": [
+        "Item not found: KOTA 22x22 RAJ. Please create this item or adjust the inputs."
+      ],
+      "row_item_code_after_lookup": null,
+      "sales_order": "SAL-ORD-2026-00580",
+      "width": "22.0"
+    },
+    {
+      "actual_cut_height": 24.0,
+      "actual_cut_width": 18.0,
+      "csv_row": 901,
+      "dialog_values": {
+        "custom_cut_from_height": 24,
+        "custom_cut_from_width": 18,
+        "custom_height": 22,
+        "custom_is_gadela": 0,
+        "custom_is_jada": 0,
+        "custom_is_patala": 0,
+        "custom_is_rajsthan": 0,
+        "custom_is_rough": 0,
+        "custom_width": 16,
+        "item_template_filter": "KOTA",
+        "manual_segments_toggle": 0,
+        "polish_type": "Ledhar"
+      },
+      "expected_cut_height": 24.0,
+      "expected_cut_width": 24.0,
+      "expected_item_code": "KOTA 24x24 LDR",
+      "generated_item_code": "KOTA 24x18 LDR",
+      "height": "22.0",
+      "messages": [
+        "Item not found: KOTA 24x18 LDR. Please create this item or adjust the inputs."
+      ],
+      "row_item_code_after_lookup": null,
+      "sales_order": "SAL-ORD-2026-00291",
+      "width": "16.0"
+    },
+    {
+      "actual_cut_height": 18.0,
+      "actual_cut_width": 12.0,
+      "csv_row": 1057,
+      "dialog_values": {
+        "custom_cut_from_height": 18,
+        "custom_cut_from_width": 12,
+        "custom_height": 15,
+        "custom_is_gadela": 0,
+        "custom_is_jada": 0,
+        "custom_is_patala": 0,
+        "custom_is_rajsthan": 0,
+        "custom_is_rough": 0,
+        "custom_width": 7,
+        "item_template_filter": "KOTA",
+        "manual_segments_toggle": 0,
+        "polish_type": ""
+      },
+      "expected_cut_height": 24.0,
+      "expected_cut_width": 18.0,
+      "expected_item_code": "KOTA 24x18",
+      "generated_item_code": "KOTA 18x12",
+      "height": "15.0",
+      "messages": [
+        "Item not found: KOTA 18x12. Please create this item or adjust the inputs."
+      ],
+      "row_item_code_after_lookup": null,
+      "sales_order": "SAL-ORD-2026-00195-1",
+      "width": "7.0"
+    },
+    {
+      "actual_cut_height": 24.0,
+      "actual_cut_width": 30.0,
+      "csv_row": 1058,
+      "dialog_values": {
+        "custom_cut_from_height": 24,
+        "custom_cut_from_width": 30,
+        "custom_height": 20,
+        "custom_is_gadela": 0,
+        "custom_is_jada": 0,
+        "custom_is_patala": 0,
+        "custom_is_rajsthan": 0,
+        "custom_is_rough": 0,
+        "custom_width": 13,
+        "item_template_filter": "KOTA",
+        "manual_segments_toggle": 0,
+        "polish_type": ""
+      },
+      "expected_cut_height": 24.0,
+      "expected_cut_width": 24.0,
+      "expected_item_code": "KOTA 24x24",
+      "generated_item_code": "KOTA 24x30",
+      "height": "20.0",
+      "messages": [
+        "Item not found: KOTA 24x30. Please create this item or adjust the inputs."
+      ],
+      "row_item_code_after_lookup": null,
+      "sales_order": "SAL-ORD-2026-00195-1",
+      "width": "13.0"
+    },
+    {
+      "actual_cut_height": 42.0,
+      "actual_cut_width": 30.0,
+      "csv_row": 1060,
+      "dialog_values": {
+        "custom_cut_from_height": 42,
+        "custom_cut_from_width": 30,
+        "custom_height": 40,
+        "custom_is_gadela": 0,
+        "custom_is_jada": 0,
+        "custom_is_patala": 0,
+        "custom_is_rajsthan": 0,
+        "custom_is_rough": 0,
+        "custom_width": 15,
+        "item_template_filter": "KOTA",
+        "manual_segments_toggle": 0,
+        "polish_type": ""
+      },
+      "expected_cut_height": 42.0,
+      "expected_cut_width": 24.0,
+      "expected_item_code": "KOTA 42x24",
+      "generated_item_code": "KOTA 42x30",
+      "height": "40.0",
+      "messages": [
+        "Item not found: KOTA 42x30. Please create this item or adjust the inputs."
+      ],
+      "row_item_code_after_lookup": null,
+      "sales_order": "SAL-ORD-2026-00195-1",
+      "width": "15.0"
+    },
+    {
+      "actual_cut_height": 24.0,
+      "actual_cut_width": 24.0,
+      "csv_row": 1077,
+      "dialog_values": {
+        "custom_cut_from_height": 24,
+        "custom_cut_from_width": 24,
+        "custom_height": 22,
+        "custom_is_gadela": 0,
+        "custom_is_jada": 0,
+        "custom_is_patala": 0,
+        "custom_is_rajsthan": 1,
+        "custom_is_rough": 0,
+        "custom_width": 22,
+        "item_template_filter": "KOTA",
+        "manual_segments_toggle": 0,
+        "polish_type": ""
+      },
+      "expected_cut_height": 0.0,
+      "expected_cut_width": 0.0,
+      "expected_item_code": "KOTA 22X22 RAJ MIR",
+      "generated_item_code": "KOTA 22x22 RAJ",
+      "height": "22.0",
+      "messages": [
+        "Item not found: KOTA 22x22 RAJ. Please create this item or adjust the inputs."
+      ],
+      "row_item_code_after_lookup": null,
+      "sales_order": "SAL-ORD-2026-00569",
+      "width": "22.0"
+    },
+    {
+      "actual_cut_height": 54.0,
+      "actual_cut_width": 30.0,
+      "csv_row": 1082,
+      "dialog_values": {
+        "custom_cut_from_height": 54,
+        "custom_cut_from_width": 30,
+        "custom_height": 50,
+        "custom_is_gadela": 0,
+        "custom_is_jada": 0,
+        "custom_is_patala": 0,
+        "custom_is_rajsthan": 0,
+        "custom_is_rough": 0,
+        "custom_width": 15,
+        "item_template_filter": "KOTA",
+        "manual_segments_toggle": 0,
+        "polish_type": "DP"
+      },
+      "expected_cut_height": 54.0,
+      "expected_cut_width": 24.0,
+      "expected_item_code": "KOTA 54x24 DP",
+      "generated_item_code": "KOTA 54x30 DP",
+      "height": "50.0",
+      "messages": [
+        "Item not found: KOTA 54x30 DP. Please create this item or adjust the inputs."
+      ],
+      "row_item_code_after_lookup": null,
+      "sales_order": "SAL-ORD-2026-00150",
+      "width": "15.0"
+    },
+    {
+      "actual_cut_height": 24.0,
+      "actual_cut_width": 30.0,
+      "csv_row": 1141,
+      "dialog_values": {
+        "custom_cut_from_height": 24,
+        "custom_cut_from_width": 30,
+        "custom_height": 18,
+        "custom_is_gadela": 0,
+        "custom_is_jada": 0,
+        "custom_is_patala": 0,
+        "custom_is_rajsthan": 0,
+        "custom_is_rough": 0,
+        "custom_width": 12,
+        "item_template_filter": "KOTA",
+        "manual_segments_toggle": 0,
+        "polish_type": ""
+      },
+      "expected_cut_height": 24.0,
+      "expected_cut_width": 24.0,
+      "expected_item_code": "KOTA 24x24",
+      "generated_item_code": "KOTA 24x30",
+      "height": "18.0",
+      "messages": [
+        "Item not found: KOTA 24x30. Please create this item or adjust the inputs."
+      ],
+      "row_item_code_after_lookup": null,
+      "sales_order": "SAL-ORD-2026-00310",
+      "width": "12.0"
+    },
+    {
+      "actual_cut_height": 18.0,
+      "actual_cut_width": 12.0,
+      "csv_row": 1152,
+      "dialog_values": {
+        "custom_cut_from_height": 18,
+        "custom_cut_from_width": 12,
+        "custom_height": 13,
+        "custom_is_gadela": 0,
+        "custom_is_jada": 0,
+        "custom_is_patala": 0,
+        "custom_is_rajsthan": 0,
+        "custom_is_rough": 0,
+        "custom_width": 11,
+        "item_template_filter": "KOTA",
+        "manual_segments_toggle": 0,
+        "polish_type": ""
+      },
+      "expected_cut_height": 30.0,
+      "expected_cut_width": 30.0,
+      "expected_item_code": "KOTA 30x24",
+      "generated_item_code": "KOTA 18x12",
+      "height": "13.0",
+      "messages": [
+        "Item not found: KOTA 18x12. Please create this item or adjust the inputs."
+      ],
+      "row_item_code_after_lookup": null,
+      "sales_order": "SAL-ORD-2026-00297",
+      "width": "11.0"
+    },
+    {
+      "actual_cut_height": 24.0,
+      "actual_cut_width": 12.0,
+      "csv_row": 1276,
+      "dialog_values": {
+        "custom_cut_from_height": 24,
+        "custom_cut_from_width": 12,
+        "custom_height": 23,
+        "custom_is_gadela": 0,
+        "custom_is_jada": 0,
+        "custom_is_patala": 0,
+        "custom_is_rajsthan": 0,
+        "custom_is_rough": 0,
+        "custom_width": 11.5,
+        "item_template_filter": "KOTA",
+        "manual_segments_toggle": 0,
+        "polish_type": "DP"
+      },
+      "expected_cut_height": 24.0,
+      "expected_cut_width": 24.0,
+      "expected_item_code": "KOTA 24x24 DP",
+      "generated_item_code": "KOTA 24x12 DP",
+      "height": "23.0",
+      "messages": [
+        "Item not found: KOTA 24x12 DP. Please create this item or adjust the inputs."
+      ],
+      "row_item_code_after_lookup": null,
+      "sales_order": "SAL-ORD-2026-00236",
+      "width": "11.5"
+    },
+    {
+      "actual_cut_height": 72.0,
+      "actual_cut_width": 36.0,
+      "csv_row": 1341,
+      "dialog_values": {
+        "custom_cut_from_height": 72,
+        "custom_cut_from_width": 36,
+        "custom_height": 71,
+        "custom_is_gadela": 0,
+        "custom_is_jada": 0,
+        "custom_is_patala": 0,
+        "custom_is_rajsthan": 0,
+        "custom_is_rough": 0,
+        "custom_width": 35,
+        "item_template_filter": "KOTA",
+        "manual_segments_toggle": 0,
+        "polish_type": ""
+      },
+      "expected_cut_height": 78.0,
+      "expected_cut_width": 36.0,
+      "expected_item_code": "KOTA 78x36",
+      "generated_item_code": "KOTA 72x36",
+      "height": "71.0",
+      "messages": [
+        "Item not found: KOTA 72x36. Please create this item or adjust the inputs."
+      ],
+      "row_item_code_after_lookup": null,
+      "sales_order": "SAL-ORD-2026-00200",
+      "width": "35.0"
+    },
+    {
+      "actual_cut_height": 36.0,
+      "actual_cut_width": 24.0,
+      "csv_row": 1362,
+      "dialog_values": {
+        "custom_cut_from_height": 36,
+        "custom_cut_from_width": 24,
+        "custom_height": 30,
+        "custom_is_gadela": 0,
+        "custom_is_jada": 0,
+        "custom_is_patala": 0,
+        "custom_is_rajsthan": 0,
+        "custom_is_rough": 0,
+        "custom_width": 22,
+        "item_template_filter": "KOTA",
+        "manual_segments_toggle": 0,
+        "polish_type": ""
+      },
+      "expected_cut_height": 30.0,
+      "expected_cut_width": 24.0,
+      "expected_item_code": "KOTA 30x24",
+      "generated_item_code": "KOTA 36x24",
+      "height": "30.0",
+      "messages": [
+        "Item not found: KOTA 36x24. Please create this item or adjust the inputs."
+      ],
+      "row_item_code_after_lookup": null,
+      "sales_order": "SAL-ORD-2026-00180",
+      "width": "22.0"
+    },
+    {
+      "actual_cut_height": 24.0,
+      "actual_cut_width": 18.0,
+      "csv_row": 1369,
+      "dialog_values": {
+        "custom_cut_from_height": 24,
+        "custom_cut_from_width": 18,
+        "custom_height": 23,
+        "custom_is_gadela": 0,
+        "custom_is_jada": 0,
+        "custom_is_patala": 0,
+        "custom_is_rajsthan": 0,
+        "custom_is_rough": 0,
+        "custom_width": 17,
+        "item_template_filter": "KOTA",
+        "manual_segments_toggle": 0,
+        "polish_type": "Fine"
+      },
+      "expected_cut_height": 24.0,
+      "expected_cut_width": 24.0,
+      "expected_item_code": "KOTA 24x24 FIN",
+      "generated_item_code": "KOTA 24x18 FIN",
+      "height": "23.0",
+      "messages": [
+        "Item not found: KOTA 24x18 FIN. Please create this item or adjust the inputs."
+      ],
+      "row_item_code_after_lookup": null,
+      "sales_order": "SAL-ORD-2026-00183",
+      "width": "17.0"
+    },
+    {
+      "actual_cut_height": 24.0,
+      "actual_cut_width": 18.0,
+      "csv_row": 1375,
+      "dialog_values": {
+        "custom_cut_from_height": 24,
+        "custom_cut_from_width": 18,
+        "custom_height": 22,
+        "custom_is_gadela": 0,
+        "custom_is_jada": 0,
+        "custom_is_patala": 1,
+        "custom_is_rajsthan": 1,
+        "custom_is_rough": 0,
+        "custom_width": 16,
+        "item_template_filter": "KOTA",
+        "manual_segments_toggle": 0,
+        "polish_type": ""
+      },
+      "expected_cut_height": 24.0,
+      "expected_cut_width": 24.0,
+      "expected_item_code": "KOTA 22x16 RAJ P",
+      "generated_item_code": "KOTA 22x16 RAJ P",
+      "height": "22.0",
+      "messages": [],
+      "row_item_code_after_lookup": "KOTA 22x16 RAJ P",
+      "sales_order": "SAL-ORD-2026-00151",
+      "width": "16.0"
+    },
+    {
+      "actual_cut_height": 6.0,
+      "actual_cut_width": 0.0,
+      "csv_row": 1419,
+      "dialog_values": {
+        "custom_cut_from_height": 6,
+        "custom_cut_from_width": 0,
+        "custom_height": 1,
+        "custom_is_gadela": 0,
+        "custom_is_jada": 0,
+        "custom_is_patala": 0,
+        "custom_is_rajsthan": 0,
+        "custom_is_rough": 0,
+        "custom_width": 1,
+        "item_template_filter": "KOTA",
+        "manual_segments_toggle": 0,
+        "polish_type": "Ledhar"
+      },
+      "expected_cut_height": 24.0,
+      "expected_cut_width": 24.0,
+      "expected_item_code": "KOTA 24x24 LDR",
+      "generated_item_code": "KOTA 6x0 LDR",
+      "height": "1.0",
+      "messages": [
+        "Item not found: KOTA 6x0 LDR. Please create this item or adjust the inputs."
+      ],
+      "row_item_code_after_lookup": null,
+      "sales_order": "SAL-ORD-2026-00143",
+      "width": "1.0"
+    },
+    {
+      "actual_cut_height": 30.0,
+      "actual_cut_width": 30.0,
+      "csv_row": 1421,
+      "dialog_values": {
+        "custom_cut_from_height": 30,
+        "custom_cut_from_width": 30,
+        "custom_height": 28,
+        "custom_is_gadela": 0,
+        "custom_is_jada": 0,
+        "custom_is_patala": 0,
+        "custom_is_rajsthan": 0,
+        "custom_is_rough": 0,
+        "custom_width": 13,
+        "item_template_filter": "KOTA",
+        "manual_segments_toggle": 0,
+        "polish_type": "Fine"
+      },
+      "expected_cut_height": 30.0,
+      "expected_cut_width": 24.0,
+      "expected_item_code": "KOTA 30x24 FIN",
+      "generated_item_code": "KOTA 30x30 FIN",
+      "height": "28.0",
+      "messages": [
+        "Item not found: KOTA 30x30 FIN. Please create this item or adjust the inputs."
+      ],
+      "row_item_code_after_lookup": null,
+      "sales_order": "SAL-ORD-2026-00144",
+      "width": "13.0"
+    },
+    {
+      "actual_cut_height": 18.0,
+      "actual_cut_width": 30.0,
+      "csv_row": 1508,
+      "dialog_values": {
+        "custom_cut_from_height": 18,
+        "custom_cut_from_width": 30,
+        "custom_height": 12,
+        "custom_is_gadela": 0,
+        "custom_is_jada": 0,
+        "custom_is_patala": 0,
+        "custom_is_rajsthan": 0,
+        "custom_is_rough": 0,
+        "custom_width": 12,
+        "item_template_filter": "KOTA",
+        "manual_segments_toggle": 0,
+        "polish_type": ""
+      },
+      "expected_cut_height": 24.0,
+      "expected_cut_width": 24.0,
+      "expected_item_code": "KOTA 24x24",
+      "generated_item_code": "KOTA 18x30",
+      "height": "12.0",
+      "messages": [
+        "Item not found: KOTA 18x30. Please create this item or adjust the inputs."
+      ],
+      "row_item_code_after_lookup": null,
+      "sales_order": "SAL-ORD-2026-00111",
+      "width": "12.0"
+    },
+    {
+      "actual_cut_height": 24.0,
+      "actual_cut_width": 18.0,
+      "csv_row": 1517,
+      "dialog_values": {
+        "custom_cut_from_height": 24,
+        "custom_cut_from_width": 18,
+        "custom_height": 20,
+        "custom_is_gadela": 0,
+        "custom_is_jada": 0,
+        "custom_is_patala": 0,
+        "custom_is_rajsthan": 0,
+        "custom_is_rough": 0,
+        "custom_width": 15,
+        "item_template_filter": "KOTA",
+        "manual_segments_toggle": 0,
+        "polish_type": ""
+      },
+      "expected_cut_height": 24.0,
+      "expected_cut_width": 24.0,
+      "expected_item_code": "KOTA 24x24",
+      "generated_item_code": "KOTA 24x18",
+      "height": "20.0",
+      "messages": [
+        "Item not found: KOTA 24x18. Please create this item or adjust the inputs."
+      ],
+      "row_item_code_after_lookup": null,
+      "sales_order": "SAL-ORD-2026-00113",
+      "width": "15.0"
+    },
+    {
+      "actual_cut_height": 60.0,
+      "actual_cut_width": 30.0,
+      "csv_row": 1519,
+      "dialog_values": {
+        "custom_cut_from_height": 60,
+        "custom_cut_from_width": 30,
+        "custom_height": 59,
+        "custom_is_gadela": 0,
+        "custom_is_jada": 0,
+        "custom_is_patala": 0,
+        "custom_is_rajsthan": 0,
+        "custom_is_rough": 0,
+        "custom_width": 15,
+        "item_template_filter": "KOTA",
+        "manual_segments_toggle": 0,
+        "polish_type": ""
+      },
+      "expected_cut_height": 60.0,
+      "expected_cut_width": 24.0,
+      "expected_item_code": "KOTA 60x24",
+      "generated_item_code": "KOTA 60x30",
+      "height": "59.0",
+      "messages": [
+        "Item not found: KOTA 60x30. Please create this item or adjust the inputs."
+      ],
+      "row_item_code_after_lookup": null,
+      "sales_order": "SAL-ORD-2026-00113",
+      "width": "15.0"
+    },
+    {
+      "actual_cut_height": 24.0,
+      "actual_cut_width": 24.0,
+      "csv_row": 1605,
+      "dialog_values": {
+        "custom_cut_from_height": 24,
+        "custom_cut_from_width": 24,
+        "custom_height": 22,
+        "custom_is_gadela": 0,
+        "custom_is_jada": 0,
+        "custom_is_patala": 0,
+        "custom_is_rajsthan": 0,
+        "custom_is_rough": 0,
+        "custom_width": 22,
+        "item_template_filter": "KOTA",
+        "manual_segments_toggle": 0,
+        "polish_type": "Uncut"
+      },
+      "expected_cut_height": 6.0,
+      "expected_cut_width": 6.0,
+      "expected_item_code": "KOTA 24x24 UNC",
+      "generated_item_code": "KOTA 24x24 UNC",
+      "height": "22.0",
+      "messages": [],
+      "row_item_code_after_lookup": "KOTA 24x24 UNC",
+      "sales_order": "SAL-ORD-2026-00070",
+      "width": "22.0"
+    },
+    {
+      "actual_cut_height": 18.0,
+      "actual_cut_width": 30.0,
+      "csv_row": 1648,
+      "dialog_values": {
+        "custom_cut_from_height": 18,
+        "custom_cut_from_width": 30,
+        "custom_height": 14,
+        "custom_is_gadela": 0,
+        "custom_is_jada": 0,
+        "custom_is_patala": 0,
+        "custom_is_rajsthan": 0,
+        "custom_is_rough": 0,
+        "custom_width": 12.5,
+        "item_template_filter": "KOTA",
+        "manual_segments_toggle": 0,
+        "polish_type": ""
+      },
+      "expected_cut_height": 24.0,
+      "expected_cut_width": 30.0,
+      "expected_item_code": "KOTA 30x24",
+      "generated_item_code": "KOTA 18x30",
+      "height": "14.0",
+      "messages": [
+        "Item not found: KOTA 18x30. Please create this item or adjust the inputs."
+      ],
+      "row_item_code_after_lookup": null,
+      "sales_order": "SAL-ORD-2026-00052",
+      "width": "12.5"
+    },
+    {
+      "actual_cut_height": 18.0,
+      "actual_cut_width": 6.0,
+      "csv_row": 1649,
+      "dialog_values": {
+        "custom_cut_from_height": 18,
+        "custom_cut_from_width": 6,
+        "custom_height": 14,
+        "custom_is_gadela": 0,
+        "custom_is_jada": 0,
+        "custom_is_patala": 0,
+        "custom_is_rajsthan": 0,
+        "custom_is_rough": 0,
+        "custom_width": 5.5,
+        "item_template_filter": "KOTA",
+        "manual_segments_toggle": 0,
+        "polish_type": ""
+      },
+      "expected_cut_height": 18.0,
+      "expected_cut_width": 6.0,
+      "expected_item_code": "KOTA 30x24",
+      "generated_item_code": "KOTA 18x6",
+      "height": "14.0",
+      "messages": [
+        "Item not found: KOTA 18x6. Please create this item or adjust the inputs."
+      ],
+      "row_item_code_after_lookup": null,
+      "sales_order": "SAL-ORD-2026-00052",
+      "width": "5.5"
+    },
+    {
+      "actual_cut_height": 24.0,
+      "actual_cut_width": 18.0,
+      "csv_row": 1689,
+      "dialog_values": {
+        "custom_cut_from_height": 24,
+        "custom_cut_from_width": 18,
+        "custom_height": 23,
+        "custom_is_gadela": 0,
+        "custom_is_jada": 0,
+        "custom_is_patala": 0,
+        "custom_is_rajsthan": 0,
+        "custom_is_rough": 0,
+        "custom_width": 17,
+        "item_template_filter": "KOTA",
+        "manual_segments_toggle": 0,
+        "polish_type": "River"
+      },
+      "expected_cut_height": 24.0,
+      "expected_cut_width": 24.0,
+      "expected_item_code": "KOTA 24x24 RIV",
+      "generated_item_code": "KOTA 24x18 RIV",
+      "height": "23.0",
+      "messages": [
+        "Item not found: KOTA 24x18 RIV. Please create this item or adjust the inputs."
+      ],
+      "row_item_code_after_lookup": null,
+      "sales_order": "SAL-ORD-2026-00063",
+      "width": "17.0"
+    },
+    {
+      "actual_cut_height": 24.0,
+      "actual_cut_width": 24.0,
+      "csv_row": 1690,
+      "dialog_values": {
+        "custom_cut_from_height": 24,
+        "custom_cut_from_width": 24,
+        "custom_height": 22,
+        "custom_is_gadela": 0,
+        "custom_is_jada": 1,
+        "custom_is_patala": 0,
+        "custom_is_rajsthan": 1,
+        "custom_is_rough": 1,
+        "custom_width": 22,
+        "item_template_filter": "KOTA",
+        "manual_segments_toggle": 0,
+        "polish_type": ""
+      },
+      "expected_cut_height": 24.0,
+      "expected_cut_width": 24.0,
+      "expected_item_code": "KOTA 22x22 RUF RAJ J",
+      "generated_item_code": "KOTA 22x22 RAJ RUF J",
+      "height": "22.0",
+      "messages": [
+        "Item not found: KOTA 22x22 RAJ RUF J. Please create this item or adjust the inputs."
+      ],
+      "row_item_code_after_lookup": null,
+      "sales_order": "SAL-ORD-2026-00049",
+      "width": "22.0"
+    },
+    {
+      "actual_cut_height": 66.0,
+      "actual_cut_width": 30.0,
+      "csv_row": 1708,
+      "dialog_values": {
+        "custom_cut_from_height": 66,
+        "custom_cut_from_width": 30,
+        "custom_height": 61,
+        "custom_is_gadela": 0,
+        "custom_is_jada": 0,
+        "custom_is_patala": 0,
+        "custom_is_rajsthan": 0,
+        "custom_is_rough": 0,
+        "custom_width": 15,
+        "item_template_filter": "KOTA",
+        "manual_segments_toggle": 0,
+        "polish_type": ""
+      },
+      "expected_cut_height": 66.0,
+      "expected_cut_width": 24.0,
+      "expected_item_code": "KOTA 66x24",
+      "generated_item_code": "KOTA 66x30",
+      "height": "61.0",
+      "messages": [
+        "Item not found: KOTA 66x30. Please create this item or adjust the inputs."
+      ],
+      "row_item_code_after_lookup": null,
+      "sales_order": "SAL-ORD-2026-00038",
+      "width": "15.0"
+    }
+  ],
+  "profile": "sales_invoice",
+  "source_csv": "/workspace/development/frappe-bench/apps/kgmaccount/sales order item list.csv"
+}

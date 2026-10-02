@@ -1,0 +1,12 @@
+{
+  "best_csv": "/workspace/development/frappe-bench/apps/kgmaccount/kgmaccount/tests/logs/sqft/best/sales_invoice_sqft_failed_rows.csv",
+  "best_failed_count": 31,
+  "change_from_best": 0,
+  "change_from_previous": 0,
+  "latest_csv": "/workspace/development/frappe-bench/apps/kgmaccount/kgmaccount/tests/logs/sqft/sales_invoice_sqft_failed_rows.csv",
+  "latest_failed_count": 31,
+  "previous_csv": "/workspace/development/frappe-bench/apps/kgmaccount/kgmaccount/tests/logs/sqft/previous/sales_invoice_sqft_failed_rows.csv",
+  "previous_failed_count": 31,
+  "profile": "sales_invoice",
+  "source_csv": "/workspace/development/frappe-bench/apps/kgmaccount/sales order item list.csv"
+}

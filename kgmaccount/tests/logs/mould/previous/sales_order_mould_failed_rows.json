@@ -1,0 +1,165 @@
+{
+  "failed_row_count": 8,
+  "failed_rows": [
+    {
+      "candidate_qtys": [
+        0.0,
+        1.5,
+        3.0,
+        3.75,
+        5.25,
+        6.75,
+        7.5,
+        9.0,
+        10.5
+      ],
+      "csv_row": 512,
+      "expected_sqft": 4.25,
+      "height": "43.0",
+      "item": "Dhar MouldG",
+      "quantity": "1.0",
+      "sales_order": "SAL-ORD-2026-00592",
+      "width": "18.0"
+    },
+    {
+      "candidate_qtys": [
+        0.0,
+        2.0,
+        4.0,
+        5.5,
+        7.5,
+        9.5,
+        11.0,
+        13.0,
+        15.0
+      ],
+      "csv_row": 578,
+      "expected_sqft": 7.65,
+      "height": "66.0",
+      "item": "Dhar MouldG",
+      "quantity": "1.0",
+      "sales_order": "SAL-ORD-2026-00714",
+      "width": "23.0"
+    },
+    {
+      "candidate_qtys": [
+        0.0,
+        0.5,
+        1.0,
+        4.75,
+        5.25,
+        5.75,
+        9.5,
+        10.0,
+        10.5
+      ],
+      "csv_row": 668,
+      "expected_sqft": 5.5,
+      "height": "57.0",
+      "item": "Dhar MouldG",
+      "quantity": "1.0",
+      "sales_order": "SAL-ORD-2026-00419",
+      "width": "6.0"
+    },
+    {
+      "candidate_qtys": [
+        0.0,
+        1.5,
+        2.75,
+        3.0,
+        4.25,
+        5.5,
+        5.75,
+        7.0,
+        8.5
+      ],
+      "csv_row": 960,
+      "expected_sqft": 1.0,
+      "height": "30.25",
+      "item": "Dhar MouldG",
+      "quantity": "1.0",
+      "sales_order": "SAL-ORD-2026-00339",
+      "width": "15.5"
+    },
+    {
+      "candidate_qtys": [
+        0.0,
+        1.75,
+        3.5,
+        5.25,
+        7.0,
+        8.75,
+        10.5
+      ],
+      "csv_row": 1106,
+      "expected_sqft": 2.5,
+      "height": "41.0",
+      "item": "Phal MouldG",
+      "quantity": "1.0",
+      "sales_order": "SAL-ORD-2026-00238-2",
+      "width": "21.0"
+    },
+    {
+      "candidate_qtys": [
+        0.0,
+        2.75,
+        5.5,
+        8.0,
+        10.75,
+        13.5,
+        16.0,
+        18.75,
+        21.5
+      ],
+      "csv_row": 1165,
+      "expected_sqft": 22.0,
+      "height": "94.0",
+      "item": "Tiles",
+      "quantity": "1.0",
+      "sales_order": "SAL-ORD-2026-00179-1",
+      "width": "31.0"
+    },
+    {
+      "candidate_qtys": [
+        0.0,
+        1.0,
+        2.0,
+        4.75,
+        5.75,
+        6.75,
+        9.5,
+        10.5,
+        11.5
+      ],
+      "csv_row": 1189,
+      "expected_sqft": 3.25,
+      "height": "57.0",
+      "item": "Dhar MouldG",
+      "quantity": "1.0",
+      "sales_order": "SAL-ORD-2026-00202",
+      "width": "12.0"
+    },
+    {
+      "candidate_qtys": [
+        0.0,
+        1.5,
+        2.0,
+        3.0,
+        3.5,
+        4.0,
+        5.0,
+        5.5,
+        7.0
+      ],
+      "csv_row": 1214,
+      "expected_sqft": 4.5,
+      "height": "24.0",
+      "item": "Dhar Mould",
+      "quantity": "1.0",
+      "sales_order": "SAL-ORD-2026-00163",
+      "width": "18.0"
+    }
+  ],
+  "profile": "sales_order",
+  "source_csv": "/workspace/development/frappe-bench/apps/kgmaccount/sales order item list.csv"
+}
