@@ -21,6 +21,7 @@ frappe.pages["sales-order-fast-entry"].on_page_load = function(wrapper) {
 		editingIndex: null,
 		lastSideMode: "",
 		sqftManual: false,
+		entryFocusTimer: null,
 	};
 
 	const $main = $(wrapper).find(".layout-main-section");
@@ -294,7 +295,9 @@ frappe.pages["sales-order-fast-entry"].on_page_load = function(wrapper) {
 		label: __("Manual Item"),
 		onchange: function() {
 			refreshGeneratedItem();
-			focusEntryHeight();
+			if ($main.find("#kgm-template").val() === "MANUAL") {
+				focusEntryHeight();
+			}
 		},
 	});
 	controls.tax_account = makeControl("kgm-tax-account-control", {
@@ -969,13 +972,15 @@ frappe.pages["sales-order-fast-entry"].on_page_load = function(wrapper) {
 	}
 
 	function focusEntryHeight() {
-		setTimeout(() => {
+		clearTimeout(state.entryFocusTimer);
+		state.entryFocusTimer = setTimeout(() => {
 			$main.find("#kgm-height").trigger("focus").trigger("select");
 		}, 0);
 	}
 
 	function focusEntryItem() {
-		setTimeout(() => {
+		clearTimeout(state.entryFocusTimer);
+		state.entryFocusTimer = setTimeout(() => {
 			if ($main.find("#kgm-template").val() === "MANUAL") {
 				if (controls.manual_item.set_focus) {
 					controls.manual_item.set_focus();
@@ -989,6 +994,7 @@ frappe.pages["sales-order-fast-entry"].on_page_load = function(wrapper) {
 	}
 
 	function resetEntryInputs({ focusItem = true, resetItem = false } = {}) {
+		clearTimeout(state.entryFocusTimer);
 		if (resetItem) {
 			$main.find("#kgm-template").val("KOTA");
 			controls.manual_item.set_value("");

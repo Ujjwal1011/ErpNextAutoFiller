@@ -90,6 +90,7 @@ def main():
 		assert page.eval("document.querySelector('#kgm-template').value === 'KOTA' && document.querySelector('#kgm-manual-item-wrap input').value === '' && document.querySelector('#kgm-finish').value === ''")
 		assert page.eval("document.querySelector('#kgm-customer-control input').value === '' && document.querySelector('#kgm-cash-customer-control input').value === '' && document.querySelector('#kgm-phone-control input').value === ''")
 		assert page.eval("document.querySelector('#kgm-tax-charge-type').value === 'On Net Total' && document.querySelector('#kgm-tax-rate').value === '' && document.querySelector('#kgm-tax-amount').value === ''")
+		assert page.eval("new Promise(resolve => setTimeout(() => resolve(document.activeElement === document.querySelector('#kgm-customer-control input')), 150))"), "Customer should keep focus after Save Draft"
 		page.eval("$('#kgm-height').val('24').trigger('input'); $('#kgm-width').val('24').trigger('input'); $('#kgm-quantity').val('2').trigger('input'); $('#kgm-finish').val('DP').trigger('change'); $('#kgm-rate').val('99'); $('#kgm-add-entry').click(); true")
 		page.wait("document.querySelectorAll('#kgm-preview-body tr').length === 1")
 		assert page.eval("document.querySelector('#kgm-template').value === 'KOTA' && document.querySelector('#kgm-finish').value === '' && document.querySelector('#kgm-rate').value === '' && document.querySelector('#kgm-quantity').value === '1'")
