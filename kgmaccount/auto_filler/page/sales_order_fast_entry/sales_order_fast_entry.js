@@ -341,6 +341,12 @@ frappe.pages["sales-order-fast-entry"].on_page_load = function(wrapper) {
 
 	function bindEvents() {
 		$main.on("change", "#kgm-template, #kgm-finish", refreshGeneratedItem);
+		$main.on("focusout", "#kgm-manual-item-wrap input", function() {
+			setTimeout(() => {
+				if ($main.find("#kgm-template").val() !== "MANUAL" || $main.find("#kgm-rate").val()) return;
+				if (controls.manual_item.get_value()) refreshGeneratedItem(true);
+			}, 0);
+		});
 		$main.on("input", "#kgm-height, #kgm-width, #kgm-quantity", refreshGeneratedItem);
 		$main.on("input", "#kgm-sqft", function() {
 			state.sqftManual = Boolean($(this).val());
@@ -671,7 +677,7 @@ frappe.pages["sales-order-fast-entry"].on_page_load = function(wrapper) {
 		};
 	}
 
-	function refreshGeneratedItem() {
+	function refreshGeneratedItem(forceRate = false) {
 		const template = $main.find("#kgm-template").val();
 		$main.find("#kgm-manual-item-wrap").toggleClass("kgm-hidden", template !== "MANUAL");
 		$main.find("#kgm-generated-wrap").toggleClass("kgm-hidden", template === "MANUAL");
@@ -685,7 +691,7 @@ frappe.pages["sales-order-fast-entry"].on_page_load = function(wrapper) {
 		renderWorkOptions();
 		scheduleLivePreview();
 
-		if (itemCode && itemCode !== state.lastGeneratedItemCode) {
+		if (itemCode && (itemCode !== state.lastGeneratedItemCode || forceRate === true)) {
 			state.lastGeneratedItemCode = itemCode;
 			const requestId = ++state.itemDetailsRequest;
 			const billRate = getManualBillRate(itemCode);

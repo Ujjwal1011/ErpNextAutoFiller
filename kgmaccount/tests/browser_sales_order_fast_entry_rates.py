@@ -51,21 +51,27 @@ def main():
 		work = page.eval("document.querySelector('#kgm-operation option:nth-child(2)').value")
 		assert work, "No work item available for Manual entry"
 
-		page.eval("$('#kgm-sqft').val('20').trigger('input'); $('#kgm-rate').val('12').trigger('input'); $('#kgm-finish').val('Fine').trigger('change')")
+		page.eval("$('#kgm-sqft').val('20').trigger('input'); $('#kgm-finish').val('Fine').trigger('change')")
 		page.eval(f"$('#kgm-operation').val({json.dumps(work)}).trigger('change'); $('#kgm-operation-rate').val('10')")
-		page.eval("$('#kgm-add-entry').click()")
+		page.eval("$('#kgm-rate').val('12'); $('#kgm-add-entry').click(); true")
 		page.wait("document.querySelectorAll('#kgm-preview-body tr').length === 2")
+		assert page.eval("document.querySelector('#kgm-preview-body tr').cells[8].innerText.trim()") == "12"
 		assert page.eval("document.querySelector('#kgm-template').value === 'MANUAL' && document.querySelector('#kgm-manual-item-wrap input').value === 'Adhunik Brown'")
 		assert page.eval("['#kgm-height', '#kgm-width', '#kgm-sqft', '#kgm-rate', '#kgm-operation-rate'].every(selector => document.querySelector(selector).value === '')")
 		assert page.eval("document.querySelector('#kgm-quantity').value === '1' && document.querySelector('#kgm-finish').value === '' && document.querySelector('#kgm-operation').value === ''")
 		assert page.eval("document.querySelector('#kgm-customer-control input').value === 'Stone Galaxy Rahul' && document.querySelector('#kgm-cash-customer-control input').value === 'Cash Customer' && document.querySelector('#kgm-phone-control input').value === '1234567890'")
 		assert page.eval("[document.querySelector('#kgm-date-control input').value, document.querySelector('#kgm-delivery-date-control input').value]") == initial_dates
+		page.eval("document.querySelector('#kgm-manual-item-wrap input').focus(); document.querySelector('#kgm-height').focus(); true")
+		page.wait("document.querySelector('#kgm-rate').value === '12'")
 		page.eval(f"$('#kgm-operation').val({json.dumps(work)}).trigger('change')")
 		assert page.eval("document.querySelector('#kgm-operation-rate').value") == "10"
 
 		page.eval("$('#kgm-sqft').val('30').trigger('input'); $('#kgm-rate').val('15'); $('#kgm-operation-rate').val('11')")
 		page.eval("$('#kgm-add-entry').click()")
 		page.wait("document.querySelectorAll('#kgm-preview-body tr').length === 4")
+		assert page.eval("document.querySelector('#kgm-rate').value === ''")
+		page.eval("document.querySelector('#kgm-manual-item-wrap input').focus(); document.querySelector('#kgm-height').focus(); true")
+		page.wait("document.querySelector('#kgm-rate').value === '15'")
 		rates = page.eval("Array.from(document.querySelectorAll('#kgm-preview-body tr')).map(row => row.cells[8].innerText.trim())")
 		assert rates == ["15", "11", "15", "11"], rates
 		page.eval("document.querySelector('.kgm-edit-entry').click()")
